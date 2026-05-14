@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mantenedor de Reportes - Municipalidad</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <style>
+        :root { --primary-blue: #3d71ff; --bg-light: #f8fafc; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg-light); }
+        
+        #map { height: calc(100vh - 100px); width: 100%; border-radius: 20px; z-index: 1; border: 4px solid white; box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
+        
+        .sidebar-crud { width: 380px; height: 100vh; background: white; border-right: 1px solid #e2e8f0; position: fixed; z-index: 1001; overflow-y: auto; transition: 0.3s; }
+        .main-content { margin-left: 380px; padding: 20px; }
+
+        .form-floating > .form-control:focus { border-color: var(--primary-blue); box-shadow: none; }
+        .status-pill { width: 12px; height: 12px; border-radius: 50%; display: inline-block; margin-right: 8px; }
+        
+        /* Estilo de la lista de reportes */
+        .report-item { cursor: pointer; border-bottom: 1px solid #f1f5f9; transition: 0.2s; }
+        .report-item:hover { background-color: #f8faff; }
+        .report-item.active { background-color: #f0f4ff; border-left: 4px solid var(--primary-blue); }
+    </style>
+</head>
+<body>
+
+<!-- Sidebar: CRUD de Reportes -->
+<div class="sidebar-crud p-4">
+    <div class="d-flex align-items-center mb-4">
+        <i class="bi bi-tools text-primary fs-3 me-2"></i>
+        <h5 class="fw-bold mb-0">Mantenedor de Reportes</h5>
+    </div>
+
+    <!-- Formulario de Creación/Edición -->
+    <div class="card border-0 bg-light rounded-4 p-3 mb-4">
+        <h6 class="fw-bold mb-3" id="formTitle">Nuevo Reporte en Mapa</h6>
+        <form id="reportForm">
+            <input type="hidden" id="reportId">
+            <div class="mb-3">
+                <label class="tiny fw-bold text-muted">COORDENADAS (Lat, Lng)</label>
+                <input type="text" id="coords" class="form-control form-control-sm bg-white" readonly placeholder="Haz clic en el mapa">
+            </div>
+            <div class="form-floating mb-2">
+                <select class="form-select" id="category">
+                    <option value="Obras">Obras (Baches)</option>
+                    <option value="Aseo">Aseo y Ornato</option>
+                    <option value="Seguridad">Seguridad</option>
+                    <option value="Luminaria">Luminaria</option>
+                </select>
+                <label>Categoría</label>
+            </div>
+            <div class="form-floating mb-3">
+                <textarea class="form-control" id="description" style="height: 100px"></textarea>
+                <label>Descripción del problema</label>
+            </div>
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary w-100 rounded-pill fw-bold">Guardar</button>
+                <button type="button" onclick="resetForm()" class="btn btn-light rounded-pill"><i class="bi bi-x-lg"></i></button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Lista de Reportes (READ) -->
+    <div class="report-list">
+        <label class="small fw-bold text-muted mb-3 d-block text-uppercase">Reportes Recientes</label>
+        <div id="listContainer">
+            <!-- Dinámico -->
+        </div>
+    </div>
+</div>
+
+<!-- Main: Mapa Interactivo -->
+<div class="main-content">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <h4 class="fw-bold mb-0">Visualizador Geográfico</h4>
+            <p class="text-muted small">Haz clic en cualquier punto cerca de la UCSC para registrar una incidencia.</p>
+        </div>
+        <div class="badge bg-white text-dark shadow-sm p-2 px-3 border rounded-pill">
+            <span class="status-pill bg-primary"></span> UCSC Campus San Andrés
+        </div>
+    </div>
+    
+    <div id="map"></div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+    // Configuración Inicial del Mapa (UCSC Concepción)
+    const map = L.map('map').setView([-36.7937, -73.0617], 15);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+    let reportes = [
+        { id: 1, lat: -36.7940, lng: -73.0620, cat: 'Obras', desc: 'Bache entrada principal UCSC', status: 'Pendiente' },
+        { id: 2, lat: -36.7915, lng: -73.0595, cat: 'Luminaria', desc: 'Foco fundido poste 12', status: 'Resuelto' }
+    ];
+
+    let markers = {};
+
+    // Función para renderizar la lista y los marcadores (READ)
+    function render() {
+        const container = document.getElementById('listContainer');
+        container.innerHTML = '';
+        
+        // Limpiar marcadores previos
+        for (let id in markers) { map.removeLayer(markers[id]); }
+
+        reportes.forEach(r => {
+            // Agregar a la lista lateral
+            const item = document.createElement('div');
+            item.className = 'report-item p-3 rounded-3 mb-2';
+            item.innerHTML = `
+                <div class="d-flex justify-content-between align-items-start">
+                    <span class="badge ${r.cat === 'Obras' ? 'bg-danger' : 'bg-info'} mb-2">${r.cat}</span>
+                    <button class="btn btn-sm text-danger p-0" onclick="deleteReport(${r.id})"><i class="bi bi-trash"></i></button>
+                </div>
+                <h6 class="fw-bold mb-1 small">${r.desc}</h6>
+                <p class="tiny text-muted mb-0">ID: #00${r.id} | ${r.status}</p>
+            `;
+            item.onclick = () => {
+                map.flyTo([r.lat, r.lng], 17);
+                markers[r.id].openPopup();
+                editReport(r.id);
+            };
+            container.appendChild(item);
+
+            // Agregar marcador al mapa
+            const marker = L.marker([r.lat, r.lng]).addTo(map)
+                .bindPopup(`<b>${r.cat}</b><br>${r.desc}`);
+            markers[r.id] = marker;
+        });
+    }
+
+    // Capturar Clic en el mapa para obtener coordenadas (CREATE)
+    map.on('click', function(e) {
+        document.getElementById('coords').value = `${e.latlng.lat.toFixed(6)}, ${e.latlng.lng.toFixed(6)}`;
+        document.getElementById('description').focus();
+        document.getElementById('formTitle').innerText = "Nuevo Reporte en este punto";
+    });
+
+    // Guardar Reporte (CREATE / UPDATE)
+    document.getElementById('reportForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const id = document.getElementById('reportId').value;
+        const coordRaw = document.getElementById('coords').value.split(',');
+        
+        if (!coordRaw[0]) return alert("Haz clic en el mapa primero");
+
+        const nuevo = {
+            id: id ? parseInt(id) : Date.now(),
+            lat: parseFloat(coordRaw[0]),
+            lng: parseFloat(coordRaw[1]),
+            cat: document.getElementById('category').value,
+            desc: document.getElementById('description').value,
+            status: 'Pendiente'
+        };
+
+        if (id) {
+            const index = reportes.findIndex(r => r.id == id);
+            reportes[index] = nuevo;
+        } else {
+            reportes.push(nuevo);
+        }
+
+        resetForm();
+        render();
+    });
+
+    // Borrar Reporte (DELETE)
+    function deleteReport(id) {
+        if(confirm('¿Eliminar este reporte geolocalizado?')) {
+            reportes = reportes.filter(r => r.id !== id);
+            render();
+        }
+    }
+
+    // Cargar en formulario para editar (UPDATE)
+    function editReport(id) {
+        const r = reportes.find(r => r.id == id);
+        document.getElementById('reportId').value = r.id;
+        document.getElementById('coords').value = `${r.lat}, ${r.lng}`;
+        document.getElementById('category').value = r.cat;
+        document.getElementById('description').value = r.desc;
+        document.getElementById('formTitle').innerText = "Editando Reporte #" + r.id;
+    }
+
+    function resetForm() {
+        document.getElementById('reportForm').reset();
+        document.getElementById('reportId').value = '';
+        document.getElementById('formTitle').innerText = "Nuevo Reporte en Mapa";
+    }
+
+    // Ejecución inicial
+    render();
+</script>
+
+</body>
+</html>
