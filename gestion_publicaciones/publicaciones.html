@@ -28,7 +28,6 @@
             max-width: 1200px;
         }
 
-        /* Sidebar Navigation */
         .nav-link {
             color: #1a1d23;
             font-size: 1.1rem;
@@ -53,7 +52,6 @@
             color: var(--primary-blue);
         }
 
-        /* Central Feed */
         .bg-white-glass {
             background: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(10px);
@@ -88,7 +86,6 @@
             background-color: #eef2ff;
         }
 
-        /* Right Side Trends */
         .trend-card {
             border: 1px solid #edf2f7;
         }
@@ -126,15 +123,14 @@
 
 <div class="container custom-container">
     <div class="row gx-4">
-        <!-- Columna Izquierda: Navegación -->
         <aside class="col-md-3 d-none d-md-flex flex-column py-4 sticky-top vh-100">
 
             
             <nav class="nav flex-column gap-2 mb-auto">
-                <a class="nav-link active" href="#"><i class="bi bi-house-door-fill me-3"></i> Inicio</a>
-                <a class="nav-link" href="#"><i class="bi bi-hash me-3"></i> Explorar</a>
+                <a class="nav-link active" href="./publicaciones.html"><i class="bi bi-house-door-fill me-3"></i> Inicio</a>
+                <a class="nav-link" href="../emprendedores_comercio/visualizar_emprendores_comercio.html"><i class="bi bi-hash me-3"></i> Emprendedores</a>
                 <a class="nav-link" href="#"><i class="bi bi-megaphone me-3"></i> Reportes</a>
-                <a class="nav-link" href="#"><i class="bi bi-check2-square me-3"></i> Votaciones</a>
+                <a class="nav-link" href="../gestion_votaciones_consultas/votaciones.html"><i class="bi bi-check2-square me-3"></i> Votaciones</a>
                 <a class="nav-link" href="#"><i class="bi bi-person me-3"></i> Mi Perfil</a>
             </nav>
 
@@ -150,13 +146,11 @@
             </div>
         </aside>
 
-        <!-- Columna Central: Feed -->
         <main class="col-md-6 border-start border-end px-0 bg-white shadow-sm min-vh-100">
             <div class="feed-header p-3 sticky-top bg-white-glass blur">
                 <h5 class="fw-bold mb-0">Inicio</h5>
             </div>
 
-            <!-- Caja de Publicación -->
             <div class="post-box p-3 border-bottom">
                 <div class="d-flex gap-3">
                     <img src="https://i.pravatar.cc/150?u=3" class="rounded-circle" width="48" height="48">
@@ -176,9 +170,8 @@
                 </div>
             </div>
 
-            <!-- Feed de Posts -->
             <div class="posts-container">
-                <!-- Post 1 -->
+                 <a href="./publicaciones_detail.html" class="d-block text-decoration-none text-dark">
                 <article class="post p-3 border-bottom d-flex gap-3">
                     <img src="https://i.pravatar.cc/150?u=12" class="rounded-circle" width="48" height="48">
                     <div class="flex-grow-1">
@@ -202,29 +195,31 @@
                         </div>
                     </div>
                 </article>
+                </a>
 
-                <!-- Post 2 -->
-                <article class="post p-3 border-bottom d-flex gap-3">
-                    <img src="https://i.pravatar.cc/150?u=5" class="rounded-circle" width="48" height="48">
-                    <div class="flex-grow-1">
-                        <div class="post-meta">
-                            <span class="fw-bold">Tech News</span> <span class="text-muted small">@technews · 5h</span>
+                 <a href="./publicaciones_detail.html" class="d-block text-decoration-none text-dark">
+
+                    <article class="post p-3 border-bottom d-flex gap-3">
+                        <img src="https://i.pravatar.cc/150?u=5" class="rounded-circle" width="48" height="48">
+                        <div class="flex-grow-1">
+                            <div class="post-meta">
+                                <span class="fw-bold">Tech News</span> <span class="text-muted small">@technews · 5h</span>
+                            </div>
+                            <p class="post-content mt-1">
+                                Apple acaba de anunciar nuevas integraciones de IA para el desarrollo de front-end. ¡Se viene un gran cambio para los desarrolladores! 💻✨
+                            </p>
+                            <div class="post-actions d-flex justify-content-between text-muted mt-2 pe-md-5">
+                                <span class="action-item"><i class="bi bi-chat me-2"></i> 8</span>
+                                <span class="action-item"><i class="bi bi-arrow-repeat me-2"></i> 5</span>
+                                <span class="action-item"><i class="bi bi-heart me-2"></i> 42</span>
+                                <span class="action-item"><i class="bi bi-share"></i></span>
+                            </div>
                         </div>
-                        <p class="post-content mt-1">
-                            Apple acaba de anunciar nuevas integraciones de IA para el desarrollo de front-end. ¡Se viene un gran cambio para los desarrolladores! 💻✨
-                        </p>
-                        <div class="post-actions d-flex justify-content-between text-muted mt-2 pe-md-5">
-                            <span class="action-item"><i class="bi bi-chat me-2"></i> 8</span>
-                            <span class="action-item"><i class="bi bi-arrow-repeat me-2"></i> 5</span>
-                            <span class="action-item"><i class="bi bi-heart me-2"></i> 42</span>
-                            <span class="action-item"><i class="bi bi-share"></i></span>
-                        </div>
-                    </div>
-                </article>
+                    </article>
+                </a>
             </div>
         </main>
 
-        <!-- Columna Derecha: Tendencias -->
         <aside class="col-md-3 d-none d-md-block py-4 sticky-top vh-100">
             <div class="search-bar mb-4">
                 <div class="input-group bg-light rounded-pill px-3 border-0">

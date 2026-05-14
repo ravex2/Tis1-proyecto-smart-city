@@ -19,7 +19,6 @@
         }
 
 
-        /* Inputs con estilo moderno */
         .custom-input {
             background-color: #f8fafc;
             border: 1px solid #edf2f7;
@@ -36,7 +35,6 @@
             outline: none;
         }
 
-        /* Área de subida de archivos */
         .border-dashed {
             border: 2px dashed #e2e8f0;
             transition: border-color 0.2s;
@@ -48,7 +46,6 @@
             background-color: #f0f4ff;
         }
 
-        /* Sombras y Colores del Proyecto */
         .shadow-card {
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
         }
@@ -69,7 +66,6 @@
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-lg-8">
-            <!-- Encabezado del Formulario -->
             <div class="d-flex align-items-center gap-3 mb-4">
                 <a href="directorio.html" class="btn-icon-soft"><i class="bi bi-arrow-left"></i></a>
                 <div>
@@ -81,9 +77,8 @@
             <!-- Formulario Principal -->
             <div class="card border-0 shadow-card rounded-4 overflow-hidden">
                 <div class="card-body p-5">
-                    <form id="registroNegocioForm">
+                    <form>
                         
-                        <!-- Sección 1: Identificación -->
                         <div class="row g-4 mb-5">
                             <div class="col-12">
                                 <h5 class="fw-bold text-primary mb-3"><i class="bi bi-info-circle me-2"></i>Información General</h5>
@@ -108,7 +103,6 @@
                             </div>
                         </div>
 
-                        <!-- Sección 2: Ubicación y Contacto -->
                         <div class="row g-4 mb-5">
                             <div class="col-12 border-top pt-4">
                                 <h5 class="fw-bold text-primary mb-3"><i class="bi bi-geo-alt me-2"></i>Ubicación y Contacto</h5>
@@ -137,7 +131,6 @@
                             </div>
                         </div>
 
-                        <!-- Sección 3: Operación y Media -->
                         <div class="row g-4 mb-5">
                             <div class="col-12 border-top pt-4">
                                 <h5 class="fw-bold text-primary mb-3"><i class="bi bi-clock me-2"></i>Horarios y Redes</h5>
@@ -161,7 +154,6 @@
                             </div>
                         </div>
 
-                        <!-- Footer del Formulario -->
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end border-top pt-4">
                             <button type="button" class="btn btn-light rounded-pill px-5 fw-bold">Cancelar</button>
                             <button type="submit" class="btn btn-primary rounded-pill px-5 fw-bold shadow-primary">Enviar Solicitud</button>
@@ -170,7 +162,6 @@
                 </div>
             </div>
             
-            <!-- Toast o Alerta de Estado (Simulado) -->
             <div id="statusAlert" class="mt-4 d-none">
                 <div class="alert alert-success rounded-4 border-0 shadow-sm d-flex align-items-center">
                     <i class="bi bi-check-circle-fill fs-4 me-3"></i>
@@ -183,26 +174,6 @@
     </div>
 </div>
 
-<script>
-    // Lógica básica de validación para cumplir con las reglas del proceso (D.3.x)
-    document.getElementById('registroNegocioForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        // Simulación de validaciones de formato
-        const email = document.getElementById('correo_electronico').value;
-        const tel = document.getElementById('telefono').value;
-        const alertBox = document.getElementById('statusAlert');
-
-        if (!email.includes('@')) {
-            alert("Debes ingresar un correo electrónico válido.");
-            return;
-        }
-
-        // Si pasa validaciones, mostrar éxito según D.4.x
-        alertBox.classList.remove('d-none');
-        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-    });
-</script>
 
 </body>
 </html>

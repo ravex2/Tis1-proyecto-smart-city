@@ -23,7 +23,6 @@
 
         .shadow-card { box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04); }
         
-        /* Ocultar resultados inicialmente */
         #resultsPanel { display: none; }
         
         .progress-bar { transition: width 1.5s ease-in-out; }
@@ -32,7 +31,6 @@
 <body class="bg-light-soft">
 
 <div class="container py-5">
-    <!-- Header -->
     <div class="d-flex justify-content-between align-items-end mb-5">
         <div>
             <span class="badge bg-primary-soft text-primary mb-2 px-3 rounded-pill fw-bold">Participación Activa</span>
@@ -42,7 +40,6 @@
     </div>
 
     <div class="row g-4">
-        <!-- Columna de Votación -->
         <div class="col">
             <div class="card border-0 shadow-card rounded-4 p-4 mb-4" id="votingCard">
                 <div class="d-flex justify-content-between align-items-start mb-4">
@@ -55,7 +52,7 @@
                 
                 <p class="mb-4">¿Cuál de estos proyectos considera prioritario para el sector sur de nuestra comuna?</p>
                 
-                <form id="formVotacion">
+                <form >
                     <div class="voting-options d-flex flex-column gap-3 mb-4">
                         <label class="voting-item p-3 border rounded-4 d-flex align-items-center gap-3">
                             <input type="radio" name="proyecto" value="1" class="form-check-input flex-shrink-0">
@@ -88,7 +85,6 @@
                     <p class="tiny text-center text-muted mt-3">Voto único y anónimo por ciudadano.</p>
                 </form>
 
-                <!-- Mensaje de Agradecimiento (Oculto) -->
                 <div id="thanksMessage" class="text-center py-5" style="display: none;">
                     <div class="icon-circle bg-success-soft text-success mx-auto mb-3" style="width: 80px; height: 80px; font-size: 2rem;">
                         <i class="bi bi-check-lg"></i>
@@ -112,25 +108,6 @@
         });
     });
 
-    // Lógica al enviar el voto
-    document.getElementById('formVotacion').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const selected = document.querySelector('input[name="proyecto"]:checked');
-        
-        if (!selected) {
-            alert("Por favor, selecciona una opción.");
-            return;
-        }
-
-        // Simular envío y cambio de interfaz
-        document.getElementById('formVotacion').style.display = 'none';
-        document.querySelector('#votingCard p').style.display = 'none';
-        document.getElementById('thanksMessage').style.display = 'block';
-        
-        // Cambiar panel derecho
-        document.getElementById('infoPanel').style.display = 'none';
-        document.getElementById('resultsPanel').style.display = 'block';
-    });
 </script>
 
 </body>

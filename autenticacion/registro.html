@@ -15,18 +15,16 @@
 
         :root {
             --primary-blue: #3d71ff;
-            --bg-light: #ffffff; /* Aseguramos que el fondo base sea blanco */
+            --bg-light: #ffffff; 
         }
 
-        /* Contenedor del lado izquierdo */
         .left-side-container {
-            background-color: #ffffff; /* Espacio dividido en blanco */
+            background-color: #ffffff; 
             position: relative;
             height: 100vh;
             overflow: hidden;
         }
 
-        /* Diagonal Image Section */
         .diagonal-bg {
             position: absolute;
             top: 0;
@@ -37,7 +35,6 @@
                         url('https://images.unsplash.com/photo-1577495508048-b635879837f1?auto=format&fit=crop&q=80&w=1920');
             background-size: cover;
             background-position: center;
-            /* Este es el corte diagonal del wireframe */
             clip-path: polygon(0 0, 100% 0, 70% 100%, 0% 100%);
             z-index: 1;
         }
@@ -51,12 +48,9 @@
             flex-direction: column;
             justify-content: center;
             padding-left: 10%;
-            /* Color de texto oscuro para que resalte sobre el blanco si es necesario, 
-            o mantenemos blanco si la imagen es oscura */
             color: white; 
         }
 
-        /* Sombra interna para suavizar la unión con el blanco */
         .diagonal-bg::after {
             content: '';
             position: absolute;
@@ -71,7 +65,6 @@
 
 
         
-        /* Form Styles */
         .custom-input-group {
             background-color: #f8fafc;
             border-radius: 12px;
@@ -128,7 +121,6 @@
 
 <div class="container-fluid p-0 overflow-hidden">
     <div class="row g-0 vh-100">
-        <!-- Lado Izquierdo: Imagen con Corte Diagonal -->
         <div class="col-lg-7 d-none d-lg-block left-side-container">
             <div class="diagonal-bg"></div>
             
@@ -139,7 +131,6 @@
                 <h1 class="display-4 fw-bold">Tu comuna,<br>más cerca.</h1>
             </div>
         </div>
-        <!-- Lado Derecho: Formulario de Login -->
         <div class="col-lg-5 d-flex align-items-center justify-content-center bg-white">
             <div class="login-box p-4 p-md-5 w-100" style="max-width: 450px;">
                 <div class="mb-5">
