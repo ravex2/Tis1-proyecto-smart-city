@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión Operativa - UCSC & Concepción</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    
+    <!-- Leaflet CSS para el Mapa -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <style>
+        :root {
+            --primary-blue: #3d71ff;
+            --bg-light: #f8fafc;
+            --border-color: #f1f5f9;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-light);
+            overflow-x: hidden;
+        }
+
+        .sidebar-op {
+            background: #ffffff;
+            height: 100vh;
+            border-right: 1px solid var(--border-color);
+            position: fixed;
+            width: 300px;
+            z-index: 1000;
+        }
+
+        .main-content {
+            margin-left: 300px;
+            padding: 2rem;
+        }
+
+        #map {
+            height: 600px;
+            width: 100%;
+            border-radius: 24px;
+            z-index: 1;
+        }
+
+        .report-card {
+            background: white;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .report-card:hover {
+            border-color: var(--primary-blue);
+            background-color: #f0f4ff;
+        }
+
+        .status-badge {
+            font-size: 0.65rem;
+            padding: 4px 8px;
+            border-radius: 50px;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+
+<aside class="sidebar-op p-4 d-flex flex-column">
+    <div class="d-flex align-items-center mb-4">
+        <i class="bi bi-geo-fill fs-3 text-primary me-2"></i>
+        <span class="fw-bold fs-5">Módulo Operativo</span>
+    </div>
+
+    <div class="mb-4">
+        <label class="small text-muted fw-bold mb-2 d-block">FILTRAR POR ZONA</label>
+        <div class="report-card p-3 mb-2">
+            <h6 class="fw-bold mb-1 small">Campus San Andrés (UCSC)</h6>
+            <p class="text-muted mb-0" style="font-size: 0.75rem;">2 reportes activos</p>
+        </div>
+        <div class="report-card p-3 mb-2">
+            <h6 class="fw-bold mb-1 small">Concepción Centro</h6>
+            <p class="text-muted mb-0" style="font-size: 0.75rem;">5 reportes activos</p>
+        </div>
+    </div>
+
+    <div class="mt-auto p-3 bg-light rounded-4">
+        <p class="small mb-1 text-muted">Viendo datos de:</p>
+        <p class="fw-bold small mb-0">Región del Biobío, Chile</p>
+    </div>
+</aside>
+
+<main class="main-content">
+    <div class="row g-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                <div class="card-header bg-white border-0 p-4 d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="fw-bold mb-0">Mapa de Reportes Ciudadanos</h5>
+                        <p class="text-muted small mb-0">Ubicación actual: UCSC y alrededores</p>
+                    </div>
+                    <button class="btn btn-primary rounded-pill btn-sm px-3">Actualizar Mapa</button>
+                </div>
+                <div class="card-body p-0">
+                    <!-- Contenedor del Mapa -->
+                    <div id="map"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+
+    var map = L.map('map').setView([-36.7937, -73.0617], 15);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    var ucscIcon = L.icon({
+        iconUrl: 'https://cdn-icons-png.flaticon.com/512/8074/8074788.png',
+        iconSize: [40, 40],
+        iconAnchor: [20, 40],
+        popupAnchor: [0, -40]
+    });
+
+    L.marker([-36.7937, -73.0617], {icon: ucscIcon}).addTo(map)
+        .bindPopup('<b>UCSC - Campus San Andrés</b><br>Sede Principal.')
+        .openPopup();
+
+    var bache = L.marker([-36.7950, -73.0650]).addTo(map)
+        .bindPopup('<b>Reporte #001</b><br>Bache en vía de acceso.');
+
+    var luminaria = L.marker([-36.7910, -73.0590]).addTo(map)
+        .bindPopup('<b>Reporte #002</b><br>Luminaria dañada en estacionamiento.');
+
+    function centerUCSC() {
+        map.flyTo([-36.7937, -73.0617], 16);
+    }
+</script>
+
+</body>
+</html>
