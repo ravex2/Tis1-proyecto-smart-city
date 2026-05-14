@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Directorio Comercial - Municipalidad</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="social-style.css">
+
+    <style>
+
+        /* Estilo para las imágenes fijas en las tarjetas */
+        .card-img-fixed {
+            height: 200px;
+            object-fit: cover;
+        }
+
+        /* Sombras y efectos de hover suaves */
+        .shadow-card {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+            transition: all 0.3s ease;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        /* Selectores redondeados */
+        .custom-select-pill {
+            border-radius: 50px;
+            padding-left: 1.5rem;
+            padding-right: 2.5rem;
+            border: 1px solid #edf2f7;
+            background-color: white;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* Colores de la Municipalidad */
+        .bg-light-soft {
+            background-color: #f8fafc;
+        }
+
+        .shadow-primary {
+            box-shadow: 0 4px 14px rgba(61, 113, 255, 0.3);
+        }
+
+        .text-secondary {
+            color: #64748b !important;
+        }
+
+        .custom-filtros-h  {
+            max-height: 100px;
+        }
+        
+    </style>
+
+</head>
+<body class="bg-light-soft">
+
+<div class="container py-5">
+    <!-- Encabezado y Filtros -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-5 gap-2">
+        <div>
+            <h2 class="fw-bold mb-0">Directorio de Emprendimiento y Comercio</h2>
+            <p class="text-muted mb-0">Descubre y apoya el talento local de nuestra comuna.</p>
+        </div>
+        <div class="d-flex custom-filtros-h gap-2">
+            <select class="form-select custom-select-pill">
+                <option selected>Todos los Rubros</option>
+                <option>Gastronomía</option>
+                <option>Artesanía</option>
+                <option>Servicios</option>
+            </select>
+            <select class="form-select custom-select-pill">
+                <option selected>Todos los Sectores</option>
+                <option>Centro</option>
+                <option>Zona Norte</option>
+                <option>Barrio Oriente</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Grilla de Emprendedores (4 columnas según wireframe) -->
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+        
+        <!-- Tarjeta 1 -->
+        <div class="col">
+            <div class="card h-100 border-0 shadow-card rounded-4 overflow-hidden card-hover">
+                <div class="position-relative">
+                    <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&q=80&w=500" class="card-img-top card-img-fixed" alt="Café">
+                    <span class="badge bg-white text-dark position-absolute top-0 end-0 m-3 shadow-sm rounded-pill small fw-bold">Gastronomía</span>
+                </div>
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-1">Café de la Comuna</h5>
+                    <p class="card-text text-secondary small">Café de especialidad, pastelería artesanal y almuerzos diarios con productos locales.</p>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Tarjeta 2 -->
+        <div class="col">
+            <div class="card h-100 border-0 shadow-card rounded-4 overflow-hidden card-hover">
+                <div class="position-relative">
+                    <img src="https://images.unsplash.com/photo-1459411552884-841db9b3cc2a?auto=format&fit=crop&q=80&w=500" class="card-img-top card-img-fixed" alt="Artesanía">
+                    <span class="badge bg-white text-dark position-absolute top-0 end-0 m-3 shadow-sm rounded-pill small fw-bold">Artesanía</span>
+                </div>
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-1">Artesanías Luna</h5>
+                    <p class="card-text text-secondary small">Piezas únicas hechas a mano por artesanos locales. Cerámica, tejidos y madera.</p>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Tarjeta 3 -->
+        <div class="col">
+            <div class="card h-100 border-0 shadow-card rounded-4 overflow-hidden card-hover">
+                <div class="position-relative">
+                    <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=500" class="card-img-top card-img-fixed" alt="Servicios">
+                    <span class="badge bg-white text-dark position-absolute top-0 end-0 m-3 shadow-sm rounded-pill small fw-bold">Tecnología</span>
+                </div>
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-1">Servicios Tech Alex</h5>
+                    <p class="card-text text-secondary small">Soporte técnico, desarrollo web y asesoría digital para pymes de la zona.</p>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Tarjeta 4 -->
+        <div class="col">
+            <div class="card h-100 border-0 shadow-card rounded-4 overflow-hidden card-hover">
+                <div class="position-relative">
+                    <img src="https://images.unsplash.com/photo-1537724326059-2ea20251b9c8?auto=format&fit=crop&q=80&w=500" class="card-img-top card-img-fixed" alt="Comercio">
+                    <span class="badge bg-white text-dark position-absolute top-0 end-0 m-3 shadow-sm rounded-pill small fw-bold">Comercio</span>
+                </div>
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-1">La Juguetería de Ana</h5>
+                    <p class="card-text text-secondary small">Juguetes educativos, juegos de mesa y regalos para todas las edades.</p>
+                </div>
+      
+            </div>
+        </div>
+
+        <!-- Repetir bloques similares para completar las 8 tarjetas del wireframe -->
+        <!-- ... -->
+
+        <div class="col">
+            <div class="card h-100 border-0 shadow-card rounded-4 overflow-hidden card-hover">
+                <div class="position-relative">
+                    <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&q=80&w=500" class="card-img-top card-img-fixed" alt="Café">
+                    <span class="badge bg-white text-dark position-absolute top-0 end-0 m-3 shadow-sm rounded-pill small fw-bold">Gastronomía</span>
+                </div>
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-1">Café de la Comuna</h5>
+                    <p class="card-text text-secondary small">Café de especialidad, pastelería artesanal y almuerzos diarios con productos locales.</p>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Tarjeta 2 -->
+        <div class="col">
+            <div class="card h-100 border-0 shadow-card rounded-4 overflow-hidden card-hover">
+                <div class="position-relative">
+                    <img src="https://images.unsplash.com/photo-1459411552884-841db9b3cc2a?auto=format&fit=crop&q=80&w=500" class="card-img-top card-img-fixed" alt="Artesanía">
+                    <span class="badge bg-white text-dark position-absolute top-0 end-0 m-3 shadow-sm rounded-pill small fw-bold">Artesanía</span>
+                </div>
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-1">Artesanías Luna</h5>
+                    <p class="card-text text-secondary small">Piezas únicas hechas a mano por artesanos locales. Cerámica, tejidos y madera.</p>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Tarjeta 3 -->
+        <div class="col">
+            <div class="card h-100 border-0 shadow-card rounded-4 overflow-hidden card-hover">
+                <div class="position-relative">
+                    <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=500" class="card-img-top card-img-fixed" alt="Servicios">
+                    <span class="badge bg-white text-dark position-absolute top-0 end-0 m-3 shadow-sm rounded-pill small fw-bold">Tecnología</span>
+                </div>
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-1">Servicios Tech Alex</h5>
+                    <p class="card-text text-secondary small">Soporte técnico, desarrollo web y asesoría digital para pymes de la zona.</p>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Tarjeta 4 -->
+        <div class="col">
+            <div class="card h-100 border-0 shadow-card rounded-4 overflow-hidden card-hover">
+                <div class="position-relative">
+                    <img src="https://images.unsplash.com/photo-1537724326059-2ea20251b9c8?auto=format&fit=crop&q=80&w=500" class="card-img-top card-img-fixed" alt="Comercio">
+                    <span class="badge bg-white text-dark position-absolute top-0 end-0 m-3 shadow-sm rounded-pill small fw-bold">Comercio</span>
+                </div>
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-1">La Juguetería de Ana</h5>
+                    <p class="card-text text-secondary small">Juguetes educativos, juegos de mesa y regalos para todas las edades.</p>
+                </div>
+      
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+</body>
+</html>
