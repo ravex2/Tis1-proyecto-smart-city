@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Municipal - Shopeers</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    
+    <style>
+        :root {
+            --primary-blue: #3d71ff;
+            --bg-light: #f8fafc;
+            --sidebar-text: #64748b;
+            --shadow-soft: 0 10px 40px rgba(0, 0, 0, 0.04);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-light);
+            color: #0f172a;
+            overflow-x: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: #ffffff;
+            height: 100vh;
+            border-right: 1px solid #f1f5f9;
+            position: sticky;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .nav-link {
+            color: var(--sidebar-text);
+            font-size: 0.9rem;
+            font-weight: 500;
+            padding: 0.75rem 1rem;
+            border-radius: 12px;
+            transition: all 0.2s;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background-color: #f0f4ff;
+            color: var(--primary-blue);
+        }
+
+        /* Upgrade Card */
+        .upgrade-card {
+            background: linear-gradient(135deg, #0d1e4c 0%, #1e3a8a 100%);
+            border-radius: 24px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary-glass {
+            background: rgba(255, 255, 255, 0.15);
+            border: none;
+            color: white;
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-primary-glass:hover {
+            background: rgba(255, 255, 255, 0.25);
+            color: white;
+        }
+
+        /* Search Bar */
+        .search-container {
+            background: #ffffff;
+            transition: box-shadow 0.3s;
+        }
+
+        .search-container:focus-within {
+            box-shadow: 0 4px 15px rgba(61, 113, 255, 0.1) !important;
+        }
+
+        /* Cards & Badges */
+        .shadow-card {
+            box-shadow: var(--shadow-soft);
+        }
+
+        .badge-success-soft {
+            background: #ecfdf5;
+            color: #10b981;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 8px;
+        }
+
+        .badge-danger-soft {
+            background: #fef2f2;
+            color: #ef4444;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 8px;
+        }
+
+        .bg-success-soft { background-color: #dcfce7 !important; }
+
+        /* Buttons & UI */
+        .btn-white { background: white; border: none; font-weight: 600; font-size: 0.8rem; }
+        .shadow-primary { box-shadow: 0 4px 14px 0 rgba(61, 113, 255, 0.39); }
+        .btn-icon-soft {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: none;
+            background: white;
+            color: #64748b;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .tiny { font-size: 0.7rem; }
+        .kbd-hint { font-size: 0.65rem; background: #f8fafc; }
+
+    </style>
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <nav class="col-md-2 d-none d-md-block sidebar px-4">
+            <div class="sidebar-sticky">
+                <div class="logo-area my-4 d-flex align-items-center">
+                    <div class="logo-icon me-2">
+                        <i class="bi bi-intersect fs-3 text-primary"></i>
+                    </div>
+                    <span class="fw-bold fs-4">Administrador</span>
+                </div>
+                
+                <ul class="nav flex-column gap-1">
+                    <li class="nav-item"><a class="nav-link active" href="#"><i class="bi bi-grid-fill me-2"></i> Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-megaphone me-2"></i> Reportes <span class="badge rounded-pill bg-success-soft text-success float-end">12</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-check2-square me-2"></i> Votaciones</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-shop me-2"></i> Comercios</a></li>
+                </ul>
+
+                <h6 class="sidebar-heading px-3 mt-4 mb-2 text-muted text-uppercase small fw-bold" style="font-size: 0.65rem;">Gestión</h6>
+                <ul class="nav flex-column gap-1">
+                    <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-newspaper me-2"></i> Publicaciones</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-people me-2"></i> Ciudadanos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-people me-2"></i> Usuarios</a></li>
+
+                </ul>
+
+
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="col-md-10 ms-sm-auto px-md-5 main-content bg-light-soft">
+            <!-- Topbar -->
+            <header class="d-flex justify-content-between align-items-center py-4">
+                <div class="search-wrapper w-50">
+                    <div class="input-group search-container border-0 shadow-sm rounded-pill px-3">
+                        <span class="input-group-text bg-transparent border-0"><i class="bi bi-search text-muted"></i></span>
+                        <input type="text" class="form-control border-0 bg-transparent" placeholder="Buscar reportes o ciudadanos...">
+                        <span class="kbd-hint border rounded px-2 my-auto small text-muted">⌘ K</span>
+                    </div>
+                </div>
+                <div class="header-actions d-flex align-items-center gap-3">
+                    <button class="btn-icon-soft"><i class="bi bi-brightness-high"></i></button>
+                    <button class="btn-icon-soft"><i class="bi bi-bell"></i></button>
+                    <div class="user-avatar ms-2">
+                        <img src="https://i.pravatar.cc/150?u=admin" width="40" height="40" class="rounded-circle" alt="User">
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard Title Row -->
+            <div class="d-flex justify-content-between align-items-end mb-4">
+                <div>
+                    <h2 class="fw-bold mb-0">Gestión Municipal</h2>
+                    <p class="text-muted small mb-0">Analítica de interacción y reportes ciudadanos.</p>
+                </div>
+                <div class="d-flex gap-2">
+                    <div class="dropdown">
+                        <button class="btn btn-white shadow-sm rounded-pill px-3 dropdown-toggle btn-sm" type="button">
+                            <i class="bi bi-calendar3 me-2"></i> Período: Abril 2026
+                        </button>
+                    </div>
+                    <button class="btn btn-primary rounded-pill px-4 btn-sm shadow-primary"><i class="bi bi-file-earmark-pdf me-2"></i> Exportar PDF</button>
+                    <button class="btn btn-success text-white rounded-pill px-4 btn-sm shadow-sm" style="background-color: #10b981; border: none;"><i class="bi bi-file-earmark-excel me-2"></i> Excel</button>
+                </div>
+            </div>
+
+            <!-- Summary Stats -->
+            <div class="row g-4 mb-4">
+                <!-- Reportes Totales -->
+                <div class="col-md-3">
+                    <div class="card border-0 shadow-card p-3 rounded-4">
+                        <div class="d-flex justify-content-between text-muted mb-2">
+                            <span class="small fw-semibold">Reportes Ciudadanos</span>
+                            <i class="bi bi-exclamation-triangle-fill text-warning opacity-50"></i>
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                            <h3 class="fw-bold mb-0">482</h3>
+                            <span class="badge-success-soft"><i class="bi bi-caret-up-fill me-1"></i>12%</span>
+                        </div>
+                        <p class="text-muted tiny mt-2 mb-0">24 pendientes de revisión</p>
+                    </div>
+                </div>
+                <!-- Participación en Votaciones -->
+                <div class="col-md-3">
+                    <div class="card border-0 shadow-card p-3 rounded-4">
+                        <div class="d-flex justify-content-between text-muted mb-2"><span class="small fw-semibold">Participación Votos</span><i class="bi bi-check2-square text-info opacity-50"></i></div>
+                        <div class="d-flex align-items-center gap-2">
+                            <h3 class="fw-bold mb-0">3,150</h3>
+                            <span class="badge-success-soft"><i class="bi bi-caret-up-fill me-1"></i>22%</span>
+                        </div>
+                        <p class="text-muted tiny mt-2 mb-0">Consulta: Obras Verdes 2026</p>
+                    </div>
+                </div>
+                <!-- Interacción Social -->
+                <div class="col-md-3">
+                    <div class="card border-0 shadow-card p-3 rounded-4">
+                        <div class="d-flex justify-content-between text-muted mb-2"><span class="small fw-semibold">Interacciones Feed</span><i class="bi bi-chat-heart-fill text-danger opacity-50"></i></div>
+                        <div class="d-flex align-items-center gap-2">
+                            <h3 class="fw-bold mb-0">8,924</h3>
+                            <span class="badge-success-soft"><i class="bi bi-caret-up-fill me-1"></i>5,2%</span>
+                        </div>
+                        <p class="text-muted tiny mt-2 mb-0">Likes y comentarios en noticias</p>
+                    </div>
+                </div>
+                <!-- Emprendedores Registrados -->
+                <div class="col-md-3">
+                    <div class="card border-0 shadow-card p-3 rounded-4">
+                        <div class="d-flex justify-content-between text-muted mb-2"><span class="small fw-semibold">Nuevos Comercios</span><i class="bi bi-shop text-primary opacity-50"></i></div>
+                        <div class="d-flex align-items-center gap-2">
+                            <h3 class="fw-bold mb-0">156</h3>
+                            <span class="badge-success-soft"><i class="bi bi-caret-up-fill me-1"></i>10%</span>
+                        </div>
+                        <p class="text-muted tiny mt-2 mb-0">vs. 142 mes anterior</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Row -->
+            <div class="row g-4">
+                <!-- Evolución Temporal -->
+                <div class="col-md-8">
+                    <div class="card border-0 shadow-card p-4 rounded-4">
+                        <h6 class="fw-bold mb-4">Evolución de Interacción Ciudadana</h6>
+                        <div class="d-flex align-items-baseline gap-3 mb-4">
+                            <h2 class="fw-bold">Interacción Activa</h2>
+                            <span class="text-success small fw-bold"><i class="bi bi-arrow-up-right me-1"></i>18.4% <span class="fw-normal text-muted ms-1">crecimiento mensual</span></span>
+                        </div>
+                        <div style="height: 300px;">
+                            <canvas id="interaccionChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <!-- Ranking Sectores -->
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-card p-4 rounded-4 h-100 text-center">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h6 class="fw-bold mb-0">Participación por Sector</h6>
+                            <i class="bi bi-three-dots text-muted"></i>
+                        </div>
+                        <div style="height: 250px;">
+                            <canvas id="sectorChart"></canvas>
+                        </div>
+                        <p class="text-muted small mt-3">El <span class="fw-bold text-dark">Barrio Centro</span> es el más activo con un 35% de los reportes totales.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+// Gráfico de Interacción (Evolución Temporal)
+const interCtx = document.getElementById('interaccionChart').getContext('2d');
+const gradient = interCtx.createLinearGradient(0, 0, 0, 300);
+gradient.addColorStop(0, 'rgba(61, 113, 255, 0.2)');
+gradient.addColorStop(1, 'rgba(61, 113, 255, 0)');
+
+new Chart(interCtx, {
+    type: 'line',
+    data: {
+        labels: ['Semana 1', 'Semana 2', 'Semana 3', 'Semana 4'],
+        datasets: [{
+            label: 'Reportes e Interacciones',
+            data: [2100, 3400, 2800, 4500],
+            borderColor: '#3d71ff',
+            borderWidth: 3,
+            fill: true,
+            backgroundColor: gradient,
+            tension: 0.4,
+            pointRadius: 4,
+            pointBackgroundColor: '#fff',
+            pointBorderColor: '#3d71ff'
+        }]
+    },
+    options: {
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+            y: { border: { display: false }, grid: { color: '#f1f5f9' }, ticks: { color: '#94a3b8', font: { size: 10 } } },
+            x: { border: { display: false }, grid: { display: false }, ticks: { color: '#94a3b8', font: { size: 10 } } }
+        }
+    }
+});
+
+// Gráfico de Barras (Ranking Sector/Barrio)
+const sectorCtx = document.getElementById('sectorChart').getContext('2d');
+new Chart(sectorCtx, {
+    type: 'bar',
+    data: {
+        labels: ['Centro', 'Norte', 'Oriente', 'Sur', 'Rural'],
+        datasets: [{
+            data: [85, 42, 63, 31, 15],
+            backgroundColor: (context) => {
+                return context.dataIndex === 0 ? '#3d71ff' : '#e2e8f0';
+            },
+            borderRadius: 8,
+            barThickness: 20
+        }]
+    },
+    options: {
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+            y: { display: false },
+            x: { grid: { display: false }, border: { display: false } }
+        }
+    }
+});
+</script>
+</body>
+</html>
