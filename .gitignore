@@ -1,0 +1,13 @@
+# enviroment
+.env
+
+# cache
+/cache/twig/*
+!/cache/twig/.gitkeep
+
+# logs
+logs/
+
+# vendor
+/vendor/
+
