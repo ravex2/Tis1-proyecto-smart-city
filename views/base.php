@@ -1,6 +1,16 @@
 <?php
 
 ?>
+<?php
+
+$ruta = $_GET["ruta"] ?? "login";
+
+if($ruta == "crear_categoria_publicacion"){
+    include __DIR__ . "/../src/categorias_publicaciones/crear_categoria_publicacion.php";
+    return;
+}
+
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
