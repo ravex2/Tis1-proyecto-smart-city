@@ -18,6 +18,7 @@
         <th scope="col">id</th>
         <th scope="col">Nombre Categoria</th>
         <th scope="col">ID Funcionario</th>
+        <th scope="col">Opcion 1</th>
         </tr>
     </thead>
     <tbody>
@@ -34,6 +35,7 @@
                         echo "<td>".$id_categoria."</td>";                
                         echo "<td>".$nombre."</td>";
                         echo "<td>".$id_funcionario."</td>";
+                        echo "<td><a href='eliminar_categoria_publicacion?id_enviado=".$id_categoria."'>Eliminar </a></td>";
                     echo "</tr>";
                 }
             }else{
