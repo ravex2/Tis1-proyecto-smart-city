@@ -14,6 +14,10 @@ if($ruta == "leer_categoria_publicacion"){
     include __DIR__ . "/../src/categorias_publicaciones/leer_categoria_publicacion.php";
     return;
 }
+if ($ruta == "eliminar_categoria_publicacion") {
+    include __DIR__ . "/../src/categorias_publicaciones/eliminar_categoria_publicacion.php";
+    return;
+}
 
 ?>
 <!DOCTYPE html>
