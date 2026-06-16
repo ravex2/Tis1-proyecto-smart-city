@@ -11,8 +11,7 @@ class Database
 {
     private PDO $pdo;
 
-    public function __construct(array $config)
-    {
+    public function __construct(array $config) {
         $dsn = sprintf(
             'mysql:host=%s;port=%s;dbname=%s;charset=utf8mb4',
             $config['host'],
@@ -31,8 +30,7 @@ class Database
         );
     }
 
-    public function connection(): PDO
-    {
+    public function connection(): PDO {
         return $this->pdo;
     }
 
