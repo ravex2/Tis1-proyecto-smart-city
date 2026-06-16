@@ -7,6 +7,11 @@ $ruta = $_GET["ruta"] ?? "login";
 
 if($ruta == "crear_categoria_publicacion"){
     include __DIR__ . "/../src/categorias_publicaciones/crear_categoria_publicacion.php";
+    include __DIR__ . "/../src/categorias_publicaciones/leer_categoria_publicacion.php";
+    return;
+}
+if($ruta == "leer_categoria_publicacion"){
+    include __DIR__ . "/../src/categorias_publicaciones/leer_categoria_publicacion.php";
     return;
 }
 
