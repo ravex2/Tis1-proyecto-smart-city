@@ -1,5 +1,27 @@
 <?php
+require_once __DIR__ . '/../config/app.php';
+require_once __DIR__ . '/../controllers/controller.auth.php';
 
+$errorMessage = '';
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $login = $_POST['login'] ?? '';
+    $password = $_POST['password'] ?? '';
+
+    $auth = new AuthController();
+    $user = $auth->login(trim($login), $password);
+
+    if ($user) {
+        if (session_status() !== PHP_SESSION_ACTIVE) {
+            session_start();
+        }
+        $_SESSION['user'] = $user;
+        // Redirigir al panel (ajusta la ruta según tu proyecto)
+        header('Location: /Tis1-proyecto-smart-city/src/index.html');
+        exit();
+    } else {
+        $errorMessage = 'Credenciales incorrectas. Por favor, inténtalo de nuevo.';
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -10,75 +32,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="login-style.css">
-    
-    <style>
-        :root {
-            --primary-blue: #3d71ff;
-            --bg-light: #ffffff; /* Aseguramos que el fondo base sea blanco */
-        }
-
-        /* Contenedor del lado izquierdo */
-        .left-side-container {
-            background-color: #ffffff; /* Espacio dividido en blanco */
-            position: relative;
-            height: 100vh;
-            overflow: hidden;
-        }
-
-        .diagonal-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            /* Imagen con un degradado más sutil para que no mate el blanco */
-            background: linear-gradient(rgba(255, 255, 255, 0.1), rgba(13, 30, 76, 0.2)), 
-                        url('https://images.unsplash.com/photo-1577495508048-b635879837f1?auto=format&fit=crop&q=80&w=1920');
-            background-size: cover;
-            background-position: center;
-            
-            /* Corte diagonal ajustado para que el área de la imagen sea la que termina en punta */
-            /* Dejamos el espacio de la derecha (el 30%) en blanco total */
-            clip-path: polygon(0 0, 95% 0, 65% 100%, 0% 100%);
-            z-index: 1;
-        }
-
-        .overlay-content {
-            position: relative;
-            z-index: 2;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding-left: 10%;
-            /* Color de texto oscuro para que resalte sobre el blanco si es necesario, 
-            o mantenemos blanco si la imagen es oscura */
-            color: white; 
-        }
-
-        /* Sombra interna para suavizar la unión con el blanco */
-        .diagonal-bg::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            box-shadow: inset -20px 0 30px -20px rgba(0,0,0,0.3);
-        }
-
-
-        /* Responsive adjustments */
-        @media (max-width: 991.98px) {
-            .login-box {
-                background: white;
-                border-radius: 24px;
-                box-shadow: 0 20px 40px rgba(0,0,0,0.05);
-            }
-        }
-
-    </style>
+    <link rel="stylesheet" href="/Tis1-proyecto-smart-city/public/assets/css/login.css">
 </head>
 <body>
 
@@ -103,12 +57,12 @@
                     <p class="text-muted">Ingresa tus credenciales para acceder al portal ciudadano.</p>
                 </div>
 
-                <form id="loginForm">
+                <form id="loginForm" method="post" action="">
                     <div class="mb-4">
                         <label class="form-label fw-semibold">Correo Electrónico</label>
                         <div class="input-group custom-input-group shadow-sm">
                             <span class="input-group-text border-0 bg-transparent ps-3"><i class="bi bi-envelope text-muted"></i></span>
-                            <input type="email" class="form-control border-0 py-3" placeholder="nombre@ejemplo.cl" required>
+                            <input type="email" name="login" class="form-control border-0 py-3" placeholder="nombre@ejemplo.cl" required>
                         </div>
                     </div>
 
@@ -116,7 +70,7 @@
                         <label class="form-label fw-semibold">Contraseña</label>
                         <div class="input-group custom-input-group shadow-sm">
                             <span class="input-group-text border-0 bg-transparent ps-3"><i class="bi bi-lock text-muted"></i></span>
-                            <input type="password" class="form-control border-0 py-3" placeholder="••••••••" required>
+                            <input type="password" name="password" class="form-control border-0 py-3" placeholder="••••••••" required>
                         </div>
                     </div>
 
@@ -131,6 +85,10 @@
                     <button type="submit" class="btn btn-primary w-100 rounded-pill py-3 fw-bold shadow-primary">
                         Iniciar Sesión
                     </button>
+
+                    <?php if (!empty($errorMessage)): ?>
+                        <div class="alert alert-danger mt-3" role="alert"><?= htmlspecialchars($errorMessage) ?></div>
+                    <?php endif; ?>
 
                     <div class="text-center mt-5">
                         <p class="text-muted small">¿No tienes una cuenta aún? <br>
