@@ -22,6 +22,14 @@ if ($ruta == "editar_categoria_publicacion") {
     include __DIR__ . "/../src/categorias_publicaciones/editar_categoria_publicacion.php";
     return;
 }
+if ($ruta == "feed_publicaciones") {
+    include __DIR__ . "/../src/publicaciones/feed_publicaciones.php";
+    return;
+}
+if ($ruta == "crear_publicacion") {
+    include __DIR__ . "/../src/publicaciones/crear_publicacion.php";
+    return;
+}
 
 ?>
 <!DOCTYPE html>
