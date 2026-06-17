@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mantenedor de Departamentos - Municipalidad</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    
+    <style>
+        :root {
+            --primary-blue: #3d71ff;
+            --bg-light: #f8fafc;
+            --sidebar-text: #64748b;
+            --shadow-soft: 0 10px 40px rgba(0, 0, 0, 0.04);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-light);
+            color: #0f172a;
+        }
+
+        .sidebar {
+            background: #ffffff;
+            height: 100vh;
+            border-right: 1px solid #f1f5f9;
+            position: sticky;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .nav-link {
+            color: var(--sidebar-text);
+            font-size: 0.9rem;
+            font-weight: 500;
+            padding: 0.75rem 1rem;
+            border-radius: 12px;
+            transition: all 0.2s;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background-color: #f0f4ff;
+            color: var(--primary-blue);
+        }
+
+        .shadow-card { box-shadow: var(--shadow-soft); }
+        
+        /* Estilo de Tarjetas de Departamento */
+        .dept-card {
+            border: 1px solid #f1f5f9;
+            transition: all 0.3s ease;
+        }
+
+        .dept-card:hover {
+            border-color: var(--primary-blue);
+            transform: translateY(-5px);
+        }
+
+        .icon-circle {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 14px;
+            font-size: 1.2rem;
+        }
+
+        .btn-primary-custom {
+            background-color: var(--primary-blue);
+            border: none;
+            border-radius: 12px;
+            padding: 10px 20px;
+            font-weight: 600;
+            box-shadow: 0 4px 14px 0 rgba(61, 113, 255, 0.3);
+        }
+
+        .modal-content { border-radius: 24px; border: none; }
+        .form-control { border-radius: 10px; padding: 12px; border: 1px solid #e2e8f0; }
+    </style>
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <?php include __DIR__ . "../../../layout/sidebar.php"; ?>
+
+        <!-- Main Content -->
+        <main class="col-md-10 ms-sm-auto px-md-5">
+            <header class="d-flex justify-content-between align-items-center py-4">
+                <div>
+                    <h2 class="fw-bold mb-0">Mantenedor de Departamentos</h2>
+                    <p class="text-muted small">Configura las áreas responsables de resolver reportes.</p>
+                </div>
+                <button class="btn btn-primary-custom text-white" onclick="openModal()">
+                    <i class="bi bi-plus-lg me-2"></i> Nuevo Departamento
+                </button>
+            </header>
+
+            <!-- Lista de Departamentos (Grid) -->
+            <div class="row g-4" id="deptContainer">
+                <!-- Se carga dinámicamente con JS -->
+            </div>
+        </main>
+    </div>
+</div>
+
+<!-- Modal CRUD -->
+<div class="modal fade" id="deptModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content p-4">
+            <div class="modal-header border-0">
+                <h5 class="fw-bold" id="modalTitle">Nuevo Departamento</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="deptForm">
+                    <input type="hidden" id="deptId">
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Nombre del Departamento</label>
+                        <input type="text" id="deptName" class="form-control" placeholder="Ej: Seguridad Ciudadana" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Icono (Clase Bootstrap Icon)</label>
+                        <input type="text" id="deptIcon" class="form-control" placeholder="bi-tools" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Color de Identificación</label>
+                        <select id="deptColor" class="form-select form-control">
+                            <option value="bg-primary">Azul (General)</option>
+                            <option value="bg-success">Verde (Medio Ambiente)</option>
+                            <option value="bg-danger">Rojo (Emergencias)</option>
+                            <option value="bg-warning">Amarillo (Obras)</option>
+                            <option value="bg-info">Cian (Social)</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary-custom text-white w-100 mt-3">Guardar Cambios</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    let departamentos = [
+        { id: 1, nombre: 'Obras Públicas', icono: 'bi-tools', color: 'bg-warning', personal: 12 },
+        { id: 2, nombre: 'Aseo y Ornato', icono: 'bi-tree', color: 'bg-success', personal: 8 },
+        { id: 3, nombre: 'Seguridad', icono: 'bi-shield-check', color: 'bg-danger', personal: 24 }
+    ];
+
+    const modal = new bootstrap.Modal(document.getElementById('deptModal'));
+    const container = document.getElementById('deptContainer');
+
+    function renderDepts() {
+        container.innerHTML = '';
+        departamentos.forEach(d => {
+            container.innerHTML += `
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-card rounded-4 p-4 dept-card">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <div class="icon-circle ${d.color} text-white shadow-sm">
+                                <i class="bi ${d.icono}"></i>
+                            </div>
+                            <div class="dropdown">
+                                <button class="btn btn-light btn-sm rounded-circle" data-bs-toggle="dropdown">
+                                    <i class="bi bi-three-dots-vertical"></i>
+                                </button>
+                                <ul class="dropdown-menu border-0 shadow-sm">
+                                    <li><a class="dropdown-item small" href="#" onclick="editDept(${d.id})"><i class="bi bi-pencil me-2"></i>Editar</a></li>
+                                    <li><a class="dropdown-item small text-danger" href="#" onclick="deleteDept(${d.id})"><i class="bi bi-trash me-2"></i>Eliminar</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <h6 class="fw-bold mb-1">${d.nombre}</h6>
+                        <p class="text-muted tiny mb-3">${d.personal} funcionarios asignados</p>
+                        <div class="d-flex align-items-center pt-2 border-top">
+                            <span class="badge bg-light text-dark rounded-pill tiny">ID: #0${d.id}</span>
+                            <span class="ms-auto text-primary tiny fw-bold cursor-pointer">Ver personal <i class="bi bi-arrow-right"></i></span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+    }
+
+    function openModal() {
+        document.getElementById('deptForm').reset();
+        document.getElementById('deptId').value = '';
+        document.getElementById('modalTitle').innerText = 'Nuevo Departamento';
+        modal.show();
+    }
+
+    function editDept(id) {
+        const d = departamentos.find(x => x.id === id);
+        document.getElementById('deptId').value = d.id;
+        document.getElementById('deptName').value = d.nombre;
+        document.getElementById('deptIcon').value = d.icono;
+        document.getElementById('deptColor').value = d.color;
+        document.getElementById('modalTitle').innerText = 'Editar Departamento';
+        modal.show();
+    }
+
+    function deleteDept(id) {
+        if(confirm('¿Seguro que deseas eliminar este departamento? Los usuarios quedarán sin área asignada.')) {
+            departamentos = departamentos.filter(x => x.id !== id);
+            renderDepts();
+        }
+    }
+
+    document.getElementById('deptForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const id = document.getElementById('deptId').value;
+        const nuevo = {
+            id: id ? parseInt(id) : departamentos.length + 1,
+            nombre: document.getElementById('deptName').value,
+            icono: document.getElementById('deptIcon').value,
+            color: document.getElementById('deptColor').value,
+            personal: id ? departamentos.find(x => x.id == id).personal : 0
+        };
+
+        if(id) {
+            const index = departamentos.findIndex(x => x.id == id);
+            departamentos[index] = nuevo;
+        } else {
+            departamentos.push(nuevo);
+        }
+
+        modal.hide();
+        renderDepts();
+    });
+
+    renderDepts();
+</script>
+
+</body>
+</html>

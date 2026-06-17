@@ -1,33 +1,10 @@
 <?php
-require_once __DIR__ . '/../config/app.php';
-require_once __DIR__ . '/../controllers/autenticacion.controlador.php';
+include __DIR__ . "../layout/header.php";
 
-$errorMessage = '';
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $login = $_POST['login'] ?? '';
-    $password = $_POST['password'] ?? '';
-
-    $auth = new AuthController();
-    $user = $auth->login(trim($login), $password);
-
-    if ($user) {
-        if (session_status() !== PHP_SESSION_ACTIVE) {
-            session_start();
-        }
-        $_SESSION['user'] = $user;
-        header('Location: /Tis1-proyecto-smart-city/public/index.php?ruta=inicio');        
-        exit();
-    } else {
-        $errorMessage = 'Credenciales incorrectas. Por favor, inténtalo de nuevo.';
-    }
-}
-
-include __DIR__ . "/layout/header.php";
 ?>
 
 <div class="container-fluid p-0 overflow-hidden">
     <div class="row g-0 vh-100">
-        <!-- Lado Izquierdo: Imagen con Corte Diagonal -->
         <div class="col-lg-7 d-none d-lg-block left-side-container">
             <div class="diagonal-bg"></div>
             
@@ -38,20 +15,19 @@ include __DIR__ . "/layout/header.php";
                 <h1 class="display-4 fw-bold">Tu comuna,<br>más cerca.</h1>
             </div>
         </div>
-        <!-- Lado Derecho: Formulario de Login -->
         <div class="col-lg-5 d-flex align-items-center justify-content-center bg-white">
             <div class="login-box p-4 p-md-5 w-100" style="max-width: 450px;">
                 <div class="mb-5">
-                    <h2 class="fw-bold text-dark">Bienvenido de nuevo</h2>
+                    <h2 class="fw-bold text-dark">Bienvenido de nuevo Registrate</h2>
                     <p class="text-muted">Ingresa tus credenciales para acceder al portal ciudadano.</p>
                 </div>
 
-                <form id="loginForm" method="post" action="">
+                <form id="loginForm">
                     <div class="mb-4">
                         <label class="form-label fw-semibold">Correo Electrónico</label>
                         <div class="input-group custom-input-group shadow-sm">
                             <span class="input-group-text border-0 bg-transparent ps-3"><i class="bi bi-envelope text-muted"></i></span>
-                            <input type="email" name="login" class="form-control border-0 py-3" placeholder="nombre@ejemplo.cl" required>
+                            <input type="email" class="form-control border-0 py-3" placeholder="nombre@ejemplo.cl" required>
                         </div>
                     </div>
 
@@ -59,7 +35,7 @@ include __DIR__ . "/layout/header.php";
                         <label class="form-label fw-semibold">Contraseña</label>
                         <div class="input-group custom-input-group shadow-sm">
                             <span class="input-group-text border-0 bg-transparent ps-3"><i class="bi bi-lock text-muted"></i></span>
-                            <input type="password" name="password" class="form-control border-0 py-3" placeholder="••••••••" required>
+                            <input type="password" class="form-control border-0 py-3" placeholder="••••••••" required>
                         </div>
                     </div>
 
@@ -75,13 +51,9 @@ include __DIR__ . "/layout/header.php";
                         Iniciar Sesión
                     </button>
 
-                    <?php if (!empty($errorMessage)): ?>
-                        <div class="alert alert-danger mt-3" role="alert"><?= htmlspecialchars($errorMessage) ?></div>
-                    <?php endif; ?>
-
                     <div class="text-center mt-5">
                         <p class="text-muted small">¿No tienes una cuenta aún? <br>
-                            <a href="?ruta=registro" class="text-primary fw-bold text-decoration-none">Regístrate como ciudadano aquí</a>
+                            <a href="?ruta=login" class="text-primary fw-bold text-decoration-none">Regístrate como ciudadano aquí</a>
                         </p>
                     </div>
                 </form>
@@ -89,7 +61,7 @@ include __DIR__ . "/layout/header.php";
         </div>
     </div>
 </div>
-<?php 
-// Incluimos la parte inferior
-include __DIR__ . "/layout/footer.php"; 
+
+<?php
+include __DIR__ . "../layout/footer.php";
 ?>

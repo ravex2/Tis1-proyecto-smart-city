@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Votación - Dashboard Municipal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    
+    <style>
+        :root {
+            --primary-blue: #3d71ff;
+            --bg-light: #f8fafc;
+            --sidebar-text: #64748b;
+            --shadow-soft: 0 10px 40px rgba(0, 0, 0, 0.04);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-light);
+            color: #0f172a;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: #ffffff;
+            height: 100vh;
+            border-right: 1px solid #f1f5f9;
+            position: sticky;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .nav-link {
+            color: var(--sidebar-text);
+            font-size: 0.9rem;
+            font-weight: 500;
+            padding: 0.75rem 1rem;
+            border-radius: 12px;
+            transition: all 0.2s;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background-color: #f0f4ff;
+            color: var(--primary-blue);
+        }
+
+        /* Form Estilos */
+        .shadow-card { box-shadow: var(--shadow-soft); border: none; border-radius: 24px; }
+        .form-label { font-weight: 600; font-size: 0.85rem; color: #475569; }
+        .form-control, .form-select {
+            border-radius: 12px;
+            padding: 12px 15px;
+            border: 1px solid #e2e8f0;
+            font-size: 0.9rem;
+        }
+        .form-control:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 4px rgba(61, 113, 255, 0.1);
+        }
+
+        .option-input-group {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 16px;
+            margin-bottom: 10px;
+        }
+
+        .btn-primary-custom {
+            background: var(--primary-blue);
+            border: none;
+            border-radius: 12px;
+            padding: 12px 25px;
+            font-weight: 600;
+            box-shadow: 0 4px 14px 0 rgba(61, 113, 255, 0.3);
+        }
+
+        .preview-badge {
+            background: #ecfdf5;
+            color: #10b981;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <?php include __DIR__ . "../../../layout/sidebar.php"; ?>
+
+        <!-- Main Content -->
+        <main class="col-md-10 ms-sm-auto px-md-5">
+            <header class="d-flex justify-content-between align-items-center py-4">
+                <div>
+                    <h2 class="fw-bold mb-0">Nueva Consulta Ciudadana</h2>
+                    <p class="text-muted small">Crea procesos participativos para la comunidad.</p>
+                </div>
+                <div class="d-flex gap-3">
+                    <button class="btn btn-outline-secondary rounded-pill px-4 btn-sm">Guardar Borrador</button>
+                    <button class="btn btn-primary-custom text-white btn-sm px-4">Publicar Ahora</button>
+                </div>
+            </header>
+
+            <div class="row g-4">
+                <!-- Formulario de Configuración -->
+                <div class="col-md-8">
+                    <div class="card shadow-card p-4">
+                        <h6 class="fw-bold mb-4"><i class="bi bi-info-circle me-2 text-primary"></i>Información General</h6>
+                        
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label class="form-label">Título de la Votación</label>
+                                <input type="text" class="form-control" placeholder="Ej: Remodelación Plaza de Armas 2026">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Descripción o Propósito</label>
+                                <textarea class="form-control" rows="3" placeholder="Explica a los ciudadanos de qué trata esta consulta..."></textarea>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Fecha de Inicio</label>
+                                <input type="date" class="form-control">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Fecha de Cierre</label>
+                                <input type="date" class="form-control">
+                            </div>
+                        </div>
+
+                        <hr class="my-4 opacity-0">
+
+                        <h6 class="fw-bold mb-4"><i class="bi bi-list-check me-2 text-primary"></i>Opciones de Respuesta</h6>
+                        
+                        <div id="optionsContainer">
+                            <div class="option-input-group d-flex align-items-center gap-3">
+                                <span class="fw-bold text-muted">1.</span>
+                                <input type="text" class="form-control bg-white" placeholder="Primera opción (Ej: Opción A)">
+                                <button class="btn text-danger"><i class="bi bi-trash"></i></button>
+                            </div>
+                            <div class="option-input-group d-flex align-items-center gap-3">
+                                <span class="fw-bold text-muted">2.</span>
+                                <input type="text" class="form-control bg-white" placeholder="Segunda opción (Ej: Opción B)">
+                                <button class="btn text-danger"><i class="bi bi-trash"></i></button>
+                            </div>
+                        </div>
+                        
+                        <button class="btn btn-light rounded-pill w-100 py-2 mt-2 text-primary fw-bold small" onclick="addOption()">
+                            <i class="bi bi-plus-circle me-2"></i>Agregar otra opción
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Panel Lateral de Configuración -->
+                <div class="col-md-4">
+                    <div class="card shadow-card p-4 mb-4">
+                        <h6 class="fw-bold mb-3">Ajustes de Privacidad</h6>
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" checked>
+                            <label class="form-check-label small">Solo ciudadanos verificados</label>
+                        </div>
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox">
+                            <label class="form-check-label small">Resultados ocultos hasta el cierre</label>
+                        </div>
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" checked>
+                            <label class="form-check-label small">Permitir comentarios</label>
+                        </div>
+                        
+                        <label class="form-label mt-2">Sector Objetivo</label>
+                        <select class="form-select small">
+                            <option>Toda la comuna</option>
+                            <option>Sector Centro</option>
+                            <option>Sector Norte</option>
+                            <option>Sector Sur</option>
+                        </select>
+                    </div>
+
+                    <!-- Card de Vista Previa Rápida -->
+                    <div class="card shadow-card p-4 bg-primary text-white">
+                        <div class="d-flex justify-content-between mb-3">
+                            <span class="preview-badge">VISTA PREVIA APP</span>
+                            <i class="bi bi-phone"></i>
+                        </div>
+                        <h5 class="fw-bold mb-2">Título de la Consulta</h5>
+                        <p class="tiny opacity-75 mb-4">Aquí se mostrará un resumen de la propuesta para el ciudadano...</p>
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-light btn-sm rounded-pill py-2 opacity-50" disabled>Votar Opción 1</button>
+                            <button class="btn btn-light btn-sm rounded-pill py-2 opacity-50" disabled>Votar Opción 2</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script>
+    function addOption() {
+        const container = document.getElementById('optionsContainer');
+        const count = container.children.length + 1;
+        
+        const div = document.createElement('div');
+        div.className = 'option-input-group d-flex align-items-center gap-3';
+        div.innerHTML = `
+            <span class="fw-bold text-muted">${count}.</span>
+            <input type="text" class="form-control bg-white" placeholder="Nueva opción">
+            <button class="btn text-danger" onclick="this.parentElement.remove()"><i class="bi bi-trash"></i></button>
+        `;
+        container.appendChild(div);
+    }
+</script>
+
+</body>
+</html>
