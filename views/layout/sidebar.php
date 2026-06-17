@@ -18,7 +18,7 @@
 
         <h6 class="sidebar-heading px-3 mt-4 mb-2 text-muted text-uppercase small fw-bold" style="font-size: 0.65rem;">Gestión</h6>
         <ul class="nav flex-column gap-1">
-            <li class="nav-item"><a class="nav-link" href="?ruta=publicaciones"><i class="bi bi-newspaper me-2"></i> Publicaciones</a></li>
+            <li class="nav-item"><a class="nav-link" href="?ruta=crear_publicacion"><i class="bi bi-newspaper me-2"></i> Publicaciones</a></li>
             <li class="nav-item"><a class="nav-link active" href="?ruta=usuarios"><i class="bi bi-person-gear me-2"></i> Usuarios</a></li>
             <li class="nav-item"><a class="nav-link" href="?ruta=departamentos"><i class="bi bi-people me-2"></i> Departamentos</a></li>
 
