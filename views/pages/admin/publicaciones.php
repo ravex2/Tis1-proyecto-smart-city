@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Publicaciones y Categorías - Shopeers</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    
+    <style>
+        :root {
+            --primary-blue: #3d71ff;
+            --bg-light: #f8fafc;
+            --sidebar-text: #64748b;
+            --shadow-soft: 0 10px 40px rgba(0, 0, 0, 0.04);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-light);
+            color: #0f172a;
+        }
+
+        .sidebar {
+            background: #ffffff;
+            height: 100vh;
+            border-right: 1px solid #f1f5f9;
+            position: sticky;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .nav-link {
+            color: var(--sidebar-text);
+            font-size: 0.9rem;
+            font-weight: 500;
+            padding: 0.75rem 1rem;
+            border-radius: 12px;
+            transition: all 0.2s;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background-color: #f0f4ff;
+            color: var(--primary-blue);
+        }
+
+        .shadow-card { box-shadow: var(--shadow-soft); border: none; border-radius: 24px; }
+        .post-img { width: 50px; height: 50px; border-radius: 12px; object-fit: cover; }
+        
+        .table-no-border tbody tr td {
+            border: 0 !important;
+            padding: 16px;
+            vertical-align: middle;
+        }
+        .table-no-border thead th {
+            border: 0 !important;
+            background-color: #f8fafc;
+            color: #64748b;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 16px;
+        }
+
+        .category-item {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 10px 15px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: 0.2s;
+        }
+        .category-item:hover { background: #f1f5f9; }
+
+        .btn-action-soft {
+            width: 32px; height: 32px; border-radius: 8px; border: none; 
+            background: #f1f5f9; color: #64748b; transition: 0.2s;
+        }
+        .btn-action-soft:hover { background: #e2e8f0; color: #0f172a; }
+
+        .modal-content { border-radius: 24px; border: none; }
+        .form-control { border-radius: 10px; border: 1px solid #e2e8f0; }
+    </style>
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <?php include __DIR__ . "../../../layout/sidebar.php"; ?>
+
+        <!-- Main Content -->
+        <main class="col-md-10 ms-sm-auto px-md-5">
+            <header class="d-flex justify-content-between align-items-center py-4">
+                <div>
+                    <h2 class="fw-bold mb-0">Centro de Comunicaciones</h2>
+                    <p class="text-muted small">Administra noticias y clasificaciones del feed municipal.</p>
+                </div>
+                <button class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm" data-bs-toggle="modal" data-bs-target="#postModal">
+                    <i class="bi bi-plus-lg me-2"></i> Nueva Publicación
+                </button>
+            </header>
+
+            <div class="row g-4">
+                <!-- PANEL IZQUIERDO: CATEGORÍAS -->
+                <div class="col-md-3">
+                    <div class="card shadow-card p-4">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h6 class="fw-bold mb-0 small">Categorías</h6>
+                            <button class="btn btn-primary btn-sm rounded-circle" data-bs-toggle="modal" data-bs-target="#catAddModal"><i class="bi bi-plus"></i></button>
+                        </div>
+                        
+                        <div class="category-list">
+                            <div class="category-item border">
+                                <span class="small fw-semibold text-dark">Deportes</span>
+                                <div class="d-flex gap-1">
+                                    <button class="btn btn-link p-0 text-muted tiny"><i class="bi bi-pencil"></i></button>
+                                    <button class="btn btn-link p-0 text-danger tiny"><i class="bi bi-trash"></i></button>
+                                </div>
+                            </div>
+                            <div class="category-item border">
+                                <span class="small fw-semibold text-dark">Seguridad</span>
+                                <div class="d-flex gap-1">
+                                    <button class="btn btn-link p-0 text-muted tiny"><i class="bi bi-pencil"></i></button>
+                                    <button class="btn btn-link p-0 text-danger tiny"><i class="bi bi-trash"></i></button>
+                                </div>
+                            </div>
+                            <div class="category-item border">
+                                <span class="small fw-semibold text-dark">Cultura</span>
+                                <div class="d-flex gap-1">
+                                    <button class="btn btn-link p-0 text-muted tiny"><i class="bi bi-pencil"></i></button>
+                                    <button class="btn btn-link p-0 text-danger tiny"><i class="bi bi-trash"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PANEL DERECHO: PUBLICACIONES -->
+                <div class="col-md-9">
+                    <div class="card shadow-card overflow-hidden">
+                        <div class="table-responsive">
+                            <table class="table table-no-border mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Noticia</th>
+                                        <th>Categoría</th>
+                                        <th>Estado</th>
+                                        <th>Vistas</th>
+                                        <th class="text-end">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="border-0">
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <img src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=100" class="post-img me-3">
+                                                <div>
+                                                    <div class="fw-bold small">Maratón Municipal 2026</div>
+                                                    <div class="text-muted tiny">Creado hoy, 12:30 PM</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td><span class="badge bg-primary bg-opacity-10 text-primary rounded-pill tiny px-3 py-2">Deportes</span></td>
+                                        <td><span class="text-success small fw-bold">● Activo</span></td>
+                                        <td class="small fw-semibold text-muted">842</td>
+                                        <td class="text-end px-4">
+                                            <button class="btn-action-soft me-1"><i class="bi bi-pencil"></i></button>
+                                            <button class="btn-action-soft text-danger"><i class="bi bi-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr class="border-0">
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <img src="https://images.unsplash.com/photo-1541873676947-d6a3a99bb57c?w=100" class="post-img me-3">
+                                                <div>
+                                                    <div class="fw-bold small">Obras en Av. Libertad</div>
+                                                    <div class="text-muted tiny">Creado ayer, 09:15 AM</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td><span class="badge bg-warning bg-opacity-10 text-warning rounded-pill tiny px-3 py-2">Seguridad</span></td>
+                                        <td><span class="text-muted small fw-bold">○ Borrador</span></td>
+                                        <td class="small fw-semibold text-muted">0</td>
+                                        <td class="text-end px-4">
+                                            <button class="btn-action-soft me-1"><i class="bi bi-pencil"></i></button>
+                                            <button class="btn-action-soft text-danger"><i class="bi bi-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<!-- Modal Publicación -->
+<div class="modal fade" id="postModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content p-4">
+            <div class="modal-header border-0">
+                <h5 class="fw-bold">Redactar Publicación</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form class="row g-3">
+                    <div class="col-md-8"><label class="form-label tiny fw-bold">Título</label><input type="text" class="form-control" placeholder="Ej: Nueva iluminación en parques"></div>
+                    <div class="col-md-4">
+                        <label class="form-label tiny fw-bold">Categoría</label>
+                        <select class="form-select border-0 bg-light"><option>Deportes</option><option>Seguridad</option><option>Cultura</option></select>
+                    </div>
+                    <div class="col-12"><label class="form-label tiny fw-bold">Contenido</label><textarea class="form-control" rows="4"></textarea></div>
+                    <div class="col-12 mt-4"><button class="btn btn-primary w-100 rounded-pill py-2 fw-bold">Publicar en el App</button></div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Nueva Categoría -->
+<div class="modal fade" id="catAddModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content p-4">
+            <h6 class="fw-bold mb-3">Nueva Categoría</h6>
+            <input type="text" class="form-control mb-3" placeholder="Nombre (Ej: Salud)">
+            <button class="btn btn-primary w-100 rounded-pill">Guardar</button>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+
+    const traerCategoriasPublicaciones = async () => {
+        // usa ajax para traer la informacion de controlador de categoria publicacion controlador
+    };
+
+</script>
+
+
+</body>
+</html>
