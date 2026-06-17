@@ -1,9 +1,19 @@
 <?php
 
-    require __DIR__ . '/../controllers/areaController.php';
+    require_once __DIR__ . '/../../controllers/areaController.php';
     
-    $controller = new areaController();
 
-    $controller->eliminarArea($_POST['id_area']);
+    if (isset($_GET['id_enviado'])) {
 
+        $controller = new areaController();
+
+        $resultado = $controller->eliminarArea($_GET['id_enviado']);
+
+        if ($resultado) {
+            header('Location: ../../views/areas_municipales/index.php');
+            exit;
+        }else {
+            echo "Error al eliminar el área municipal.";
+        }
+    }
 ?>

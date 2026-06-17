@@ -7,7 +7,7 @@ define('DB_NAME', 'smart_city');
 define('DB_USER', 'root');
 define('DB_PASS', '');
 define('APP_NAME', 'Smart City');
-define('DB_PORT', 3307);
+define('DB_PORT', 3306);
 
 
 ini_set('display_errors', 1);
