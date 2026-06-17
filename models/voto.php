@@ -2,17 +2,13 @@
 
 require_once __DIR__ . '/basemodel.php';
 
-class Usuario extends BaseModel {
-    protected string $table = 'usuario';
-    protected array $primaryKey = ['rut'];
-    protected array $columns = ['nombre', 'apellido', 'correo', 'direccion', 'contrasenha', 'id_rol', 'id_sector'];
+class Voto extends BaseModel {
+    protected string $table = 'voto';
+    protected array $primaryKey = ['id_voto'];
+    protected array $columns = ['fecha_voto', 'id_alternativa'];
 
     public function __construct(?\PDO $pdo = null) {
         parent::__construct($pdo);
-    }
-
-    public function findByCorreo(string $correo): ?array {
-        return $this->fetch('SELECT * FROM usuario WHERE correo = ? LIMIT 1', [$correo]);
     }
 
     protected function fetch(string $sql, array $params = []): ?array {
