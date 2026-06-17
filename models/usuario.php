@@ -11,6 +11,10 @@ class Usuario extends BaseModel {
         parent::__construct($pdo);
     }
 
+    public function findByCorreo(string $correo): ?array {
+        return $this->fetch('SELECT * FROM usuario WHERE correo = ? LIMIT 1', [$correo]);
+    }
+
     protected function fetch(string $sql, array $params = []): ?array {
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute($params);
@@ -94,9 +98,5 @@ class Usuario extends BaseModel {
     public function delete(array|int $id): bool {
         [$where, $params] = $this->buildWhereClause($id);
         return $this->execute(sprintf('DELETE FROM %s WHERE %s', $this->table, $where), $params);
-    }
-
-    public function findByCorreo(string $correo): ?array {
-        return $this->fetch('SELECT * FROM usuario WHERE correo = ? LIMIT 1', [$correo]);
     }
 }
