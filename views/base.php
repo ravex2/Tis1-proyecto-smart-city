@@ -18,6 +18,10 @@ if ($ruta == "eliminar_categoria_publicacion") {
     include __DIR__ . "/../src/categorias_publicaciones/eliminar_categoria_publicacion.php";
     return;
 }
+if ($ruta == "editar_categoria_publicacion") {
+    include __DIR__ . "/../src/categorias_publicaciones/editar_categoria_publicacion.php";
+    return;
+}
 
 ?>
 <!DOCTYPE html>
