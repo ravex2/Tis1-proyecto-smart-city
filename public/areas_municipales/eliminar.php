@@ -1,6 +1,6 @@
 <?php
 
-    require_once __DIR__ . '/../../controllers/area.controller.php';
+    require_once __DIR__ . '/../../controllers/area.controlador.php';
     
 
     if (isset($_GET['id_enviado'])) {
