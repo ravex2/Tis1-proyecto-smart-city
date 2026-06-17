@@ -1,11 +1,11 @@
 <?php
 
-    require_once __DIR__ . '/../../controllers/areaController.php';
+    require_once __DIR__ . '/../../controllers/area.controller.php';
     
 
     if (isset($_GET['id_enviado'])) {
 
-        $controller = new areaController();
+        $controller = new AreaController();
 
         $resultado = $controller->eliminarArea($_GET['id_enviado']);
 
