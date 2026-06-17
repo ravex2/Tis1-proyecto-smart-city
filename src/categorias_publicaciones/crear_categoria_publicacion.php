@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 
-<h2>Crear Categoraa</h2>
+<h2>Crear Categoria</h2>
 
 <form method="POST">
     <input type="text" name="nombre" placeholder="Nombre categoraa" required>
