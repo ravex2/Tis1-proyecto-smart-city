@@ -15,7 +15,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             session_start();
         }
         $_SESSION['user'] = $user;
-        // Redirigir al panel (ajusta la ruta según tu proyecto)
         header('Location: /Tis1-proyecto-smart-city/src/index.html');
         exit();
     } else {
