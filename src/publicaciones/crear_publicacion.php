@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . "/../../config/database.php";
 $cat_pub = $conexion->query("SELECT * FROM categoria_publicacion");
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
 
