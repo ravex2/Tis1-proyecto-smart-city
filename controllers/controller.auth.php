@@ -2,8 +2,7 @@
 
 require_once __DIR__ . '/../models/user.php';
 
-class AuthController
-{
+class AuthController {
     private $usuarioModel;
 
     public function __construct($usuarioModel = null) {
@@ -14,10 +13,7 @@ class AuthController
         }
     }
 
-    /**
-     * Intenta autenticar un usuario por correo y contraseña.
-     * Devuelve el registro de usuario en caso de éxito, o false si falla.
-     */
+
     public function login(string $email, string $password)
     {
         $user = $this->usuarioModel->findByCorreo($email);
@@ -33,7 +29,6 @@ class AuthController
             return $user;
         }
 
-        // Soporte para contraseña en texto plano (como el caso "admin")
         if ($password === $stored) {
             return $user;
         }
