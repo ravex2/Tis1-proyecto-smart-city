@@ -58,7 +58,7 @@
                         </div>
                         <div class="modal-body">
                             <div class="container-fluid">
-                                <form id="formArea" action="ingresar.php" method="POST">
+                                <form id="formArea" action="../../public/areas_municipales/ingresar.php" method="POST">
                                     <input type="hidden" name="id_area" id="id_area">
                                     <label class="form-label">Nombre área</label>
                                     <input class="form-control" type="text" name="nombre" id="nombre" required>
@@ -121,13 +121,10 @@
                                         <?= $row['id_area'] ?>,
                                         '<?= htmlspecialchars($row['nombre_area'], ENT_QUOTES) ?>',
                                         '<?= htmlspecialchars($row['descripcion'], ENT_QUOTES) ?>',
-                                        <?= $row['id_municipalidad'] ?>
-                                    )">
-                                    Editar
-                                </button>
+                                        '<?= htmlspecialchars($row['nombre_municipalidad'], ENT_QUOTES) ?>')">Editar</button>
 
                                 <a class="btn btn-danger"
-                                href="delete.php?id_enviado=<?= $row['id_area'] ?>">
+                                href="../../public/areas_municipales/eliminar.php?id_enviado=<?= $row['id_area'] ?>">
                                 Eliminar
                                 </a>
                             </td>
@@ -146,7 +143,7 @@
 
                 document.getElementById('tituloModal').innerText = 'Agregar Área Municipal';
 
-                document.getElementById('formArea').action = 'ingresar.php';
+                document.getElementById('formArea').action = '../../public/areas_municipales/ingresar.php';
 
                 document.getElementById('id_area').value = '';
 
@@ -163,7 +160,7 @@
 
                 document.getElementById('tituloModal').innerText = 'Editar Área Municipal';
 
-                document.getElementById('formArea').action = 'editar.php';
+                document.getElementById('formArea').action = '../../public/areas_municipales/editar.php';
 
                 document.getElementById('id_area').value = id;
 
