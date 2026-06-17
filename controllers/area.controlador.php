@@ -1,10 +1,7 @@
 <?php
-
     require __DIR__ . '/../models/Area.php';
 
-    class areaController {
-
-
+    class AreaController {
         public function obtenerArea(){
             return listarAreas();
         }
@@ -19,7 +16,5 @@
         public function eliminarArea(int $id){
             return borrarArea($id);
         }
-
     }
-
 ?>
