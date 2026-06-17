@@ -2,10 +2,116 @@
 require_once __DIR__ . '/../config/app.php';
 require_once __DIR__ . '/../controllers/autenticacion.controlador.php';
 
-$errorMessage = '';
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $login = $_POST['login'] ?? '';
-    $password = $_POST['password'] ?? '';
+?>
+<?php
+
+$ruta = $_GET["ruta"] ?? "login";
+
+if($ruta == "crear_categoria_publicacion"){
+    include __DIR__ . "/../src/categorias_publicaciones/crear_categoria_publicacion.php";
+    include __DIR__ . "/../src/categorias_publicaciones/leer_categoria_publicacion.php";
+    return;
+}
+if($ruta == "leer_categoria_publicacion"){
+    include __DIR__ . "/../src/categorias_publicaciones/leer_categoria_publicacion.php";
+    return;
+}
+if ($ruta == "eliminar_categoria_publicacion") {
+    include __DIR__ . "/../src/categorias_publicaciones/eliminar_categoria_publicacion.php";
+    return;
+}
+if ($ruta == "editar_categoria_publicacion") {
+    include __DIR__ . "/../src/categorias_publicaciones/editar_categoria_publicacion.php";
+    return;
+}
+if ($ruta == "feed_publicaciones") {
+    include __DIR__ . "/../src/publicaciones/feed_publicaciones.php";
+    return;
+}
+if ($ruta == "crear_publicacion") {
+    include __DIR__ . "/../src/publicaciones/crear_publicacion.php";
+    return;
+}
+if ($ruta == "leer_publicacion") {
+    include __DIR__ . "/../src/publicaciones/leer_publicacion.php";
+    return;
+}
+if ($ruta == "eliminar_publicacion") {
+    include __DIR__ . "/../src/publicaciones/eliminar_publicacion.php";
+    return;
+}
+if ($ruta == "editar_publicacion") {
+    include __DIR__ . "/../src/publicaciones/editar_publicacion.php";
+    return;
+}
+
+?>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión - Municipalidad Digital</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="login-style.css">
+    
+    <style>
+        :root {
+            --primary-blue: #3d71ff;
+            --bg-light: #ffffff; /* Aseguramos que el fondo base sea blanco */
+        }
+
+        /* Contenedor del lado izquierdo */
+        .left-side-container {
+            background-color: #ffffff; /* Espacio dividido en blanco */
+            position: relative;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .diagonal-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* Imagen con un degradado más sutil para que no mate el blanco */
+            background: linear-gradient(rgba(255, 255, 255, 0.1), rgba(13, 30, 76, 0.2)), 
+                        url('https://images.unsplash.com/photo-1577495508048-b635879837f1?auto=format&fit=crop&q=80&w=1920');
+            background-size: cover;
+            background-position: center;
+            
+            /* Corte diagonal ajustado para que el área de la imagen sea la que termina en punta */
+            /* Dejamos el espacio de la derecha (el 30%) en blanco total */
+            clip-path: polygon(0 0, 95% 0, 65% 100%, 0% 100%);
+            z-index: 1;
+        }
+
+        .overlay-content {
+            position: relative;
+            z-index: 2;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-left: 10%;
+            /* Color de texto oscuro para que resalte sobre el blanco si es necesario, 
+            o mantenemos blanco si la imagen es oscura */
+            color: white; 
+        }
+
+        /* Sombra interna para suavizar la unión con el blanco */
+        .diagonal-bg::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            box-shadow: inset -20px 0 30px -20px rgba(0,0,0,0.3);
+        }
 
     $auth = new AuthController();
     $user = $auth->login(trim($login), $password);
