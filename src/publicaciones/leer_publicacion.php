@@ -20,6 +20,7 @@
         <th scope="col">Descripcion</th>
         <th scope="col">Fecha Evento</th>
         <th scope="col">Estado</th>
+        <th scope="col">Imagen</th>
         <th scope="col">Lugar</th>
         <th scope="col">Id Categoria</th>
         <th scope="col">Id Funcionario</th>
@@ -41,6 +42,7 @@
                     $contenido =$fila['contenido'];
                     $fecha_evento =$fila['fecha_evento'];
                     $tipo_estado =$fila['tipo_estado'];
+                    $imagen =$fila['imagen'];
                     $lugar =$fila['lugar'];
                     $categoria_nombre =$fila['categoria_nombre'];
                     $id_funcionario =$fila['id_funcionario'];
@@ -50,6 +52,7 @@
                         echo "<td>".$contenido."</td>";
                         echo "<td>".$fecha_evento."</td>";
                         echo "<td>".$tipo_estado."</td>";
+                        echo "<td><img src='../src/publicaciones/".$fila['imagen']."' width='100'></td>";
                         echo "<td>".$lugar."</td>";
                         echo "<td>".$categoria_nombre."</td>";
                         echo "<td>".$id_funcionario."</td>";
