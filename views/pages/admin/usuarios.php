@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Usuarios y Departamentos - Shopeers</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    
+    <style>
+        :root {
+            --primary-blue: #3d71ff;
+            --bg-light: #f8fafc;
+            --sidebar-text: #64748b;
+            --shadow-soft: 0 10px 40px rgba(0, 0, 0, 0.04);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-light);
+            color: #0f172a;
+            overflow-x: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: #ffffff;
+            height: 100vh;
+            border-right: 1px solid #f1f5f9;
+            position: sticky;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .nav-link {
+            color: var(--sidebar-text);
+            font-size: 0.9rem;
+            font-weight: 500;
+            padding: 0.75rem 1rem;
+            border-radius: 12px;
+            transition: all 0.2s;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background-color: #f0f4ff;
+            color: var(--primary-blue);
+        }
+
+        /* Search Bar */
+        .search-container {
+            background: #ffffff;
+            transition: box-shadow 0.3s;
+        }
+
+        .shadow-card {
+            box-shadow: var(--shadow-soft);
+        }
+
+        .btn-white { background: white; border: none; font-weight: 600; font-size: 0.8rem; }
+        .shadow-primary { box-shadow: 0 4px 14px 0 rgba(61, 113, 255, 0.39); }
+        
+        /* Estilos específicos de Usuarios */
+        .user-avatar-list { width: 32px; height: 32px; border-radius: 8px; object-fit: cover; }
+        .badge-dept { background: #eef2ff; color: #4338ca; font-size: 0.7rem; font-weight: 700; padding: 4px 8px; border-radius: 6px; }
+        .dept-card { transition: transform 0.2s; cursor: pointer; border: 1px solid transparent; }
+        .dept-card:hover { transform: translateY(-5px); border-color: var(--primary-blue); }
+        .btn-action { width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center; border-radius: 8px; border: none; background: #f1f5f9; color: #64748b; }
+        .btn-action:hover { background: #e2e8f0; color: #1e293b; }
+    </style>
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+         <?php include __DIR__ . "../../../layout/sidebar.php"; ?>
+
+        <!-- Main Content -->
+        <main class="col-md-10 ms-sm-auto px-md-5 bg-light-soft">
+            <!-- Header -->
+            <header class="d-flex justify-content-between align-items-center py-4">
+                <div class="search-wrapper w-50">
+                    <div class="input-group search-container border-0 shadow-sm rounded-pill px-3">
+                        <span class="input-group-text bg-transparent border-0"><i class="bi bi-search text-muted"></i></span>
+                        <input type="text" class="form-control border-0 bg-transparent" placeholder="Buscar funcionarios...">
+                    </div>
+                </div>
+                <div class="header-actions d-flex align-items-center gap-3">
+                    <div class="user-avatar ms-2">
+                        <img src="https://i.pravatar.cc/150?u=admin" width="40" height="40" class="rounded-circle" alt="User">
+                    </div>
+                </div>
+            </header>
+
+            <!-- Título y Acciones -->
+            <div class="d-flex justify-content-between align-items-end mb-4">
+                <div>
+                    <h2 class="fw-bold mb-0">Configuración de Estructura</h2>
+                    <p class="text-muted small mb-0">Administra quiénes operan la plataforma y sus áreas.</p>
+                </div>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-primary rounded-pill px-4 btn-sm shadow-primary"><i class="bi bi-person-plus-fill me-2"></i> Crear Usuario</button>
+                </div>
+            </div>
+
+            <div class="row g-4">
+
+                <div class="col-md-12">
+                    <div class="card border-0 shadow-card rounded-4 p-4">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h6 class="fw-bold mb-0">Lista de Funcionarios</h6>
+                            <div class="dropdown">
+                                <button class="btn btn-light btn-sm rounded-pill px-3" type="button">Filtrar por Rol</button>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle border-0">
+                                <thead class="table-light border-0">
+                                    <tr class="text-muted small">
+                                        <th class="border-0 fw-bold py-3">USUARIO</th>
+                                        <th class="border-0 fw-bold py-3">DEPARTAMENTO</th>
+                                        <th class="border-0 fw-bold py-3">ROL</th>
+                                        <th class="border-0 fw-bold py-3 text-end">ACCIONES</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="border-0">
+                                    <tr>
+                                        <td class="border-0 py-3">
+                                            <div class="d-flex align-items-center">
+                                                <img src="https://i.pravatar.cc/150?u=12" class="user-avatar-list me-3">
+                                                <div>
+                                                    <p class="fw-bold mb-0 small">Roberto Jara</p>
+                                                    <p class="text-muted tiny mb-0">r.jara@municipio.cl</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="border-0"><span class="badge-dept">Obras Públicas</span></td>
+                                        <td class="border-0"><span class="text-primary fw-bold tiny">Supervisor</span></td>
+                                        <td class="border-0 text-end">
+                                            <button class="btn-action me-1"><i class="bi bi-pencil-square"></i></button>
+                                            <button class="btn-action text-danger"><i class="bi bi-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border-0 py-3">
+                                            <div class="d-flex align-items-center">
+                                                <img src="https://i.pravatar.cc/150?u=45" class="user-avatar-list me-3">
+                                                <div>
+                                                    <p class="fw-bold mb-0 small">Ana María Soto</p>
+                                                    <p class="text-muted tiny mb-0">a.soto@municipio.cl</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="border-0"><span class="badge-dept">Seguridad</span></td>
+                                        <td class="border-0"><span class="text-muted fw-bold tiny">Operador</span></td>
+                                        <td class="border-0 text-end">
+                                            <button class="btn-action me-1"><i class="bi bi-pencil-square"></i></button>
+                                            <button class="btn-action text-danger"><i class="bi bi-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+</body>
+</html>
