@@ -1,10 +1,10 @@
 <?php
 
-    require_once __DIR__ . '/../../controllers/areaController.php';
+    require_once __DIR__ . '/../../controllers/area.controller.php';
     
     if($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-        $controller = new areaController();
+        $controller = new AreaController();
 
         $resultado = $controller->crearArea($_POST['nombre'],$_POST['descripcion'], $_POST['id_municipalidad']);
 

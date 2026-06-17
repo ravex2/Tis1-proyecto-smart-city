@@ -11,3 +11,6 @@ logs/
 # vendor
 /vendor/
 
+
+# archivos no necearios
+models/crudtrait.php

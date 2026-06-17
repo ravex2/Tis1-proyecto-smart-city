@@ -1,0 +1,111 @@
+:root {
+    --bg-main: #f4f7fa;
+    --sidebar-bg: #fdfdfe;
+    --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+    --border-radius-lg: 24px;
+    --primary-blue: #3d71ff;
+}
+
+body {
+    background-color: var(--bg-main);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    color: #1a1d23;
+}
+
+/* Sidebar Styling */
+.sidebar {
+    background-color: var(--sidebar-bg);
+    min-height: 100vh;
+    border-right: 1px solid #edf1f7;
+    padding: 1.5rem 1rem;
+}
+
+.nav-link {
+    color: #6c757d;
+    font-weight: 500;
+    padding: 0.8rem 1rem;
+    border-radius: 12px;
+    margin-bottom: 5px;
+    transition: all 0.2s ease;
+}
+
+.nav-link:hover, .nav-link.active {
+    background-color: #f0f4ff;
+    color: var(--primary-blue);
+}
+
+.nav-link.active {
+    box-shadow: 0 4px 12px rgba(61, 113, 255, 0.1);
+}
+
+/* Main Content Area */
+.main-content {
+    padding-bottom: 3rem;
+}
+
+/* Custom Cards */
+.stat-card {
+    background: #ffffff;
+    border-radius: var(--border-radius-lg);
+    border: 1px solid #f0f2f5;
+    box-shadow: var(--card-shadow);
+    transition: transform 0.2s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+}
+
+/* UI Elements */
+.bg-success-soft {
+    background-color: #e6f7f0 !important;
+}
+
+.bg-danger-soft {
+    background-color: #fbe9e9 !important;
+}
+
+.rounded-pill {
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.upgrade-card {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    border-radius: 20px;
+    position: relative;
+    overflow: hidden;
+    margin: 0 10px;
+}
+
+.upgrade-card::after {
+    content: '';
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    width: 80px;
+    height: 80px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 50%;
+}
+
+.btn-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    border: 1px solid #edf1f7;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.tiny {
+    font-size: 0.75rem;
+}
+
+input:focus {
+    box-shadow: none !important;
+    outline: none !important;
+}
