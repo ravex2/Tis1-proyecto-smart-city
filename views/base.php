@@ -1,4 +1,6 @@
 <?php
+require_once __DIR__ . '/../config/app.php';
+require_once __DIR__ . '/../controllers/autenticacion.controlador.php';
 
 ?>
 <?php
@@ -111,19 +113,23 @@ if ($ruta == "editar_publicacion") {
             box-shadow: inset -20px 0 30px -20px rgba(0,0,0,0.3);
         }
 
+    $auth = new AuthController();
+    $user = $auth->login(trim($login), $password);
 
-        /* Responsive adjustments */
-        @media (max-width: 991.98px) {
-            .login-box {
-                background: white;
-                border-radius: 24px;
-                box-shadow: 0 20px 40px rgba(0,0,0,0.05);
-            }
+    if ($user) {
+        if (session_status() !== PHP_SESSION_ACTIVE) {
+            session_start();
         }
+        $_SESSION['user'] = $user;
+        header('Location: /Tis1-proyecto-smart-city/public/index.php?ruta=inicio');        
+        exit();
+    } else {
+        $errorMessage = 'Credenciales incorrectas. Por favor, inténtalo de nuevo.';
+    }
+}
 
-    </style>
-</head>
-<body>
+include __DIR__ . "/layout/header.php";
+?>
 
 <div class="container-fluid p-0 overflow-hidden">
     <div class="row g-0 vh-100">
@@ -146,12 +152,12 @@ if ($ruta == "editar_publicacion") {
                     <p class="text-muted">Ingresa tus credenciales para acceder al portal ciudadano.</p>
                 </div>
 
-                <form id="loginForm">
+                <form id="loginForm" method="post" action="">
                     <div class="mb-4">
                         <label class="form-label fw-semibold">Correo Electrónico</label>
                         <div class="input-group custom-input-group shadow-sm">
                             <span class="input-group-text border-0 bg-transparent ps-3"><i class="bi bi-envelope text-muted"></i></span>
-                            <input type="email" class="form-control border-0 py-3" placeholder="nombre@ejemplo.cl" required>
+                            <input type="email" name="login" class="form-control border-0 py-3" placeholder="nombre@ejemplo.cl" required>
                         </div>
                     </div>
 
@@ -159,7 +165,7 @@ if ($ruta == "editar_publicacion") {
                         <label class="form-label fw-semibold">Contraseña</label>
                         <div class="input-group custom-input-group shadow-sm">
                             <span class="input-group-text border-0 bg-transparent ps-3"><i class="bi bi-lock text-muted"></i></span>
-                            <input type="password" class="form-control border-0 py-3" placeholder="••••••••" required>
+                            <input type="password" name="password" class="form-control border-0 py-3" placeholder="••••••••" required>
                         </div>
                     </div>
 
@@ -175,9 +181,13 @@ if ($ruta == "editar_publicacion") {
                         Iniciar Sesión
                     </button>
 
+                    <?php if (!empty($errorMessage)): ?>
+                        <div class="alert alert-danger mt-3" role="alert"><?= htmlspecialchars($errorMessage) ?></div>
+                    <?php endif; ?>
+
                     <div class="text-center mt-5">
                         <p class="text-muted small">¿No tienes una cuenta aún? <br>
-                            <a href="#" class="text-primary fw-bold text-decoration-none">Regístrate como ciudadano aquí</a>
+                            <a href="?ruta=registro" class="text-primary fw-bold text-decoration-none">Regístrate como ciudadano aquí</a>
                         </p>
                     </div>
                 </form>
@@ -185,6 +195,7 @@ if ($ruta == "editar_publicacion") {
         </div>
     </div>
 </div>
-
-</body>
-</html>
+<?php 
+// Incluimos la parte inferior
+include __DIR__ . "/layout/footer.php"; 
+?>
