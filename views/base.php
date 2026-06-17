@@ -30,6 +30,10 @@ if ($ruta == "crear_publicacion") {
     include __DIR__ . "/../src/publicaciones/crear_publicacion.php";
     return;
 }
+if ($ruta == "leer_publicacion") {
+    include __DIR__ . "/../src/publicaciones/leer_publicacion.php";
+    return;
+}
 
 ?>
 <!DOCTYPE html>
