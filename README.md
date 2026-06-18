@@ -116,11 +116,28 @@ http://localhost:8000
 
 ## Equipo de desarrolladores
 
-* Oscar
-* Felipe
-* Benjamin
-* Hector
-* Matias
+* Oscar Gonzalez
+* Felipe Alarcon
+* Benjamin Cisternas
+* Hector Contreras
+* Matias Altamirano
+
+## Contribuciones
+
+
+* Oscar Gonzalez: 
+    * mantenedor de publicaciones
+* Felipe Alarcon
+    * mantenedores de reacciones
+* Benjamin Cisternas
+    * mantenedor area_municipal
+    * panel de admin
+    * asignacion de roles
+* Hector Contreras
+    * mentanedor de los comentarios
+* Matias Altamirano
+    * login y cierre de sesión
+    * mantenedores de admin, sector, usuarios, rubro
 
 ## Licencia
 
