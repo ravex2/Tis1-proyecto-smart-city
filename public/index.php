@@ -25,6 +25,7 @@ $mapaRutas = [
     'reportes' => '/views/pages/admin/reportes.php',
     'sector' => '/views/pages/admin/sector.php',
     'logout' => '/views/pages/auth/logout.php',
+    'usuarios' => '/views/pages/admin/usuarios.php',
     'roles_usuarios' => '/views/pages/admin/asignacion_roles.php',
     'publicaciones' => '/src/publicaciones/feed_publicaciones.php',
     'departamentos' => '/views/pages/admin/area_municipal.php',
