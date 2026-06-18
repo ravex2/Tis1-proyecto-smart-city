@@ -81,11 +81,11 @@
 <body>
 
     <div class="container-fluid">
-        <div class="row gx-4">
-            <?php include BASE_PATH . "/views/layout/sidebar.php"; ?>
-    
+    <div class="row">
 
-            <main class="col-md-10 border-start border-end px-0 bg-white shadow-sm min-vh-100">
+        <?php include BASE_PATH . "/views/layout/sidebar.php"; ?>
+
+        <main class="col-md-10 ms-sm-auto px-4">
                 <div class="feed-header p-3 sticky-top bg-white-glass blur">
                     <h5 class="fw-bold mb-0">Inicio</h5>
                 </div>
