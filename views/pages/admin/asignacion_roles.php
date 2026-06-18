@@ -126,9 +126,9 @@
                                     <td>
                                     <?php
                                         $color = match($usuario['nombre_rol']) {
-                                            'Administrador' => 'danger',
+                                            'Administrador Municipal' => 'danger',
                                             'Encargado de Comunicaciones' => 'primary',
-                                            'Usuario' => 'secondary',
+                                            'Ciudadano' => 'secondary',
                                             default => 'dark'
                                         };
                                         ?>
