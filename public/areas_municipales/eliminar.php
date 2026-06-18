@@ -10,7 +10,7 @@
         $resultado = $controller->eliminarArea($_GET['id_enviado']);
 
         if ($resultado) {
-            header('Location: ../../views/areas_municipales/index.php');
+            header('Location: ?ruta=departamentos');
             exit;
         }else {
             echo "Error al eliminar el área municipal.";
