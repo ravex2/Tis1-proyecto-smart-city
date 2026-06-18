@@ -24,6 +24,12 @@ class Publicacion extends BaseModel {
         return $stmt->fetchAll();
     }
 
+    public function countAll(): int
+    {
+        $row = $this->fetch("SELECT COUNT(*) AS total FROM publicacion WHERE tipo_estado='activa'");
+        return (int) $row['total'];
+    }
+
     protected function execute(string $sql, array $params = []): bool {
         $stmt = $this->pdo->prepare($sql);
         return $stmt->execute($params);

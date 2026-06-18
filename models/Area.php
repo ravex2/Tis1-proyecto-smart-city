@@ -25,4 +25,12 @@
         $db = getDatabase();
         return $db->execute("DELETE FROM area_municipal where id_area = ?",[$id]);
     }
+    function contarAreas(): int {
+        $db = getDatabase();
+        $result = $db->query("SELECT COUNT(*) AS total FROM area_municipal");
+
+        return (int) $result[0]['total'];
+    }
+
+
 ?>
