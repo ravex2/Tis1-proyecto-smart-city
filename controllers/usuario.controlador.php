@@ -31,7 +31,6 @@
         public function eliminarUsuario(string $rut){
             return $this->model->delete(['rut' => $rut]);
         }
-
         
     }
 ?>
