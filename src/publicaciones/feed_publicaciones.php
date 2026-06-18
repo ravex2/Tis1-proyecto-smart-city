@@ -118,17 +118,12 @@ $resultado = $conexion->query($consulta);
 
                 <div class="text-muted small mb-3">
                     <span class="fw-bold text-dark">Lugar:</span> <?php echo $fila['lugar']; ?> |
-                    <span class="fw-bold text-dark">Fecha:</span>
-                    <?php 
-                        echo $fila['fecha_evento'] 
-                        ? date("d-m-Y", strtotime($fila['fecha_evento'])) 
-                        : "Sin fecha";
-                    ?>
+                    <span class="fw-bold text-dark">Fecha:</span><?php echo !empty($fila['fecha_evento']) ? date("d-m-Y", strtotime($fila['fecha_evento'])) : 'No especificada'; ?>
                 </div>
 
                 <hr class="opacity-10">
 
-                
+                <!-- Stats -->
                 <div class="d-flex gap-4 py-1 border-bottom border-top border-light my-3 py-3">
                     <div><span class="fw-bold">156</span> <span class="text-muted">Me gusta</span></div>
                     <div><span class="fw-bold">12</span> <span class="text-muted">Reposts</span></div>
@@ -137,7 +132,7 @@ $resultado = $conexion->query($consulta);
 
                 <!-- Botones de Acción Grandes -->
                 <div class="d-flex justify-content-around text-muted fs-5 py-1">
-                    <i class="bi bi-chat action-hover-blue"></i>
+                    <i class="bi bi-chat action-hover-blue" onclick="toggleComments(<?php echo $fila['id_publicacion']; ?>)"></i>
                     <i class="bi bi-arrow-repeat action-hover-green"></i>
                     <i class="bi bi-heart action-hover-red"></i>
                     <i class="bi bi-bookmark action-hover-blue"></i>
@@ -145,13 +140,19 @@ $resultado = $conexion->query($consulta);
                 </div>
             </div>
             
-            <div class="comment-input-area p-3 border-bottom bg-light-soft">
-                <div class="d-flex gap-3">
-                    <img src="https://i.pravatar.cc/150?u=3" class="rounded-circle" width="40" height="40">
-                    <div class="flex-grow-1">
-                        <input type="text" class="form-control border-0 bg-transparent py-2" placeholder="Publica tu respuesta">
+            <div id="comments-section-<?php echo $fila['id_publicacion']; ?>" class="d-none">
+                <div class="comments-list bg-light-soft px-4 py-2" data-id="<?php echo $fila['id_publicacion']; ?>" id="comments-list-<?php echo $fila['id_publicacion']; ?>">
+                    <!-- Comentarios cargados dinamicamente -->
+                </div>
+
+                <div class="comment-input-area p-3 border-bottom bg-light-soft">
+                    <div class="d-flex gap-3">
+                        <img src="https://i.pravatar.cc/150?u=3" class="rounded-circle" width="40" height="40">
+                        <div class="flex-grow-1">
+                            <input type="text" id="input-comment-<?php echo $fila['id_publicacion']; ?>" class="form-control border-0 bg-transparent py-2" placeholder="Publica tu respuesta">
+                        </div>
+                        <button onclick="addComment(<?php echo $fila['id_publicacion']; ?>)" class="btn btn-primary rounded-pill px-4 btn-sm fw-bold shadow-primary">Responder</button>
                     </div>
-                    <button class="btn btn-primary rounded-pill px-4 btn-sm fw-bold shadow-primary">Responder</button>
                 </div>
             </div>
             <?php  }?>
@@ -162,5 +163,152 @@ $resultado = $conexion->query($consulta);
     </div>
 </div>
 
+<script>
+const mockRut = '12345678-9'; 
+
+document.addEventListener('DOMContentLoaded', () => {
+    const commentLists = document.querySelectorAll('.comments-list');
+    commentLists.forEach(list => {
+        loadComments(list.getAttribute('data-id'));
+    });
+});
+
+function toggleComments(id_publicacion) {
+    const section = document.getElementById(`comments-section-${id_publicacion}`);
+    if (section) {
+        section.classList.toggle('d-none');
+    }
+}
+
+async function loadComments(id_publicacion) {
+    try {
+        const res = await fetch(`../gestion_comentarios/leer.php?id_publicacion=${id_publicacion}`);
+        const data = await res.json();
+        
+        const container = document.getElementById(`comments-list-${id_publicacion}`);
+        if(container && data.length > 0) {
+            container.innerHTML = '';
+            data.forEach(comment => {
+                container.innerHTML += renderComment(comment, id_publicacion);
+            });
+        }
+    } catch(e) {
+        console.error("Error cargando comentarios:", e);
+    }
+}
+
+function renderComment(comment, id_publicacion) {
+    return `
+    <div class="comment-item d-flex gap-3 my-2" id="comment-${comment.id_comentario}">
+        <img src="https://i.pravatar.cc/150?u=${comment.rut_usuario}" class="rounded-circle" width="32" height="32">
+        <div class="flex-grow-1 bg-white p-2 rounded shadow-sm border border-light">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+                <span class="fw-bold text-dark small">${comment.rut_usuario}</span>
+                <span class="text-muted" style="font-size:0.7rem;">${comment.fecha_comentario}</span>
+            </div>
+            <div class="comment-text mb-2 text-secondary" id="comment-text-${comment.id_comentario}" style="font-size:0.9rem;">${comment.comentario}</div>
+            
+            <div class="d-flex gap-2">
+                <button onclick="editComment(${comment.id_comentario})" class="btn btn-sm btn-link text-decoration-none text-primary p-0" style="font-size:0.75rem;">Editar</button>
+                <button onclick="deleteComment(${comment.id_comentario}, ${id_publicacion})" class="btn btn-sm btn-link text-decoration-none text-danger p-0" style="font-size:0.75rem;">Eliminar</button>
+            </div>
+            
+            <div id="edit-box-${comment.id_comentario}" class="d-none mt-2">
+                <input type="text" id="edit-input-${comment.id_comentario}" class="form-control form-control-sm mb-2" value="${comment.comentario}">
+                <button onclick="saveEdit(${comment.id_comentario})" class="btn btn-sm btn-success py-0" style="font-size:0.8rem;">Guardar</button>
+                <button onclick="cancelEdit(${comment.id_comentario})" class="btn btn-sm btn-secondary py-0" style="font-size:0.8rem;">Cancelar</button>
+            </div>
+        </div>
+    </div>`;
+}
+
+async function addComment(id_publicacion) {
+    const input = document.getElementById(`input-comment-${id_publicacion}`);
+    const texto = input.value.trim();
+    if(!texto) return;
+
+    try {
+        const res = await fetch('../gestion_comentarios/insertar.php', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                comentario: texto,
+                id_publicacion: id_publicacion,
+                rut_usuario: mockRut
+            })
+        });
+        const data = await res.json();
+        
+        if(data.success) {
+            input.value = '';
+            const container = document.getElementById(`comments-list-${id_publicacion}`);
+            container.innerHTML += renderComment(data, id_publicacion);
+        } else {
+            alert(data.message || 'Error al agregar comentario');
+        }
+    } catch(e) {
+        console.error("Error agregando:", e);
+    }
+}
+
+function editComment(id_comentario) {
+    document.getElementById(`comment-text-${id_comentario}`).classList.add('d-none');
+    document.getElementById(`edit-box-${id_comentario}`).classList.remove('d-none');
+}
+
+function cancelEdit(id_comentario) {
+    document.getElementById(`comment-text-${id_comentario}`).classList.remove('d-none');
+    document.getElementById(`edit-box-${id_comentario}`).classList.add('d-none');
+}
+
+async function saveEdit(id_comentario) {
+    const input = document.getElementById(`edit-input-${id_comentario}`);
+    const nuevoTexto = input.value.trim();
+    if(!nuevoTexto) return;
+
+    try {
+        const res = await fetch('../gestion_comentarios/editar.php', {
+            method: 'PUT',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                id_comentario: id_comentario,
+                comentario: nuevoTexto
+            })
+        });
+        const data = await res.json();
+        
+        if(data.success) {
+            document.getElementById(`comment-text-${id_comentario}`).textContent = nuevoTexto;
+            cancelEdit(id_comentario);
+        } else {
+            alert(data.message || 'Error al editar comentario');
+        }
+    } catch(e) {
+        console.error("Error editando:", e);
+    }
+}
+
+async function deleteComment(id_comentario, id_publicacion) {
+    if(!confirm('¿Estás seguro de eliminar este comentario?')) return;
+
+    try {
+        const res = await fetch('../gestion_comentarios/eliminar.php', {
+            method: 'DELETE',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ id_comentario: id_comentario })
+        });
+        const data = await res.json();
+        
+        if(data.success) {
+            const element = document.getElementById(`comment-${id_comentario}`);
+            if(element) element.remove();
+        } else {
+            alert(data.message || 'Error al eliminar comentario');
+        }
+    } catch(e) {
+        console.error("Error eliminando:", e);
+    }
+}
+</script>
 </body>
 </html>
