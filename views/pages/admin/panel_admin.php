@@ -1,5 +1,12 @@
 <?php
 
+    session_start();
+    if (!isset($_SESSION['user'])) {
+        header('Location: ?ruta=login');
+        exit();
+    }
+
+
     require_once __DIR__ . '/../../../models/Area.php';
     require_once __DIR__ . '/../../../models/usuario.php';
     require_once __DIR__ . '/../../../models/publicacion.php';
@@ -10,9 +17,7 @@
     $totalPublicaciones = $publicaciones->countAll();
     $totalDepartamentos = contarAreas();
 
-    session_start();
-
-    $usuarioLogeado = $_SESSION['user'] ?? null;
+    $usuarioLogeado = $_SESSION['user'] ?? null;    
 ?>
 
 <!doctype html>
