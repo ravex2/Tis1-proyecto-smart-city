@@ -103,3 +103,15 @@ body {
 
 .tiny { font-size: 0.7rem; }
 .kbd-hint { font-size: 0.65rem; background: #f8fafc; }
+
+
+
+
+
+/* Estilos específicos de Usuarios */
+.user-avatar-list { width: 32px; height: 32px; border-radius: 8px; object-fit: cover; }
+.badge-dept { background: #eef2ff; color: #4338ca; font-size: 0.7rem; font-weight: 700; padding: 4px 8px; border-radius: 6px; }
+.dept-card { transition: transform 0.2s; cursor: pointer; border: 1px solid transparent; }
+.dept-card:hover { transform: translateY(-5px); border-color: var(--primary-blue); }
+.btn-action { width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center; border-radius: 8px; border: none; background: #f1f5f9; color: #64748b; }
+.btn-action:hover { background: #e2e8f0; color: #1e293b; }
