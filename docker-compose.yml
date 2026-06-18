@@ -1,0 +1,21 @@
+services:
+  web:
+    build: .
+    container_name: php-servidor
+    volumes:
+      - ./src:/var/www/html
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+  db:
+    image: mysql:8.0
+    container_name: mysql-db
+    restart: always
+    environment:
+      MYSQL_DATABASE: mi_base
+      MYSQL_ROOT_PASSWORD: mi_password_seguro
+    volumes:
+      - ./mysql_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
