@@ -113,7 +113,7 @@ if (isset($_GET['voto_pub']) && isset($_GET['tipo_voto'])) {
 
                 <div class="text-muted small mb-3">
                     <span class="fw-bold text-dark">Lugar:</span> <?php echo $fila['lugar']; ?> |
-                    <span class="fw-bold text-dark">Fecha:</span><?php echo !empty($fila['fecha_evento']) ? date("d-m-Y", strtotime($fila['fecha_evento'])) : 'No especificada'; ?>
+                    <span class="fw-bold text-dark">Fecha:</span><?php echo !empty($fila['fecha_evento']) ? date("d-m-Y", strtotime($fila['fecha_evento'])) : 'Sin Fecha'; ?>
                 </div>
 
                 <hr class="opacity-10">
