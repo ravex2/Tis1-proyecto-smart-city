@@ -1,16 +1,18 @@
 <?php
 
-require_once __DIR__ . "/app.php";
+    require_once __DIR__ . "/../core/database.php";
+    require_once __DIR__ . "/app.php";
 
-try {
-    $conexion = new PDO(
-        "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8",
-        DB_USER,
-        DB_PASS
-    );
-
-    $conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-} catch (PDOException $e) {
-    die("Error de conexión: " . $e->getMessage());
-}
+    use Proyecto\core\Database;
+    
+    function getDatabase(): Database {
+        $config = [
+            'host' => DB_HOST,
+            'port' => DB_PORT,
+            'dbname' => DB_NAME,
+            'username' => DB_USER,
+            'password' => DB_PASS,
+        ];
+        return new Database($config);
+    }
+?>
