@@ -1,4 +1,9 @@
 <?php
+if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_start();
+}
+
+
 require_once __DIR__ . '/../config/app.php';
 require_once __DIR__ . '/../controllers/autenticacion.controlador.php';
 
@@ -54,11 +59,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user = $auth->login(trim($login), $password);
 
     if ($user) {
-
-        if (session_status() !== PHP_SESSION_ACTIVE) {
-            session_start();
-        }
-
         $_SESSION['user'] = $user;
 
         header('Location: ?ruta=dashboard');
