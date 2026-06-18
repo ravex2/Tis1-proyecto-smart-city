@@ -8,15 +8,19 @@ use Dotenv\Dotenv;
 $dotenv = Dotenv::createImmutable(__DIR__ . "/..");
 $dotenv->load();
 
-$ruta = $_GET["ruta"] ?? "login";
-$rutasPublicas = ['login', 'registro'];
 
-/*
-if (!isset($_SESSION['user']) && !in_array($ruta, $rutasPublicas)) {
-    $ruta = 'login'; // Fuerza el login si no hay sesión
+if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_start();
 }
-*/
 
+
+$ruta = $_GET["ruta"] ?? "login";
+$rutasPublicas = ['login', 'registro', 'leer_publicacion'];
+
+
+if (!isset($_SESSION['user']) && !in_array($ruta, $rutasPublicas)) {
+    $ruta = 'login';
+}
 
 $mapaRutas = [
     'login'  => '/views/base.php',
