@@ -32,16 +32,6 @@ if (isset($_GET['voto_pub']) && isset($_GET['tipo_voto'])) {
     exit;
 }
 
-
-
-
-
-
-
-
-
-
-
 ?>
 
 <!DOCTYPE html>
@@ -54,7 +44,7 @@ if (isset($_GET['voto_pub']) && isset($_GET['tipo_voto'])) {
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="social-style.css">
-
+    <link rel="stylesheet" href="/Tis1-proyecto-smart-city/assets/css/publicaciones.css">
     
 </head>
 <body>
@@ -72,6 +62,12 @@ if (isset($_GET['voto_pub']) && isset($_GET['tipo_voto'])) {
                 <a class="nav-link" href="#"><i class="bi bi-bell me-3"></i> Notificaciones</a>
                 <a class="nav-link" href="#"><i class="bi bi-person me-3"></i> Perfil</a>
             </nav>
+
+            <a class="btn btn-primary rounded-pill py-3 fw-bold shadow-primary mb-4 w-100"
+                href="?ruta=login"
+            >Iniciar Sesion</a>
+
+
         </aside>
 
         
@@ -92,9 +88,9 @@ if (isset($_GET['voto_pub']) && isset($_GET['tipo_voto'])) {
                 
                 <div class="d-flex align-items-center justify-content-between mb-3">
                     <div class="d-flex align-items-center gap-3">
-                        <img  class="rounded-circle shadow-sm" width="56" height="56">
+                        <img src="https://i.pravatar.cc/150?u=3" class="rounded-circle shadow-sm" width="56" height="56">
                         <div>
-                            <div class="post-main-text fs-4 fw-medium mb-3 lh-sm">
+                            <div class="post-main-text fs-5 fw-medium mb-3 lh-sm">
                                 <?php echo $fila['titulo']; ?>
                             
                             </div>
@@ -103,10 +99,10 @@ if (isset($_GET['voto_pub']) && isset($_GET['tipo_voto'])) {
                     </div>
                 </div>
                 <div class="post-main-text fs-4 fw-medium mb-3 lh-sm">
-                                    <img src="../src/publicaciones/<?php echo $fila['imagen']; ?>" 
+                                    <img src="/Tis1-proyecto-smart-city/src/publicaciones/img/<?php echo $fila['imagen']; ?>"
                                     class="img-fluid rounded-3" style="max-height:300px; object-fit:cover;">
                 </div>
-                <div class="fw-bold fs-5 mb-0">
+                <div class="fw-bold fs-6 mb-0">
                     <?php echo $fila['contenido']; ?>
                 </div>
                 
@@ -179,6 +175,31 @@ if (isset($_GET['voto_pub']) && isset($_GET['tipo_voto'])) {
             
         </main>
             
+
+        <aside class="col-md-3 d-none d-md-block py-4 sticky-top vh-100">
+            <div class="search-bar mb-4">
+                <div class="input-group bg-light rounded-pill px-3 border-0">
+                    <span class="input-group-text bg-transparent border-0"><i class="bi bi-search text-muted"></i></span>
+                    <input type="text" class="form-control bg-transparent border-0 py-2" placeholder="Buscar en Reportes">
+                </div>
+            </div>
+
+
+
+            <div class="trend-card bg-light rounded-4 p-3">
+                <h6 class="fw-bold mb-3 px-1">Emprendedores Destacados</h6>
+                <div class="follow-item d-flex align-items-center gap-2 mb-3">
+                    <img src="https://i.pravatar.cc/150?u=shop1" class="rounded-circle" width="36" height="36">
+                    <div class="flex-grow-1 overflow-hidden">
+                        <div class="fw-bold text-truncate small">Café de la Plaza</div>
+                        <div class="text-muted tiny">@plaza_cafe</div>
+                    </div>
+                    <button class="btn btn-dark btn-sm rounded-pill px-3">Ver</button>
+                </div>
+            </div>
+
+        </aside>
+
     </div>
 </div>
 
