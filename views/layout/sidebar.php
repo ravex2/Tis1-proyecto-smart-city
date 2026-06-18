@@ -63,7 +63,7 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link <?= $rutaActual === 'usuarios' ? 'active' : '' ?>" href="?ruta=usuarios">
+                <a class="nav-link <?= $rutaActual === 'roles_usuarios' ? 'active' : '' ?>" href="?ruta=roles_usuarios">
                     <i class="bi bi-person-gear me-2"></i> Roles
                 </a>
             </li>
