@@ -21,10 +21,10 @@ if (!isset($_SESSION['user']) && !in_array($ruta, $rutasPublicas)) {
 $mapaRutas = [
     'login'  => '/views/base.php',
     'registro' => '/views/pages/registro.php',
+    'logout' => '/views/pages/admin/logout.php',
     'dashboard' => '/views/pages/admin/panel_admin.php',
     'reportes' => '/views/pages/admin/reportes.php',
     'sector' => '/views/pages/admin/sector.php',
-    'logout' => '/views/pages/auth/logout.php',
     'usuarios' => '/views/pages/admin/usuarios.php',
     'roles_usuarios' => '/views/pages/admin/asignacion_roles.php',
     'publicaciones' => '/src/publicaciones/feed_publicaciones.php',
