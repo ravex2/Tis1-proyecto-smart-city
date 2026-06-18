@@ -53,7 +53,13 @@
 
                                     <p class="small text-secondary mb-2">
                                         <?php echo $fila['lugar']; ?> |
-                                        <?php echo date("d-m-Y", strtotime($fila['fecha_evento'])); ?>
+                                        <?php 
+                                        if (!empty($fila['fecha_evento'])) {
+                                            echo date("d-m-Y", strtotime($fila['fecha_evento']));
+                                        } else {
+                                            echo "Sin fecha";
+                                        }
+                                        ?>
                                     </p>
 
                                     <div class="d-flex gap-2">
