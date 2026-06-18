@@ -4,6 +4,48 @@ require_once __DIR__ . "/../../config/database.php";
 $consulta = "SELECT * FROM publicacion WHERE tipo_estado = 'activa'
 ORDER BY fecha DESC";
 $resultado = $conexion->query($consulta);
+
+if (isset($_GET['voto_pub']) && isset($_GET['tipo_voto'])) {
+    $id_p = intval($_GET['voto_pub']);
+    $tipo_r = $_GET['tipo_voto'];
+    
+    // 1. Buscamos si ESTA publicación específica ya tiene alguna reacción registrada
+    $stmt_check = $conexion->prepare("SELECT id_reaccion, tipo_reaccion FROM reaccion WHERE id_publicacion = ?");
+    $stmt_check->execute([$id_p]);
+    $reaccion_existente = $stmt_check->fetch(PDO::FETCH_ASSOC);
+    
+    if ($reaccion_existente) {
+        if ($reaccion_existente['tipo_reaccion'] === $tipo_r) {
+            // CASO 3 (DELETE): Se presionó la misma -> Se borra usando su ID único real
+            $stmt_delete = $conexion->prepare("DELETE FROM reaccion WHERE id_reaccion = ?");
+            $stmt_delete->execute([$reaccion_existente['id_reaccion']]);
+        } else {
+            // CASO 2 (UPDATE): Cambió de opinión -> Se actualiza esa fila específica
+            $stmt_update = $conexion->prepare("UPDATE reaccion SET tipo_reaccion = ? WHERE id_reaccion = ?");
+            $stmt_update->execute([$tipo_r, $reaccion_existente['id_reaccion']]);
+        }
+    } else {
+        // CASO 1 (INSERT CORREGIDO): No había voto. No forzamos el ID '1'.
+        // Dejamos que MySQL le asigne su número correlativo automático (1, 2, 3...)
+        $stmt_insert = $conexion->prepare("INSERT INTO reaccion (id_publicacion, tipo_reaccion) VALUES (?, ?)");
+        $stmt_insert->execute([$id_p, $tipo_r]);
+    }
+    
+    // Redirección manteniendo la posición de la pantalla
+    header("Location: " . strtok($_SERVER["REQUEST_URI"], '?') . "?#post-" . $id_p);
+    exit;
+}
+
+
+
+
+
+
+
+
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -161,10 +203,18 @@ $resultado = $conexion->query($consulta);
                 <div class="d-flex justify-content-around text-muted fs-5 py-1">
                     <i class="bi bi-chat action-hover-blue"></i>            <!-- Comentarios -->
 
-                    <i class="bi bi-hand-thumbs-up action-hover-green"></i> <!-- Me gusta -->
-                    <i class="bi bi-heart action-hover-blue"></i>           <!-- me encanta -->
-                    <i class="bi bi-hand-thumbs-down action-hover-red"></i> <!-- No me gusta -->
-                    <i class="bi bi-emoji-grin action-hover-green"></i>     <!-- Me divierte -->
+                    <a href="?voto_pub=<?php echo $id_pub; ?>&tipo_voto=me gusta" class="text-muted action-hover-green text-decoration-none">
+                        <i class="bi bi-hand-thumbs-up"></i>
+                    </a> <!-- Me gusta -->
+                    <a href="?voto_pub=<?php echo $id_pub; ?>&tipo_voto=me encanta" class="text-muted action-hover-blue text-decoration-none">
+                        <i class="bi bi-heart"></i>
+                    </a> <!-- Me encanta -->
+                    <a href="?voto_pub=<?php echo $id_pub; ?>&tipo_voto=no me gusta" class="text-muted action-hover-red text-decoration-none">
+                        <i class="bi bi-hand-thumbs-down"></i>
+                    </a> <!-- No me gusta -->
+                    <a href="?voto_pub=<?php echo $id_pub; ?>&tipo_voto=me divierte" class="text-muted action-hover-green text-decoration-none">
+                        <i class="bi bi-emoji-grin"></i>
+                    </a>     <!-- Me divierte -->
                     
                 </div>
             </div>
