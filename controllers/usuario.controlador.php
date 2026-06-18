@@ -1,5 +1,6 @@
 <?php
     require __DIR__ . '/../models/usuario.php';
+    require __DIR__ . '/../models/funcionario_municipal.php';
 
     class UsuarioController {
         private $model;
@@ -24,8 +25,31 @@
             return $this->model->update($id, $data);
         }
 
-        public function cambiarRol($id, $id_rol){
-            return $this->model->update($id, ['id_rol' => $id_rol]);
+        public function cambiarRol($rut, $id_rol){
+            $resultado = $this->model->update(
+                ['rut' => $rut],
+                ['id_rol' => $id_rol]
+            );
+
+            if (!$resultado) {
+                return false;
+            }
+            $rolesMunicipales = [2, 3]; // Funcionario, Administrador
+
+            if (in_array($id_rol, $rolesMunicipales)) {
+
+                $funcionarioModel = new FuncionarioMunicipal();
+
+                $funcionario = $funcionarioModel->findByRut($rut);
+
+                if (!$funcionario) {
+                    $funcionarioModel->create([
+                        'rut_usuario' => $rut,
+                        'id_area_municipal' => 1]);
+                }
+            }
+
+            return true;
         }
 
         public function eliminarUsuario($id){

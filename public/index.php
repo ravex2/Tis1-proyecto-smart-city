@@ -25,7 +25,7 @@ $mapaRutas = [
     'reportes' => '/views/pages/admin/reportes.php',
     'sector' => '/views/pages/admin/sector.php',
     'logout' => '/views/pages/auth/logout.php',
-    'usuarios' => '/views/pages/admin/usuarios.php',
+    'roles_usuarios' => '/views/pages/admin/asignacion_roles.php',
     'publicaciones' => '/src/publicaciones/feed_publicaciones.php',
     'departamentos' => '/views/pages/admin/area_municipal.php',
     'comercio' => '/views/pages/admin/comercio.php',
@@ -40,6 +40,13 @@ $mapaRutas = [
     'crear_categoria_publicacion' => '/src/categorias_publicaciones/crear_categoria_publicacion.php',
     'editar_categoria_publicacion' => '/src/categorias_publicaciones/editar_categoria_publicacion.php',
     'eliminar_categoria_publicacion' => '/src/categorias_publicaciones/eliminar_categoria_publicacion.php',
+
+    'asignar_rol' => '/public/usuario_rol/editar.php',
+
+    'eliminar_area' => '/public/areas_municipales/eliminar.php',
+    'ingresar_area' => '/public/areas_municipales/ingresar.php',
+    'editar_area' => '/public/areas_municipales/editar.php',
+    'listar_area' => '/public/areas_municipales/listar.php',
 ];
 
 $archivoRelativo = $mapaRutas[$ruta] ?? '/views/pages/404.php';

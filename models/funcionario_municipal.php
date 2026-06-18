@@ -64,6 +64,9 @@ class FuncionarioMunicipal extends BaseModel {
         [$where, $params] = $this->buildWhereClause($id);
         return $this->fetch(sprintf('SELECT * FROM %s WHERE %s LIMIT 1', $this->table, $where), $params);
     }
+    public function findByRut(int $rut): ?array{
+        return $this->fetch("SELECT * FROM funcionario_municipal WHERE rut_usuario = ? LIMIT 1",[$rut]);
+    }
 
     public function create(array $data): string {
         $data = $this->filterData($data);
