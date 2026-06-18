@@ -92,8 +92,14 @@ http://localhost:8000
 ### Base de datos MySQL
 
 1. Crear una base de datos llamada `smartcity`.
-2. Importar el archivo `smartcity.sql`.
-3. Configurar las credenciales en el archivo `.env`.
+2. Editar archivo smartcity.sql
+```sql
+-- comentar esta linea dentro del sql
+SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ '70a3f71e-6864-11f1-a2f5-244bfee1da32:1-87';
+```
+3. Importar el archivo `smartcity.sql`.
+4. Configurar las credenciales en el archivo `.env`.
+
 
 ## Instrucciones de uso
 
