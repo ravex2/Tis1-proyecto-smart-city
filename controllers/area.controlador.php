@@ -3,18 +3,18 @@
 
     class AreaController {
         public function obtenerArea(){
-            return listarAreas();
+            return listarConFuncionarios();
         }
-
         public function crearArea(string $nombre, string $descripcion, int $id_municipalidad) {
             return insertarArea($nombre,$descripcion, $id_municipalidad);
         }
         public function editarArea(int $id, string $nombre, string $descripcion, int $id_municipalidad){
             return actualizarArea($id, $nombre, $descripcion, $id_municipalidad);
         }
-
-        public function eliminarArea(int $id){
-            return borrarArea($id);
+        function eliminarAreaCompleta(int $id_area) {
+            $db = getDatabase();
+            $db->execute("DELETE FROM funcionario_municipal WHERE id_area_municipal = ?",[$id_area]);
+            return borrarArea($id_area);
         }
     }
 ?>

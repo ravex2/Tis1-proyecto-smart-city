@@ -9,7 +9,7 @@
             $_POST['id_rol']);
 
         if($resultado) {
-            header('Location: ../../views/pages/admin/asignacion_roles.php');
+            header('Location: ?ruta=roles_usuarios');
         } else {
             echo "Error al editar el área municipal.";
         }

@@ -28,35 +28,41 @@
             integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
             crossorigin="anonymous"
         />
+        <link rel="stylesheet" href="assets/css/panel.css">
     </head>
 
     <body>
-        <div class="container">
-            <div
-                class="table-responsive">
-                <table
-                    class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">Usuario</th>
-                            <th scope="col">Correo</th>
-                            <th scope="col">Rol</th>
-                            <th scope="col">Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($usuarios as $usuario): ?>
-                            <tr>
-                            <td><?= $usuario['nombre'].' '.$usuario['apellido'] ?></td>
-                            <td><?= $usuario['correo'] ?></td>
-                            <td><?= $usuario['nombre_rol'] ?></td>
-                            <td> <button type='button' class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#modalId' onclick="abrirModal(<?= $usuario['rut'] ?>, <?= $usuario['id_rol'] ?>)">Editar Rol</button> </td>
-                            </tr>
-                    <?php endforeach; ?>
-                    </tbody>
-                </table>
+        <div class="container-fluid">
+            <div class="row">
+                <?php include __DIR__ . "/../../layout/sidebar.php"; ?>
+
+                <div class="col-md-10 col-lg-10 p-4">
+                    <div
+                        class="table-responsive">
+                        <table
+                            class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Usuario</th>
+                                    <th scope="col">Correo</th>
+                                    <th scope="col">Rol</th>
+                                    <th scope="col">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($usuarios as $usuario): ?>
+                                    <tr>
+                                    <td><?= $usuario['nombre'].' '.$usuario['apellido'] ?></td>
+                                    <td><?= $usuario['correo'] ?></td>
+                                    <td><?= $usuario['nombre_rol'] ?></td>
+                                    <td> <button type='button' class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#modalId' onclick="abrirModal(<?= $usuario['rut'] ?>, <?= $usuario['id_rol'] ?>)">Editar Rol</button> </td>
+                                    </tr>
+                            <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
-            
             <div
                 class="modal fade"
                 id="modalId"
@@ -82,7 +88,7 @@
                                 aria-label="Close"
                             ></button>
                         </div>
-                        <form method="POST" action="../../../public/usuario_rol/editar.php">
+                        <form method="POST" action="?ruta=asignar_rol">
                             <div class="modal-body">
                                 <input type="hidden" name="rut" id="rut_usuario">
 
@@ -109,9 +115,6 @@
                     </div>
                 </div>
             </div>
-            
-            <!-- Optional: Place to the bottom of scripts -->
-
             
         </div>
         <script>
