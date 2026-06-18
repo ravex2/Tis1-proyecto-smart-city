@@ -151,7 +151,7 @@
                                             <i class="bi bi-eye"></i> Ver publicaciones
                                         </a>
 
-                                        <a href="#" class="btn btn-warning">
+                                        <a href="?ruta=leer_categoria_publicacion" class="btn btn-warning">
                                             <i class="bi bi-folder-plus"></i> Categorías
                                         </a>
                                         <a href="#" class="btn btn-danger">
