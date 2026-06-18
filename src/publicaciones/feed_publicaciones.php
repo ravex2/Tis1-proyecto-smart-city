@@ -4,6 +4,46 @@ require_once __DIR__ . "/../../config/database.php";
 $consulta = "SELECT * FROM publicacion WHERE tipo_estado = 'activa'
 ORDER BY fecha DESC";
 $resultado = $conexion->query($consulta);
+
+if (isset($_GET['voto_pub']) && isset($_GET['tipo_voto'])) {
+    $id_p = intval($_GET['voto_pub']);
+    $tipo_r = $_GET['tipo_voto'];
+    
+    // 1. Buscamos si ESTA publicación específica ya tiene alguna reacción registrada
+    $stmt_check = $conexion->prepare("SELECT id_reaccion, tipo_reaccion FROM reaccion WHERE id_publicacion = ?");
+    $stmt_check->execute([$id_p]);
+    $reaccion_existente = $stmt_check->fetch(PDO::FETCH_ASSOC);
+    
+    if ($reaccion_existente) {
+        if ($reaccion_existente['tipo_reaccion'] === $tipo_r) {
+            // CASO 3:
+            $stmt_delete = $conexion->prepare("DELETE FROM reaccion WHERE id_reaccion = ?");
+            $stmt_delete->execute([$reaccion_existente['id_reaccion']]);
+        } else {
+            // CASO 2 :
+            $stmt_update = $conexion->prepare("UPDATE reaccion SET tipo_reaccion = ? WHERE id_reaccion = ?");
+            $stmt_update->execute([$tipo_r, $reaccion_existente['id_reaccion']]);
+        }
+    } else { //caso 1:
+        $stmt_insert = $conexion->prepare("INSERT INTO reaccion (id_publicacion, tipo_reaccion) VALUES (?, ?)");
+        $stmt_insert->execute([$id_p, $tipo_r]);
+    }
+    
+    // Redirección manteniendo la posición de la pantalla
+    header("Location: " . strtok($_SERVER["REQUEST_URI"], '?') . "?#post-" . $id_p);
+    exit;
+}
+
+
+
+
+
+
+
+
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -92,7 +132,15 @@ $resultado = $conexion->query($consulta);
                 <h5 class="fw-bold mb-0">Publicaciones</h5>
             </div>
         <?php if($resultado->rowCount()>0){ ?>
-        <?php   foreach($resultado as $fila){?>
+        <?php   foreach($resultado as $fila){
+            $id_pub = $fila['id_publicacion'];
+            $total_me_guta    = $conexion->query("SELECT COUNT(*) FROM reaccion WHERE id_publicacion = $id_pub AND tipo_reaccion = 'me gusta'")->fetchColumn();
+            $total_me_encanta = $conexion->query("SELECT COUNT(*) FROM reaccion WHERE id_publicacion = $id_pub AND tipo_reaccion = 'me encanta'")->fetchColumn();
+            $total_no_me_gusta = $conexion->query("SELECT COUNT(*) FROM reaccion WHERE id_publicacion = $id_pub AND tipo_reaccion = 'no me gusta'")->fetchColumn();
+            $total_me_divierte   = $conexion->query("SELECT COUNT(*) FROM reaccion WHERE id_publicacion = $id_pub AND tipo_reaccion = 'me divierte'")->fetchColumn();
+        
+            
+            ?>
             <div class="post-detail-content p-4 border-bottom">
                 
                 <div class="d-flex align-items-center justify-content-between mb-3">
@@ -125,18 +173,42 @@ $resultado = $conexion->query($consulta);
 
                 <!-- Stats -->
                 <div class="d-flex gap-4 py-1 border-bottom border-top border-light my-3 py-3">
-                    <div><span class="fw-bold">156</span> <span class="text-muted">Me gusta</span></div>
-                    <div><span class="fw-bold">12</span> <span class="text-muted">Reposts</span></div>
-                    <div><span class="fw-bold">24</span> <span class="text-muted">Citas</span></div>
+                    <div>
+                        <span class="fw-bold">0</span> <span class="text-muted">Comentarios</span>
+                    </div> 
+                    <div>
+                        <span class="fw-bold"><?php echo $total_me_guta; ?></span> <span class="text-muted">Me gusta</span>
+                    </div>
+                    <div>
+                        <span class="fw-bold"><?php echo $total_me_encanta; ?></span> <span class="text-muted">Me encanta</span>
+                    </div>
+                    <div>
+                        <span class="fw-bold"><?php echo $total_no_me_gusta; ?></span> <span class="text-muted">No me gusta</span>
+                    </div>
+                    <div>
+                        <span class="fw-bold"><?php echo $total_me_divierte; ?></span> <span class="text-muted">Me divierte</span>
+                    </div>
+
+
                 </div>
 
                 <!-- Botones de Acción Grandes -->
                 <div class="d-flex justify-content-around text-muted fs-5 py-1">
-                    <i class="bi bi-chat action-hover-blue" onclick="toggleComments(<?php echo $fila['id_publicacion']; ?>)"></i>
-                    <i class="bi bi-arrow-repeat action-hover-green"></i>
-                    <i class="bi bi-heart action-hover-red"></i>
-                    <i class="bi bi-bookmark action-hover-blue"></i>
-                    <i class="bi bi-share action-hover-blue"></i>
+                    <i class="bi bi-chat action-hover-blue"></i>            <!-- Comentarios -->
+
+                    <a href="?voto_pub=<?php echo $id_pub; ?>&tipo_voto=me gusta" class="text-muted action-hover-green text-decoration-none">
+                        <i class="bi bi-hand-thumbs-up"></i>
+                    </a> <!-- Me gusta -->
+                    <a href="?voto_pub=<?php echo $id_pub; ?>&tipo_voto=me encanta" class="text-muted action-hover-blue text-decoration-none">
+                        <i class="bi bi-heart"></i>
+                    </a> <!-- Me encanta -->
+                    <a href="?voto_pub=<?php echo $id_pub; ?>&tipo_voto=no me gusta" class="text-muted action-hover-red text-decoration-none">
+                        <i class="bi bi-hand-thumbs-down"></i>
+                    </a> <!-- No me gusta -->
+                    <a href="?voto_pub=<?php echo $id_pub; ?>&tipo_voto=me divierte" class="text-muted action-hover-green text-decoration-none">
+                        <i class="bi bi-emoji-grin"></i>
+                    </a>     <!-- Me divierte -->
+                    
                 </div>
             </div>
             
