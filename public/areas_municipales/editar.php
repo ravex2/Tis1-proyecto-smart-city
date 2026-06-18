@@ -1,6 +1,6 @@
 <?php
 
-    require_once __DIR__ . '/../../controllers/area.controller.php';
+    require_once __DIR__ . '/../../controllers/area.controlador.php';
     
     if($_SERVER['REQUEST_METHOD'] == 'POST') {
         $controller = new AreaController();
@@ -9,12 +9,11 @@
             $_POST['nombre'],
             $_POST['descripcion'],
             $_POST['id_municipalidad']);
-        }
 
         if($resultado) {
-            header('Location: ../../views/areas_municipales/index.php');
+            header('Location: ?ruta=departamentos');
         } else {
             echo "Error al editar el área municipal.";
         }
-
+    }
 ?>

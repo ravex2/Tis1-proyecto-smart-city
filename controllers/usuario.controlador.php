@@ -24,8 +24,14 @@
             return $this->model->update(['rut' => $rut], $data);
         }
 
+        public function cambiarRol($id, $id_rol){
+            return $this->model->update($id, ['id_rol' => $id_rol]);
+        }
+
         public function eliminarUsuario(string $rut){
             return $this->model->delete(['rut' => $rut]);
         }
+
+        
     }
 ?>

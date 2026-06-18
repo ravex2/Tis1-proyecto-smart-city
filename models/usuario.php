@@ -5,7 +5,7 @@ require_once __DIR__ . '/basemodel.php';
 class Usuario extends BaseModel {
     protected string $table = 'usuario';
     protected array $primaryKey = ['rut'];
-    protected array $columns = ['rut', 'nombre', 'apellido', 'correo', 'direccion', 'contrasenha', 'id_rol', 'id_sector'];
+    protected array $columns = ['nombre', 'apellido', 'correo', 'direccion', 'contrasenha', 'id_rol', 'id_sector'];
 
     public function __construct(?\PDO $pdo = null) {
         parent::__construct($pdo);
@@ -64,9 +64,17 @@ class Usuario extends BaseModel {
         return $this->fetchAll(sprintf('SELECT * FROM %s', $this->table));
     }
 
+    public function findAllWithRoles(): array {
+            return $this->fetchAll("SELECT u.rut,u.nombre, u.apellido, u.correo, u.id_rol,r.nombre_rol FROM usuario u JOIN rol r ON u.id_rol = r.id_rol");
+    }
+
     public function findById(array|int $id): ?array {
         [$where, $params] = $this->buildWhereClause($id);
         return $this->fetch(sprintf('SELECT * FROM %s WHERE %s LIMIT 1', $this->table, $where), $params);
+    }
+    public function countAll(): int {
+        $row = $this->fetch("SELECT COUNT(*) AS total FROM {$this->table}");
+        return (int) $row['total'];
     }
 
     public function create(array $data): string {
