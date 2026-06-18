@@ -191,30 +191,11 @@
 </head>
 <body>
 
-    <div class="container custom-container">
+    <div class="container-fluid">
         <div class="row gx-4">
-            <aside class="col-md-3 d-none d-md-flex flex-column py-4 sticky-top vh-100">
-                <div class="logo-area mb-4 px-3">
-                    <i class="bi bi-intersect fs-2 text-primary"></i>
-                </div>
-                
-                <nav class="nav flex-column gap-2 mb-auto">
-                    <a class="nav-link active" href="crear_publicacion"><i class="bi bi-house-door-fill me-3"></i> Inicio</a>
-                    <a class="nav-link" href="#"><i class="bi bi-person me-3"></i> Perfil</a>
-                </nav>
+            <?php include BASE_PATH . "/views/layout/sidebar.php"; ?>
 
-
-                <div class="user-profile-btn d-flex align-items-center p-3 rounded-pill mt-auto">
-                    <img src="https://i.pravatar.cc/150?u=3" class="rounded-circle me-3" width="40" height="40">
-                    <div class="flex-grow-1 overflow-hidden">
-                        <div class="fw-bold text-truncate">Alex Rivers</div>
-                        <div class="text-muted small">@arivers_dev</div>
-                    </div>
-                    <i class="bi bi-three-dots"></i>
-                </div>
-            </aside>
-
-            <main class="col-md-6 border-start border-end px-0 bg-white shadow-sm min-vh-100">
+            <main class="col-md-10 border-start border-end px-0 bg-white shadow-sm min-vh-100">
                 <div class="feed-header p-3 sticky-top bg-white-glass blur">
                     <h5 class="fw-bold mb-0">Inicio</h5>
                 </div>
