@@ -12,20 +12,20 @@
             return $this->model->findAll();
         }
 
-        public function obtenerUsuario($id){
-            return $this->model->findById($id);
+        public function obtenerUsuario(string $rut){
+            return $this->model->findById(['rut' => $rut]);
         }
 
         public function crearUsuario(array $data){
             return $this->model->create($data);
         }
 
-        public function editarUsuario($id, array $data){
-            return $this->model->update($id, $data);
+        public function editarUsuario(string $rut, array $data){
+            return $this->model->update(['rut' => $rut], $data);
         }
 
-        public function eliminarUsuario($id){
-            return $this->model->delete($id);
+        public function eliminarUsuario(string $rut){
+            return $this->model->delete(['rut' => $rut]);
         }
     }
 ?>

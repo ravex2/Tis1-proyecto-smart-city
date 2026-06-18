@@ -1,3 +1,61 @@
+<?php
+require_once __DIR__ . '../../../../controllers/usuario.controlador.php';
+
+
+// esto debe moverse al controlador interno
+
+$controlador = new UsuarioController();
+$usuarios = $controlador->obtenerUsuarios();
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btn_crear'])) {
+    try {
+        $datos = [
+            'rut'         => $_POST['rut'],
+            'nombre'      => $_POST['nombre'],
+            'apellido'    => $_POST['apellido'],
+            'correo'      => $_POST['correo'],
+            'direccion'   => $_POST['direccion'],
+            'contrasenha' =>  $_POST['contrasenha'], //password_hash($_POST['contrasenha'], PASSWORD_DEFAULT),
+            'id_rol'      => $_POST['id_rol'],
+            'id_sector'   => $_POST['id_sector']
+        ];
+
+        $resultado = $controlador->crearUsuario($datos);
+        
+        if ($resultado) {
+            echo "<script>alert('Usuario creado con éxito'); window.location='usuario.php';</script>";
+        }
+    } catch (Exception $e) {
+        echo "<script>alert('Error al crear usuario: " . $e->getMessage() . "');</script>";
+    }
+}
+
+// ELIMINAR
+if (isset($_POST['btn_eliminar'])) {
+    $controlador->eliminarUsuario($_POST['rut_eliminar']);
+    header("Location: usuario.php?status=deleted");
+}
+
+// EDITAR 
+if (isset($_POST['btn_editar'])) {
+    $rut = $_POST['rut'];
+    echo $_POST["id_rol"];
+    $datos = [
+        'rut'         => $_POST['rut'],
+        'nombre'      => $_POST['nombre'],
+        'apellido'    => $_POST['apellido'],
+        'correo'      => $_POST['correo'],
+        'direccion'   => $_POST['direccion'],
+        'contrasenha' => $_POST['contrasenha'],
+        'id_rol'      => $_POST['id_rol'],
+        'id_sector'   => $_POST['id_sector']
+    ];
+    $controlador->editarUsuario($rut, $datos);
+    //header("Location: usuario.php?status=updated");
+}
+?>
+
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -72,6 +130,7 @@
 </head>
 <body>
 
+
 <div class="container-fluid">
     <div class="row">
         <!-- Sidebar -->
@@ -101,7 +160,7 @@
                     <p class="text-muted small mb-0">Administra quiénes operan la plataforma y sus áreas.</p>
                 </div>
                 <div class="d-flex gap-2">
-                    <button class="btn btn-primary rounded-pill px-4 btn-sm shadow-primary"><i class="bi bi-person-plus-fill me-2"></i> Crear Usuario</button>
+                    <button class="btn btn-primary rounded-pill px-4 btn-sm shadow-primary" data-bs-toggle="modal" data-bs-target="#postModalUsuario"><i class="bi bi-person-plus-fill me-2"></i> Crear Usuario</button>
                 </div>
             </div>
 
@@ -117,52 +176,46 @@
                         </div>
 
                         <div class="table-responsive">
+
                             <table class="table table-hover align-middle border-0">
                                 <thead class="table-light border-0">
                                     <tr class="text-muted small">
                                         <th class="border-0 fw-bold py-3">USUARIO</th>
-                                        <th class="border-0 fw-bold py-3">DEPARTAMENTO</th>
+                                        <th class="border-0 fw-bold py-3">INFORMACION DE USUARIO</th>
                                         <th class="border-0 fw-bold py-3">ROL</th>
                                         <th class="border-0 fw-bold py-3 text-end">ACCIONES</th>
                                     </tr>
                                 </thead>
-                                <tbody class="border-0">
+                                <tbody>
+                                    <?php foreach ($usuarios as $u): ?>
                                     <tr>
                                         <td class="border-0 py-3">
                                             <div class="d-flex align-items-center">
                                                 <img src="https://i.pravatar.cc/150?u=12" class="user-avatar-list me-3">
                                                 <div>
-                                                    <p class="fw-bold mb-0 small">Roberto Jara</p>
-                                                    <p class="text-muted tiny mb-0">r.jara@municipio.cl</p>
+                                                    <p class="fw-bold mb-0 small"><?=$u['rut']?></p>
+                                                    <p class="text-muted tiny mb-0"><?=$u['correo']?></p>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="border-0"><span class="badge-dept">Obras Públicas</span></td>
+                                        <td class="border-0"><?= $u['nombre'] . ' ' . $u['apellido'] ?></td>
                                         <td class="border-0"><span class="text-primary fw-bold tiny">Supervisor</span></td>
-                                        <td class="border-0 text-end">
-                                            <button class="btn-action me-1"><i class="bi bi-pencil-square"></i></button>
-                                            <button class="btn-action text-danger"><i class="bi bi-trash"></i></button>
+                                        <td class="border-0">
+                                            <button class="btn-action me-1" data-bs-toggle="modal" data-bs-target="#postModalUsuarioEditar" 
+                                                onclick="prepararEdicion('<?= $u['rut'] ?>', '<?= $u['nombre'] ?>', '<?= $u['apellido'] ?>','<?=$u['contrasenha'] ?>' ,'<?= $u['correo'] ?>', '<?= $u['direccion'] ?>', '<?= $u['id_rol'] ?>', '<?= $u['id_sector'] ?>')">
+                                                <i class="bi bi-pencil"></i>
+                                            </button>
+                                            <button class="btn-action text-danger" data-bs-toggle="modal" data-bs-target="#postModalUsuarioEliminar" 
+                                                onclick="document.getElementById('rut_eliminar').value = '<?= $u['rut'] ?>'">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td class="border-0 py-3">
-                                            <div class="d-flex align-items-center">
-                                                <img src="https://i.pravatar.cc/150?u=45" class="user-avatar-list me-3">
-                                                <div>
-                                                    <p class="fw-bold mb-0 small">Ana María Soto</p>
-                                                    <p class="text-muted tiny mb-0">a.soto@municipio.cl</p>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="border-0"><span class="badge-dept">Seguridad</span></td>
-                                        <td class="border-0"><span class="text-muted fw-bold tiny">Operador</span></td>
-                                        <td class="border-0 text-end">
-                                            <button class="btn-action me-1"><i class="bi bi-pencil-square"></i></button>
-                                            <button class="btn-action text-danger"><i class="bi bi-trash"></i></button>
-                                        </td>
-                                    </tr>
+                                    <?php endforeach; ?>
                                 </tbody>
                             </table>
+
+
                         </div>
                     </div>
                 </div>
@@ -170,6 +223,161 @@
         </main>
     </div>
 </div>
+
+<!-- Modal crear usuarios -->
+<div class="modal fade" id="postModalUsuario" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content p-4">
+            <div class="modal-header border-0">
+                <h5 class="fw-bold">Crear un usuario</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="?ruta=usuarios" class="row g-3">
+                    <div class="col-md-8">
+                        <label class="form-label tiny fw-bold">Rut</label>
+                        <input type="text" name="rut" class="form-control" placeholder="Ej: 0000000-k" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label tiny fw-bold">Nombre</label>
+                        <input type="text" name="nombre" class="form-control" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label tiny fw-bold">Apellido</label>
+                        <input type="text" name="apellido" class="form-control" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label tiny fw-bold">Correo</label>
+                        <input type="email" name="correo" class="form-control" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label tiny fw-bold">Direccion</label>
+                        <input type="text" name="direccion" class="form-control">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label tiny fw-bold">Contraseña</label>
+                        <input type="password" name="contrasenha" class="form-control" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label tiny fw-bold">Rol</label>
+                        <select name="id_rol" class="form-select border-0 bg-light">
+                            <option value="1">Administrador</option>
+                            <option value="2">E.municipal</option>
+                            <option value="3">Visitante</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label tiny fw-bold">Sector</label>
+                        <select name="id_sector" class="form-select border-0 bg-light">
+                            <option value="1">Concepcion</option>
+                        </select>
+                    </div>
+                    <div class="col-12 mt-4">
+                        <button type="submit" name="btn_crear" class="btn btn-primary w-100 rounded-pill py-2 fw-bold">
+                            Crear usuario
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal editar usuarios -->
+<div class="modal fade" id="postModalUsuarioEditar" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content p-4">
+            <div class="modal-header border-0">
+                <h5 class="fw-bold">Crear un usuario</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="?ruta=usuarios" class="row g-3">
+                    <div class="col-md-8">
+                        <label class="form-label tiny fw-bold">Rut</label>
+                        <input type="text" name="rut" id="editar_rut" class="form-control" placeholder="Ej: 0000000-k" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label tiny fw-bold">Nombre</label>
+                        <input type="text" name="nombre" id="editar_nombre" class="form-control" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label tiny fw-bold">Apellido</label>
+                        <input type="text" name="apellido" id="editar_apellido" class="form-control" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label tiny fw-bold">Correo</label>
+                        <input type="email" name="correo" id="editar_correo" class="form-control" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label tiny fw-bold">contraseña</label>
+                        <input type="text" name="contrasenha" id="editar_contrasenha" class="form-control" required>
+                    </div>
+
+
+                    <div class="col-md-6">
+                        <label class="form-label tiny fw-bold">Direccion</label>
+                        <input type="text" name="direccion" id="editar_direccion" class="form-control">
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label tiny fw-bold">Rol</label>
+                        <select name="id_rol" id="editar_id_rol" class="form-select border-0 bg-light">
+                            <option value="1">Administrador</option>
+                            <option value="2">E.municipal</option>
+                            <option value="3">Visitante</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label tiny fw-bold">Sector</label>
+                        <select name="id_sector" id="editar_id_sector" class="form-select border-0 bg-light">
+                            <option value="1">Concepcion</option>
+                        </select>
+                    </div>
+                    <div class="col-12 mt-4">
+                        <button type="submit" name="btn_editar" class="btn btn-primary w-100 rounded-pill py-2 fw-bold">
+                            Editar usuario
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal eliminar -->
+<div class="modal fade" id="postModalUsuarioEliminar" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content p-4">
+            <form method="POST">
+                <input type="hidden" name="rut_eliminar" id="rut_eliminar">
+                <h5>¿Seguro que deseas eliminar este usuario?</h5>
+                <button type="submit" name="btn_eliminar" class="btn btn-danger w-100">Confirmar</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function prepararEdicion(rut, nombre, apellido,contrasenha, correo, direccion, rol,sector) {
+        // Llenar los inputs del modal de edición
+        document.getElementById('editar_rut').value = rut;
+        document.getElementById('editar_rut').readOnly = true; // El RUT no se debe editar
+        document.getElementById('editar_nombre').value = nombre;
+        document.getElementById('editar_apellido').value = apellido;
+        document.getElementById('editar_correo').value = correo;
+        document.getElementById('editar_direccion').value = direccion;
+        document.getElementById('editar_id_rol').value = rol;
+        document.getElementById('editar_id_sector').value = sector;
+        document.getElementById('editar_contrasenha').value = contrasenha;
+
+    }
+</script>
 
 </body>
 </html>

@@ -5,7 +5,7 @@ require_once __DIR__ . '/basemodel.php';
 class Usuario extends BaseModel {
     protected string $table = 'usuario';
     protected array $primaryKey = ['rut'];
-    protected array $columns = ['nombre', 'apellido', 'correo', 'direccion', 'contrasenha', 'id_rol', 'id_sector'];
+    protected array $columns = ['rut', 'nombre', 'apellido', 'correo', 'direccion', 'contrasenha', 'id_rol', 'id_sector'];
 
     public function __construct(?\PDO $pdo = null) {
         parent::__construct($pdo);
