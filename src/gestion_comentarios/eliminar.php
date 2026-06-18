@@ -14,14 +14,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'DELETE' || $_SERVER['REQUEST_METHOD'] === 'P
     }
 
     try {
+        $db = getDatabase();
         // Primero eliminar la referencia en comenta
-        $stmtComenta = $conexion->prepare("DELETE FROM comenta WHERE id_comentario = ?");
-        $stmtComenta->execute([$id_comentario]);
+        $db->execute(
+            "DELETE FROM comenta WHERE id_comentario = ?",
+            [$id_comentario]
+        );
 
         // Luego eliminar de comentario
-        $stmt = $conexion->prepare("DELETE FROM comentario WHERE id_comentario = ?");
-        $stmt->execute([$id_comentario]);
-
+        $db->execute(
+            "DELETE FROM comentario WHERE id_comentario = ?",
+            [$id_comentario]
+        );
         echo json_encode([
             'success' => true,
             'message' => 'Comentario eliminado con éxito.'

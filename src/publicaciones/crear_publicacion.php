@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . "/../../config/database.php";
-$cat_pub = $conexion->query("SELECT * FROM categoria_publicacion");
+$db = getDatabase();
+$cat_pub = $db->query("SELECT * FROM categoria_publicacion");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
@@ -21,8 +22,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $consulta = "INSERT INTO publicacion(contenido,titulo,fecha_evento,tipo_estado,lugar,imagen, visitas, id_funcionario,id_categoria) 
                 VALUES('$contenido','$titulo',".($fecha_evento ? "'$fecha_evento'" : "NULL").",'$tipo_estado','$lugar','$imagen',0,1,$id_categoria)";
-    $conexion->query($consulta);
-    header("Location: crear_publicacion");
+    $db->query($consulta);
+    header("Location: ?ruta=crear_publicacion");
 
     
 }

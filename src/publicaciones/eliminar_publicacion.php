@@ -4,9 +4,10 @@
     if(isset($_GET["id_enviado"])){
         $id_capturado = $_GET["id_enviado"];
         $consulta = "DELETE FROM publicacion WHERE id_publicacion=$id_capturado";
-        $resultado =$conexion->query($consulta);
+        $db = getDatabase();
+        $resultado =$db->query($consulta);
         if ($resultado) {
-            header("Location: leer_publicacion");
+            header("Location: ?ruta=leer_publicacion");
             exit();
         } else {
             echo "Error al eliminar";
