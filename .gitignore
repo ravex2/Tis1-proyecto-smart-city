@@ -14,3 +14,11 @@ logs/
 
 # archivos no necearios
 models/crudtrait.php
+
+
+# archivos de confiuracion os
+.DS_Store
+
+
+# archivos doc
+doc/mejoras.md
