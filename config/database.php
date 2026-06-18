@@ -15,4 +15,4 @@
         ];
         return new Database($config);
     }
-?>
+?> 

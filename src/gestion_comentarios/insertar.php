@@ -19,32 +19,42 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     try {
         $fecha = date('Y-m-d H:i:s');
-        
-        // Verificar que el rut_usuario existe, sino usar el primero disponible
-        $stmtUser = $conexion->prepare("SELECT rut FROM usuario WHERE rut = ?");
-        $stmtUser->execute([$rut_usuario]);
-        if ($stmtUser->rowCount() === 0) {
-            $stmtPrimerUser = $conexion->query("SELECT rut FROM usuario LIMIT 1");
-            if ($stmtPrimerUser->rowCount() > 0) {
-                $rut_usuario = $stmtPrimerUser->fetchColumn();
+        $db = getDatabase();
+
+        // Verificar que existe el usuario
+        $usuarios = $db->query(
+            "SELECT rut FROM usuario WHERE rut = ?",
+            [$rut_usuario]
+        );
+
+        if (count($usuarios) === 0) {
+
+            $primerUser = $db->query(
+                "SELECT rut FROM usuario LIMIT 1"
+            );
+
+            if (!empty($primerUser)) {
+                $rut_usuario = $primerUser[0]['rut'];
             } else {
-                echo json_encode(['success' => false, 'message' => 'Error: No hay usuarios en la base de datos para asignar al comentario.']);
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'No hay usuarios registrados.'
+                ]);
                 exit;
             }
         }
         
         // Obtener el nuevo id_comentario manualmente si no es auto_increment
-        $stmt = $conexion->query("SELECT MAX(id_comentario) as max_id FROM comentario");
-        $row = $stmt->fetch();
+        $resultadoMax = $db->query("SELECT MAX(id_comentario) AS max_id FROM comentario");
+
+        $row = $resultadoMax[0] ?? null;
         $nuevo_id = ($row['max_id'] !== null) ? $row['max_id'] + 1 : 1;
         
         // Insertar en comentario
-        $stmtInsert = $conexion->prepare("INSERT INTO comentario (id_comentario, comentario, fecha_comentario, id_publicacion) VALUES (?, ?, ?, ?)");
-        $stmtInsert->execute([$nuevo_id, $comentarioTexto, $fecha, $id_publicacion]);
+        $db->execute("INSERT INTO comentario (id_comentario, comentario, fecha_comentario, id_publicacion) VALUES (?, ?, ?, ?)",[$nuevo_id, $comentarioTexto, $fecha, $id_publicacion]);
         
         // Insertar en comenta
-        $stmtComenta = $conexion->prepare("INSERT INTO comenta (rut_usuario, id_comentario) VALUES (?, ?)");
-        $stmtComenta->execute([$rut_usuario, $nuevo_id]);
+        $db->execute( "INSERT INTO comenta (rut_usuario, id_comentario) VALUES (?, ?)", [$rut_usuario, $nuevo_id]);
 
         echo json_encode([
             'success' => true, 
