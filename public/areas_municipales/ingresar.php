@@ -9,7 +9,7 @@
         $resultado = $controller->crearArea($_POST['nombre'],$_POST['descripcion'], $_POST['id_municipalidad']);
 
         if($resultado) {
-            header('Location: ../../views/areas_municipales/index.php');
+            header('Location: ?ruta=departamentos');
         } else {
             echo "Error al crear el área municipal.";
         }
