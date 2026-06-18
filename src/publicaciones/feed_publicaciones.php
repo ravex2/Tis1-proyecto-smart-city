@@ -92,7 +92,15 @@ $resultado = $conexion->query($consulta);
                 <h5 class="fw-bold mb-0">Publicaciones</h5>
             </div>
         <?php if($resultado->rowCount()>0){ ?>
-        <?php   foreach($resultado as $fila){?>
+        <?php   foreach($resultado as $fila){
+            $id_pub = $fila['id_publicacion'];
+            $total_me_guta    = $conexion->query("SELECT COUNT(*) FROM reaccion WHERE id_publicacion = $id_pub AND tipo_reaccion = 'me gusta'")->fetchColumn();
+            $total_me_encanta = $conexion->query("SELECT COUNT(*) FROM reaccion WHERE id_publicacion = $id_pub AND tipo_reaccion = 'me encanta'")->fetchColumn();
+            $total_no_me_gusta = $conexion->query("SELECT COUNT(*) FROM reaccion WHERE id_publicacion = $id_pub AND tipo_reaccion = 'no me gusta'")->fetchColumn();
+            $total_me_divierte   = $conexion->query("SELECT COUNT(*) FROM reaccion WHERE id_publicacion = $id_pub AND tipo_reaccion = 'me divierte'")->fetchColumn();
+        
+            
+            ?>
             <div class="post-detail-content p-4 border-bottom">
                 
                 <div class="d-flex align-items-center justify-content-between mb-3">
@@ -130,18 +138,34 @@ $resultado = $conexion->query($consulta);
 
                 
                 <div class="d-flex gap-4 py-1 border-bottom border-top border-light my-3 py-3">
-                    <div><span class="fw-bold">156</span> <span class="text-muted">Me gusta</span></div>
-                    <div><span class="fw-bold">12</span> <span class="text-muted">Reposts</span></div>
-                    <div><span class="fw-bold">24</span> <span class="text-muted">Citas</span></div>
+                    <div>
+                        <span class="fw-bold">0</span> <span class="text-muted">Comentarios</span>
+                    </div> 
+                    <div>
+                        <span class="fw-bold"><?php echo $total_me_guta; ?></span> <span class="text-muted">Me gusta</span>
+                    </div>
+                    <div>
+                        <span class="fw-bold"><?php echo $total_me_encanta; ?></span> <span class="text-muted">Me encanta</span>
+                    </div>
+                    <div>
+                        <span class="fw-bold"><?php echo $total_no_me_gusta; ?></span> <span class="text-muted">No me gusta</span>
+                    </div>
+                    <div>
+                        <span class="fw-bold"><?php echo $total_me_divierte; ?></span> <span class="text-muted">Me divierte</span>
+                    </div>
+
+
                 </div>
 
                 <!-- Botones de Acción Grandes -->
                 <div class="d-flex justify-content-around text-muted fs-5 py-1">
-                    <i class="bi bi-chat action-hover-blue"></i>
-                    <i class="bi bi-arrow-repeat action-hover-green"></i>
-                    <i class="bi bi-heart action-hover-red"></i>
-                    <i class="bi bi-bookmark action-hover-blue"></i>
-                    <i class="bi bi-share action-hover-blue"></i>
+                    <i class="bi bi-chat action-hover-blue"></i>            <!-- Comentarios -->
+
+                    <i class="bi bi-hand-thumbs-up action-hover-green"></i> <!-- Me gusta -->
+                    <i class="bi bi-heart action-hover-blue"></i>           <!-- me encanta -->
+                    <i class="bi bi-hand-thumbs-down action-hover-red"></i> <!-- No me gusta -->
+                    <i class="bi bi-emoji-grin action-hover-green"></i>     <!-- Me divierte -->
+                    
                 </div>
             </div>
             
