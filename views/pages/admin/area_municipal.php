@@ -1,242 +1,183 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mantenedor de Departamentos - Municipalidad</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+<?php
+    ini_set('display_errors',1);
+    ini_set('display_startup_errors',1);
+    error_reporting(E_ALL);
     
-    <style>
-        :root {
-            --primary-blue: #3d71ff;
-            --bg-light: #f8fafc;
-            --sidebar-text: #64748b;
-            --shadow-soft: 0 10px 40px rgba(0, 0, 0, 0.04);
-        }
+    require_once __DIR__ . '/../../../models/Area.php';
+    require_once __DIR__ . '/../../../config/database.php';
 
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--bg-light);
-            color: #0f172a;
-        }
+    // LISTA DE ÁREAS
+    $areas = listarAreas();
 
-        .sidebar {
-            background: #ffffff;
-            height: 100vh;
-            border-right: 1px solid #f1f5f9;
-            position: sticky;
-            top: 0;
-            display: flex;
-            flex-direction: column;
-        }
+    // LISTA DE MUNICIPALIDADES
+    $db = getDatabase();
+    $municipalidades = $db->query("SELECT id_municipalidad, nombre FROM municipalidad");
 
-        .nav-link {
-            color: var(--sidebar-text);
-            font-size: 0.9rem;
-            font-weight: 500;
-            padding: 0.75rem 1rem;
-            border-radius: 12px;
-            transition: all 0.2s;
-        }
+?>
+<!doctype html>
+<html lang="es">
+    <head>
+        <title>Areas Municipales - Smart City</title>
+        <!-- Required meta tags -->
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-        .nav-link:hover, .nav-link.active {
-            background-color: #f0f4ff;
-            color: var(--primary-blue);
-        }
+        <!-- Bootstrap CSS v5.3.8 -->
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+            crossorigin="anonymous"
+        />
+    </head>
+    <body>
+        <div class="container">
+            <h3>Áreas Municipales</h3>
+            <button
+                type="button"
+                class="btn btn-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#modalId"
+                onclick="crearArea()">
+                Nueva Área municipal
+            </button>
 
-        .shadow-card { box-shadow: var(--shadow-soft); }
-        
-        /* Estilo de Tarjetas de Departamento */
-        .dept-card {
-            border: 1px solid #f1f5f9;
-            transition: all 0.3s ease;
-        }
+            <div class="modal fade" id="modalId" tabindex="-1" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="tituloModal">
+                                    Agregar Área Municipal
+                            </h5>
+                            <button
+                                type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"
+                            ></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="container-fluid">
+                                <form id="formArea" action="../../../public/areas_municipales/ingresar.php" method="POST">
+                                    <input type="hidden" name="id_area" id="id_area">
+                                    <label class="form-label">Nombre área</label>
+                                    <input class="form-control" type="text" name="nombre" id="nombre" required>
+                                    <label class="form-label">Descripcion área</label>
+                                    <input class="form-control" type="text" name="descripcion" id="descripcion" required>
+                                    <label class="form-label">Municipalidad Correspondiente</label>
 
-        .dept-card:hover {
-            border-color: var(--primary-blue);
-            transform: translateY(-5px);
-        }
+                                    <select name="id_municipalidad" class="form-control" id="id_municipalidad" required>
+                                        <option value="" disabled selected>Seleccionar Municipalidad</option>
 
-        .icon-circle {
-            width: 48px;
-            height: 48px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 14px;
-            font-size: 1.2rem;
-        }
+                                        <?php 
+                                            foreach ($municipalidades as $m) { ?>
+                                            <option value="<?= $m['id_municipalidad'] ?>">
+                                                <?= $m['nombre'] ?>
+                                            </option>
+                                        <?php } 
+                                        ?>
+                                    </select>
+                                    <div class="pt-3">
+                                        <button id="formBtn" class="btn btn-primary" type="submit">Guardar</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
 
-        .btn-primary-custom {
-            background-color: var(--primary-blue);
-            border: none;
-            border-radius: 12px;
-            padding: 10px 20px;
-            font-weight: 600;
-            box-shadow: 0 4px 14px 0 rgba(61, 113, 255, 0.3);
-        }
-
-        .modal-content { border-radius: 24px; border: none; }
-        .form-control { border-radius: 10px; padding: 12px; border: 1px solid #e2e8f0; }
-    </style>
-</head>
-<body>
-
-<div class="container-fluid">
-    <div class="row">
-        <!-- Sidebar -->
-        <?php include __DIR__ . "../../../layout/sidebar.php"; ?>
-
-        <!-- Main Content -->
-        <main class="col-md-10 ms-sm-auto px-md-5">
-            <header class="d-flex justify-content-between align-items-center py-4">
-                <div>
-                    <h2 class="fw-bold mb-0">Mantenedor de Departamentos</h2>
-                    <p class="text-muted small">Configura las áreas responsables de resolver reportes.</p>
+                        </div>
+                    </div>
                 </div>
-                <button class="btn btn-primary-custom text-white" onclick="openModal()">
-                    <i class="bi bi-plus-lg me-2"></i> Nuevo Departamento
-                </button>
-            </header>
+            </div>
+            
+            <div
+                class="container table-responsive"
+            >
+                <table
+                    class="table"
+                >
+                    <thead>
+                        <tr>
+                            <th scope="col">ID Área</th>
+                            <th scope="col">Nombre Área</th>
+                            <th scope="col">Descripción Área</th>
+                            <th scope="col">Municipalidad</th>
+                            <th scope="col">Opciones</th>
+                        </tr>
+                    </thead>
+                <tbody>
+                    <?php foreach ($areas as $row) { ?>
+                        <tr>
+                            <td><?= $row['id_area'] ?></td>
+                            <td><?= $row['nombre_area'] ?></td>
+                            <td><?= $row['descripcion'] ?></td>
+                            <td><?= $row['nombre_municipalidad'] ?></td>
 
-            <!-- Lista de Departamentos (Grid) -->
-            <div class="row g-4" id="deptContainer">
-                <!-- Se carga dinámicamente con JS -->
-            </div>
-        </main>
-    </div>
-</div>
+                            <td>
+                                <button
+                                    class="btn btn-primary"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#modalId"
+                                    onclick="editarArea(
+                                        <?= $row['id_area'] ?>,
+                                        '<?= htmlspecialchars($row['nombre_area'], ENT_QUOTES) ?>',
+                                        '<?= htmlspecialchars($row['descripcion'], ENT_QUOTES) ?>',
+                                        '<?= htmlspecialchars($row['nombre_municipalidad'], ENT_QUOTES) ?>')">Editar</button>
 
-<!-- Modal CRUD -->
-<div class="modal fade" id="deptModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content p-4">
-            <div class="modal-header border-0">
-                <h5 class="fw-bold" id="modalTitle">Nuevo Departamento</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                <a class="btn btn-danger"
+                                href="../../../public/areas_municipales/eliminar.php?id_enviado=<?= $row['id_area'] ?>">
+                                Eliminar
+                                </a>
+                            </td>
+                        </tr>
+                    <?php } ?>
+                </tbody>
+                </table>
             </div>
-            <div class="modal-body">
-                <form id="deptForm">
-                    <input type="hidden" id="deptId">
-                    <div class="mb-3">
-                        <label class="form-label small fw-bold">Nombre del Departamento</label>
-                        <input type="text" id="deptName" class="form-control" placeholder="Ej: Seguridad Ciudadana" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label small fw-bold">Icono (Clase Bootstrap Icon)</label>
-                        <input type="text" id="deptIcon" class="form-control" placeholder="bi-tools" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label small fw-bold">Color de Identificación</label>
-                        <select id="deptColor" class="form-select form-control">
-                            <option value="bg-primary">Azul (General)</option>
-                            <option value="bg-success">Verde (Medio Ambiente)</option>
-                            <option value="bg-danger">Rojo (Emergencias)</option>
-                            <option value="bg-warning">Amarillo (Obras)</option>
-                            <option value="bg-info">Cian (Social)</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary-custom text-white w-100 mt-3">Guardar Cambios</button>
-                </form>
-            </div>
+            
+
         </div>
-    </div>
-</div>
+        
+        <script>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+            function crearArea() {
 
-<script>
-    let departamentos = [
-        { id: 1, nombre: 'Obras Públicas', icono: 'bi-tools', color: 'bg-warning', personal: 12 },
-        { id: 2, nombre: 'Aseo y Ornato', icono: 'bi-tree', color: 'bg-success', personal: 8 },
-        { id: 3, nombre: 'Seguridad', icono: 'bi-shield-check', color: 'bg-danger', personal: 24 }
-    ];
+                document.getElementById('tituloModal').innerText = 'Agregar Área Municipal';
 
-    const modal = new bootstrap.Modal(document.getElementById('deptModal'));
-    const container = document.getElementById('deptContainer');
+                document.getElementById('formArea').action = '../../../public/areas_municipales/ingresar.php';
 
-    function renderDepts() {
-        container.innerHTML = '';
-        departamentos.forEach(d => {
-            container.innerHTML += `
-                <div class="col-md-4">
-                    <div class="card border-0 shadow-card rounded-4 p-4 dept-card">
-                        <div class="d-flex justify-content-between align-items-start mb-3">
-                            <div class="icon-circle ${d.color} text-white shadow-sm">
-                                <i class="bi ${d.icono}"></i>
-                            </div>
-                            <div class="dropdown">
-                                <button class="btn btn-light btn-sm rounded-circle" data-bs-toggle="dropdown">
-                                    <i class="bi bi-three-dots-vertical"></i>
-                                </button>
-                                <ul class="dropdown-menu border-0 shadow-sm">
-                                    <li><a class="dropdown-item small" href="#" onclick="editDept(${d.id})"><i class="bi bi-pencil me-2"></i>Editar</a></li>
-                                    <li><a class="dropdown-item small text-danger" href="#" onclick="deleteDept(${d.id})"><i class="bi bi-trash me-2"></i>Eliminar</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <h6 class="fw-bold mb-1">${d.nombre}</h6>
-                        <p class="text-muted tiny mb-3">${d.personal} funcionarios asignados</p>
-                        <div class="d-flex align-items-center pt-2 border-top">
-                            <span class="badge bg-light text-dark rounded-pill tiny">ID: #0${d.id}</span>
-                            <span class="ms-auto text-primary tiny fw-bold cursor-pointer">Ver personal <i class="bi bi-arrow-right"></i></span>
-                        </div>
-                    </div>
-                </div>
-            `;
-        });
-    }
+                document.getElementById('id_area').value = '';
 
-    function openModal() {
-        document.getElementById('deptForm').reset();
-        document.getElementById('deptId').value = '';
-        document.getElementById('modalTitle').innerText = 'Nuevo Departamento';
-        modal.show();
-    }
+                document.getElementById('nombre').value = '';
 
-    function editDept(id) {
-        const d = departamentos.find(x => x.id === id);
-        document.getElementById('deptId').value = d.id;
-        document.getElementById('deptName').value = d.nombre;
-        document.getElementById('deptIcon').value = d.icono;
-        document.getElementById('deptColor').value = d.color;
-        document.getElementById('modalTitle').innerText = 'Editar Departamento';
-        modal.show();
-    }
+                document.getElementById('descripcion').value = '';
 
-    function deleteDept(id) {
-        if(confirm('¿Seguro que deseas eliminar este departamento? Los usuarios quedarán sin área asignada.')) {
-            departamentos = departamentos.filter(x => x.id !== id);
-            renderDepts();
-        }
-    }
+                document.getElementById('id_municipalidad').selectedIndex = 0;
 
-    document.getElementById('deptForm').addEventListener('submit', (e) => {
-        e.preventDefault();
-        const id = document.getElementById('deptId').value;
-        const nuevo = {
-            id: id ? parseInt(id) : departamentos.length + 1,
-            nombre: document.getElementById('deptName').value,
-            icono: document.getElementById('deptIcon').value,
-            color: document.getElementById('deptColor').value,
-            personal: id ? departamentos.find(x => x.id == id).personal : 0
-        };
+                document.getElementById('formBtn').innerText = 'Ingresar';
+            }
 
-        if(id) {
-            const index = departamentos.findIndex(x => x.id == id);
-            departamentos[index] = nuevo;
-        } else {
-            departamentos.push(nuevo);
-        }
+            function editarArea(id, nombre, descripcion, idMunicipalidad) {
 
-        modal.hide();
-        renderDepts();
-    });
+                document.getElementById('tituloModal').innerText = 'Editar Área Municipal';
 
-    renderDepts();
-</script>
+                document.getElementById('formArea').action = '../../../public/areas_municipales/editar.php';
 
-</body>
+                document.getElementById('id_area').value = id;
+
+                document.getElementById('nombre').value = nombre;
+
+                document.getElementById('descripcion').value = descripcion;
+
+                document.getElementById('id_municipalidad').value = idMunicipalidad;
+
+                document.getElementById('formBtn').innerText = 'Actualizar';
+            }
+
+        </script>
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+            crossorigin="anonymous"
+        ></script>
+    </body>
 </html>
