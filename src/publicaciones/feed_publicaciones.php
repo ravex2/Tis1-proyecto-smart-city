@@ -55,56 +55,7 @@ if (isset($_GET['voto_pub']) && isset($_GET['tipo_voto'])) {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="social-style.css">
 
-    <style>
-
-        /* Detalles de la publicación principal */
-        .post-main-text {
-            color: #0f172a;
-            line-height: 1.4;
-            word-wrap: break-word;
-        }
-
-        /* Iconos con hover de color */
-        .action-hover-blue:hover { color: #3d71ff; cursor: pointer; }
-        .action-hover-green:hover { color: #10b981; cursor: pointer; }
-        .action-hover-red:hover { color: #ef4444; cursor: pointer; }
-
-        /* Hilos de comentarios */
-        .comment-item {
-            transition: background 0.2s;
-        }
-
-        .comment-item:hover {
-            background-color: rgba(0,0,0,0.01);
-        }
-
-        .thread-line {
-            position: absolute;
-            left: 35px; /* Ajustar según el centro del avatar */
-            top: 60px;
-            bottom: 0;
-            width: 2px;
-            background-color: #f1f5f9;
-        }
-
-        .bg-light-soft {
-            background-color: #f8fafc;
-        }
-
-        /* Botón de volver pequeño */
-        .btn-icon-soft.sm {
-            width: 32px;
-            height: 32px;
-            font-size: 0.9rem;
-            box-shadow: none;
-            border: none;
-        }
-
-        .btn-icon-soft.sm:hover {
-            background-color: #f1f5f9;
-        }
-
-    </style>
+    
 </head>
 <body>
 
