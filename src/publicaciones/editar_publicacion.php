@@ -1,16 +1,17 @@
 <?php
     require_once __DIR__ . "/../../config/database.php";
-    $cat_pub = $conexion->query("SELECT * FROM categoria_publicacion");
+    $db = getDatabase();
+    $cat_pub = $db->query("SELECT * FROM categoria_publicacion");
 
     if(isset($_GET["id_enviado"])){
 
         $id_capturado = $_GET["id_enviado"];
         $consulta = "SELECT * FROM publicacion WHERE id_publicacion=$id_capturado";
-        $resultado =$conexion->query($consulta);
-        $fila = $resultado->fetch();
+        $resultado = $db->query($consulta);
+        $fila = $resultado[0] ?? null;
 
         if(!$fila){
-            header("Location: leer_publicacion");
+            header("Location: ?ruta=leer_publicacion");
             exit();
         }
 
@@ -47,10 +48,10 @@
     id_categoria = $id_categoria
     WHERE id_publicacion = $id_capturado";
 
-    $resultado=$conexion->query($update);
+    $resultado=$db->execute($update);
 
     if($resultado){
-        header("Location: leer_publicacion");
+        header("Location: ?ruta=leer_publicacion");
         exit();
 
     }else{
@@ -199,7 +200,7 @@
                 </div>
                 
                 <nav class="nav flex-column gap-2 mb-auto">
-                    <a class="nav-link active" href="crear_publicacion"><i class="bi bi-house-door-fill me-3"></i> Inicio</a>
+                    <a class="nav-link active" href="?ruta=crear_publicacion"><i class="bi bi-house-door-fill me-3"></i> Inicio</a>
                     <a class="nav-link" href="#"><i class="bi bi-person me-3"></i> Perfil</a>
                 </nav>
 

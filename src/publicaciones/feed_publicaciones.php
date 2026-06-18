@@ -3,34 +3,32 @@ require_once __DIR__ . "/../../config/database.php";
 
 $consulta = "SELECT * FROM publicacion WHERE tipo_estado = 'activa'
 ORDER BY fecha DESC";
-$resultado = $conexion->query($consulta);
+$db = getDatabase();
+$resultado = $db->query($consulta);
 
 if (isset($_GET['voto_pub']) && isset($_GET['tipo_voto'])) {
     $id_p = intval($_GET['voto_pub']);
     $tipo_r = $_GET['tipo_voto'];
     
     // 1. Buscamos si ESTA publicación específica ya tiene alguna reacción registrada
-    $stmt_check = $conexion->prepare("SELECT id_reaccion, tipo_reaccion FROM reaccion WHERE id_publicacion = ?");
-    $stmt_check->execute([$id_p]);
-    $reaccion_existente = $stmt_check->fetch(PDO::FETCH_ASSOC);
+    $reaccion_existente = $db->query("SELECT id_reaccion, tipo_reaccion FROM reaccion WHERE id_publicacion = ?",[$id_p]);
+
+    $reaccion_existente = $reaccion_existente[0] ?? null;
     
     if ($reaccion_existente) {
         if ($reaccion_existente['tipo_reaccion'] === $tipo_r) {
-            // CASO 3:
-            $stmt_delete = $conexion->prepare("DELETE FROM reaccion WHERE id_reaccion = ?");
-            $stmt_delete->execute([$reaccion_existente['id_reaccion']]);
+            // CASO 3: eliminar reacción
+            $db->execute("DELETE FROM reaccion WHERE id_reaccion = ?",[$reaccion_existente['id_reaccion']]);
         } else {
-            // CASO 2 :
-            $stmt_update = $conexion->prepare("UPDATE reaccion SET tipo_reaccion = ? WHERE id_reaccion = ?");
-            $stmt_update->execute([$tipo_r, $reaccion_existente['id_reaccion']]);
+            // CASO 2: cambiar reacción
+            $db->execute("UPDATE reaccion SET tipo_reaccion = ? WHERE id_reaccion = ?", [$tipo_r, $reaccion_existente['id_reaccion']] );
         }
-    } else { //caso 1:
-        $stmt_insert = $conexion->prepare("INSERT INTO reaccion (id_publicacion, tipo_reaccion) VALUES (?, ?)");
-        $stmt_insert->execute([$id_p, $tipo_r]);
+    } else {
+        // CASO 1: crear reacción
+        $db->execute("INSERT INTO reaccion (id_publicacion, tipo_reaccion) VALUES (?, ?)",[$id_p, $tipo_r]);
     }
-    
     // Redirección manteniendo la posición de la pantalla
-    header("Location: " . strtok($_SERVER["REQUEST_URI"], '?') . "?#post-" . $id_p);
+    header("Location: ?ruta=publicaciones#post-" . $id_p);
     exit;
 }
 
@@ -131,16 +129,14 @@ if (isset($_GET['voto_pub']) && isset($_GET['tipo_voto'])) {
                 <a href="feed.html" class="btn-icon-soft sm"><i class="bi bi-arrow-left"></i></a>
                 <h5 class="fw-bold mb-0">Publicaciones</h5>
             </div>
-        <?php if($resultado->rowCount()>0){ ?>
+        <?php if(count($resultado) > 0){ ?>
         <?php   foreach($resultado as $fila){
             $id_pub = $fila['id_publicacion'];
-            $total_me_guta    = $conexion->query("SELECT COUNT(*) FROM reaccion WHERE id_publicacion = $id_pub AND tipo_reaccion = 'me gusta'")->fetchColumn();
-            $total_me_encanta = $conexion->query("SELECT COUNT(*) FROM reaccion WHERE id_publicacion = $id_pub AND tipo_reaccion = 'me encanta'")->fetchColumn();
-            $total_no_me_gusta = $conexion->query("SELECT COUNT(*) FROM reaccion WHERE id_publicacion = $id_pub AND tipo_reaccion = 'no me gusta'")->fetchColumn();
-            $total_me_divierte   = $conexion->query("SELECT COUNT(*) FROM reaccion WHERE id_publicacion = $id_pub AND tipo_reaccion = 'me divierte'")->fetchColumn();
-        
-            
-            ?>
+            $total_me_guta = $db->query("SELECT COUNT(*) AS total FROM reaccion WHERE id_publicacion = $id_pub AND tipo_reaccion = 'me gusta'")[0]['total'];
+            $total_me_encanta = $db->query("SELECT COUNT(*) AS total FROM reaccion WHERE id_publicacion = $id_pub AND tipo_reaccion = 'me encanta'")[0]['total'];
+            $total_no_me_gusta = $db->query("SELECT COUNT(*) AS total FROM reaccion WHERE id_publicacion = $id_pub AND tipo_reaccion = 'no me gusta'")[0]['total'];
+            $total_me_divierte = $db->query("SELECT COUNT(*) AS total FROM reaccion WHERE id_publicacion = $id_pub AND tipo_reaccion = 'me divierte'")[0]['total'];
+        ?>
             <div class="post-detail-content p-4 border-bottom">
                 
                 <div class="d-flex align-items-center justify-content-between mb-3">
@@ -194,18 +190,18 @@ if (isset($_GET['voto_pub']) && isset($_GET['tipo_voto'])) {
 
                 <!-- Botones de Acción Grandes -->
                 <div class="d-flex justify-content-around text-muted fs-5 py-1">
-                    <i class="bi bi-chat action-hover-blue"></i>            <!-- Comentarios -->
+                    <i class="bi bi-chat action-hover-blue" onclick="toggleComments(<?php echo $id_pub; ?>)"></i>            <!-- Comentarios -->
 
-                    <a href="?voto_pub=<?php echo $id_pub; ?>&tipo_voto=me gusta" class="text-muted action-hover-green text-decoration-none">
+                    <a href="?ruta=publicaciones&voto_pub=<?php echo $id_pub; ?>&tipo_voto=me gusta" class="text-muted action-hover-green text-decoration-none">
                         <i class="bi bi-hand-thumbs-up"></i>
                     </a> <!-- Me gusta -->
-                    <a href="?voto_pub=<?php echo $id_pub; ?>&tipo_voto=me encanta" class="text-muted action-hover-blue text-decoration-none">
+                    <a href="?ruta=publicaciones&voto_pub=<?php echo $id_pub; ?>&tipo_voto=me encanta" class="text-muted action-hover-blue text-decoration-none">
                         <i class="bi bi-heart"></i>
                     </a> <!-- Me encanta -->
-                    <a href="?voto_pub=<?php echo $id_pub; ?>&tipo_voto=no me gusta" class="text-muted action-hover-red text-decoration-none">
+                    <a href="?ruta=publicaciones&voto_pub=<?php echo $id_pub; ?>&tipo_voto=no me gusta" class="text-muted action-hover-red text-decoration-none">
                         <i class="bi bi-hand-thumbs-down"></i>
                     </a> <!-- No me gusta -->
-                    <a href="?voto_pub=<?php echo $id_pub; ?>&tipo_voto=me divierte" class="text-muted action-hover-green text-decoration-none">
+                    <a href="?ruta=publicaciones&voto_pub=<?php echo $id_pub; ?>&tipo_voto=me divierte" class="text-muted action-hover-green text-decoration-none">
                         <i class="bi bi-emoji-grin"></i>
                     </a>     <!-- Me divierte -->
                     
@@ -254,7 +250,7 @@ function toggleComments(id_publicacion) {
 
 async function loadComments(id_publicacion) {
     try {
-        const res = await fetch(`../gestion_comentarios/leer.php?id_publicacion=${id_publicacion}`);
+        const res = await fetch('src/gestion_comentarios/leer.php?id_publicacion=' + id_publicacion);
         const data = await res.json();
         
         const container = document.getElementById(`comments-list-${id_publicacion}`);
@@ -300,7 +296,7 @@ async function addComment(id_publicacion) {
     if(!texto) return;
 
     try {
-        const res = await fetch('../gestion_comentarios/insertar.php', {
+        const res = await fetch('src/gestion_comentarios/insertar.php', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
@@ -339,7 +335,7 @@ async function saveEdit(id_comentario) {
     if(!nuevoTexto) return;
 
     try {
-        const res = await fetch('../gestion_comentarios/editar.php', {
+        const res = await fetch('src/gestion_comentarios/editar.php', {
             method: 'PUT',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
@@ -364,7 +360,7 @@ async function deleteComment(id_comentario, id_publicacion) {
     if(!confirm('¿Estás seguro de eliminar este comentario?')) return;
 
     try {
-        const res = await fetch('../gestion_comentarios/eliminar.php', {
+        const res = await fetch('src/gestion_comentarios/eliminar.php', {
             method: 'DELETE',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({ id_comentario: id_comentario })
