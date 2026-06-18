@@ -127,7 +127,7 @@
                                     <?php
                                         $color = match($usuario['nombre_rol']) {
                                             'Administrador' => 'danger',
-                                            'Encargado de Comunicacion' => 'primary',
+                                            'Encargado de Comunicaciones' => 'primary',
                                             'Usuario' => 'secondary',
                                             default => 'dark'
                                         };
