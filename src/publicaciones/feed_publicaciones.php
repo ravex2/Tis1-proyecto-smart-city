@@ -118,12 +118,17 @@ $resultado = $conexion->query($consulta);
 
                 <div class="text-muted small mb-3">
                     <span class="fw-bold text-dark">Lugar:</span> <?php echo $fila['lugar']; ?> |
-                    <span class="fw-bold text-dark">Fecha:</span><?php echo date("d-m-Y", strtotime($fila['fecha_evento'])); ?>
+                    <span class="fw-bold text-dark">Fecha:</span>
+                    <?php 
+                        echo $fila['fecha_evento'] 
+                        ? date("d-m-Y", strtotime($fila['fecha_evento'])) 
+                        : "Sin fecha";
+                    ?>
                 </div>
 
                 <hr class="opacity-10">
 
-                <!-- Stats -->
+                
                 <div class="d-flex gap-4 py-1 border-bottom border-top border-light my-3 py-3">
                     <div><span class="fw-bold">156</span> <span class="text-muted">Me gusta</span></div>
                     <div><span class="fw-bold">12</span> <span class="text-muted">Reposts</span></div>
