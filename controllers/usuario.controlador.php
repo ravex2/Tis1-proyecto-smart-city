@@ -31,5 +31,7 @@
         public function eliminarUsuario($id){
             return $this->model->delete($id);
         }
+
+        
     }
 ?>

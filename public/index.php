@@ -21,7 +21,7 @@ if (!isset($_SESSION['user']) && !in_array($ruta, $rutasPublicas)) {
 $mapaRutas = [
     'login'  => '/views/base.php',
     'registro' => '/views/pages/registro.php',
-    'inicio' => '/views/pages/admin/panel.php',
+    'dashboard' => '/views/pages/admin/panel_admin.php',
     'reportes' => '/views/pages/admin/reportes.php',
     'sector' => '/views/pages/admin/sector.php',
     'logout' => '/views/pages/auth/logout.php',
@@ -44,7 +44,6 @@ $mapaRutas = [
 
 $archivoRelativo = $mapaRutas[$ruta] ?? '/views/pages/404.php';
 $archivoCompleto = BASE_PATH . $archivoRelativo;
-
 
 $template = new TemplateController();
 $template->ctrtemplate($archivoCompleto);
