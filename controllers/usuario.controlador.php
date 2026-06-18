@@ -30,9 +30,11 @@
                 ['rut' => $rut],
                 ['id_rol' => $id_rol]
             );
-
             if (!$resultado) {
-                return false;
+                return [
+                    'ok' => false,
+                    'message' => 'No se pudo actualizar el rol'
+                ];
             }
             $rolesMunicipales = [2, 3]; // Funcionario, Administrador
 
@@ -49,7 +51,10 @@
                 }
             }
 
-            return true;
+                return [
+                    'ok' => true,
+                    'message' => 'Rol asignado correctamente'
+                ];
         }
 
         public function eliminarUsuario(string $rut){
