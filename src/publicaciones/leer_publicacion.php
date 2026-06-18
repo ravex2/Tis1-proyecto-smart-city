@@ -3,8 +3,8 @@
 
     $consulta = "SELECT p.*, c.nombre AS categoria_nombre FROM publicacion p
     JOIN categoria_publicacion c ON p.id_categoria = c.id_categoria ORDER BY fecha DESC"; ;
-
-    $resultado =$conexion->query($consulta);
+    $db = getDatabase();
+    $resultado =$db->query($consulta);
 ?>
 
 <!DOCTYPE html>
@@ -142,7 +142,7 @@
                 </div>
                 
                 <nav class="nav flex-column gap-2 mb-auto">
-                    <a class="nav-link active" href="crear_publicacion"><i class="bi bi-house-door-fill me-3"></i> Inicio</a>
+                    <a class="nav-link active" href="?ruta=crear_publicacion"><i class="bi bi-house-door-fill me-3"></i> Inicio</a>
                     <a class="nav-link" href="#"><i class="bi bi-person me-3"></i> Perfil</a>
                 </nav>
 
@@ -161,7 +161,7 @@
                     <h5 class="fw-bold mb-0">Listado Publicaciones</h5>
                 </div>
                 
-            <?php if($resultado->rowCount()>0){ ?>
+            <?php if(count($resultado) > 0){ ?>
             <?php   foreach($resultado as $fila){?>
                             <div class="card mb-4 shadow-sm border-0 rounded-4">
 
@@ -187,12 +187,12 @@
 
                                     <div class="d-flex gap-2">
 
-                                        <a href="editar_publicacion?id_enviado=<?php echo $fila['id_publicacion']; ?>" 
+                                        <a href="?ruta=editar_publicacion&id_enviado=<?php echo $fila['id_publicacion']; ?>" 
                                         class="btn btn-primary rounded-pill px-4 fw-bold shadow-primary">
                                             Editar
                                         </a>
 
-                                        <a href="eliminar_publicacion?id_enviado=<?php echo $fila['id_publicacion']; ?>" 
+                                        <a href="?ruta=eliminar_publicacion&id_enviado=<?php echo $fila['id_publicacion']; ?>" 
                                         class="btn btn-outline-danger rounded-pill px-4 fw-bold shadow-primary">
                                             Eliminar
                                         </a>

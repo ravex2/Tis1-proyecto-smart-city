@@ -2,17 +2,12 @@
 require_once __DIR__ . "/../../config/database.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
     $nombre = $_POST["nombre"];
-
-
-
     if (!empty($nombre)) {
-
-        $id_funcionario =1;
-
+        $id_funcionario = 1;
         $consulta = "INSERT INTO categoria_publicacion (nombre, id_funcionario) VALUES ('$nombre','$id_funcionario')";
-        $resultado = $conexion->query($consulta);
+        $db = getDatabase();
+        $resultado = $db->query($consulta);
 
         if ($resultado) {
             echo "Categoria Creada correctamente";
