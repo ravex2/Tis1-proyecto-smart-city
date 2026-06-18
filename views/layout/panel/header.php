@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Municipal - Shopeers</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    
+    <style>
+        :root {
+            --primary-blue: #3d71ff;
+            --bg-light: #f8fafc;
+            --sidebar-text: #64748b;
+            --shadow-soft: 0 10px 40px rgba(0, 0, 0, 0.04);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-light);
+            color: #0f172a;
+            overflow-x: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: #ffffff;
+            height: 100vh;
+            border-right: 1px solid #f1f5f9;
+            position: sticky;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .nav-link {
+            color: var(--sidebar-text);
+            font-size: 0.9rem;
+            font-weight: 500;
+            padding: 0.75rem 1rem;
+            border-radius: 12px;
+            transition: all 0.2s;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background-color: #f0f4ff;
+            color: var(--primary-blue);
+        }
+
+        .upgrade-card {
+            background: linear-gradient(135deg, #0d1e4c 0%, #1e3a8a 100%);
+            border-radius: 24px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary-glass {
+            background: rgba(255, 255, 255, 0.15);
+            border: none;
+            color: white;
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-primary-glass:hover {
+            background: rgba(255, 255, 255, 0.25);
+            color: white;
+        }
+
+        /* Search Bar */
+        .search-container {
+            background: #ffffff;
+            transition: box-shadow 0.3s;
+        }
+
+        .search-container:focus-within {
+            box-shadow: 0 4px 15px rgba(61, 113, 255, 0.1) !important;
+        }
+
+        .shadow-card {
+            box-shadow: var(--shadow-soft);
+        }
+
+        .badge-success-soft {
+            background: #ecfdf5;
+            color: #10b981;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 8px;
+        }
+
+        .badge-danger-soft {
+            background: #fef2f2;
+            color: #ef4444;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 8px;
+        }
+
+        .bg-success-soft { background-color: #dcfce7 !important; }
+
+        .btn-white { background: white; border: none; font-weight: 600; font-size: 0.8rem; }
+        .shadow-primary { box-shadow: 0 4px 14px 0 rgba(61, 113, 255, 0.39); }
+        .btn-icon-soft {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: none;
+            background: white;
+            color: #64748b;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .tiny { font-size: 0.7rem; }
+        .kbd-hint { font-size: 0.65rem; background: #f8fafc; }
+
+    </style>
+</head>
+<body>
