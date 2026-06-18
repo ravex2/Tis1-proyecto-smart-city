@@ -16,17 +16,15 @@ if (isset($_GET['voto_pub']) && isset($_GET['tipo_voto'])) {
     
     if ($reaccion_existente) {
         if ($reaccion_existente['tipo_reaccion'] === $tipo_r) {
-            // CASO 3 (DELETE): Se presionó la misma -> Se borra usando su ID único real
+            // CASO 3:
             $stmt_delete = $conexion->prepare("DELETE FROM reaccion WHERE id_reaccion = ?");
             $stmt_delete->execute([$reaccion_existente['id_reaccion']]);
         } else {
-            // CASO 2 (UPDATE): Cambió de opinión -> Se actualiza esa fila específica
+            // CASO 2 :
             $stmt_update = $conexion->prepare("UPDATE reaccion SET tipo_reaccion = ? WHERE id_reaccion = ?");
             $stmt_update->execute([$tipo_r, $reaccion_existente['id_reaccion']]);
         }
-    } else {
-        // CASO 1 (INSERT CORREGIDO): No había voto. No forzamos el ID '1'.
-        // Dejamos que MySQL le asigne su número correlativo automático (1, 2, 3...)
+    } else { //caso 1:
         $stmt_insert = $conexion->prepare("INSERT INTO reaccion (id_publicacion, tipo_reaccion) VALUES (?, ?)");
         $stmt_insert->execute([$id_p, $tipo_r]);
     }
