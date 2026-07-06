@@ -32,12 +32,12 @@
             if(count($resultado) > 0){
                 foreach($resultado as $fila){
                     $id_categoria =$fila['id_categoria'];
-                    $nombre =$fila['nombre'];
+                    $nombre_categoria =$fila['nombre_categoria'];
                     $id_funcionario =$fila['id_funcionario'];
                     $id_area_municipal =$fila['id_area_municipal'];
                     echo "<tr>";
                         echo "<td>".$id_categoria."</td>";                
-                        echo "<td>".$nombre."</td>";
+                        echo "<td>".$nombre_categoria."</td>";
                         echo "<td>".$id_funcionario."</td>";
                         echo "<td>".$id_area_municipal."</td>";
                         echo "<td><a href='?ruta=editar_categoria_reporte&id_enviado=".$id_categoria."'>Editar </a></td>";
