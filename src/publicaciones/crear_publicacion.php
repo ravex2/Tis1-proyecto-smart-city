@@ -52,8 +52,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <main class="col-md-10 ms-sm-auto px-4">
                 <div class="feed-header p-3 sticky-top bg-white-glass blur">
                     <h5 class="fw-bold mb-0">Inicio</h5>
+                    
                 </div>
-
+                <div class="d-flex justify-content-end">
+                    <a href="?ruta=crear_categoria_publicacion" class="btn btn-primary rounded-pill px-5 fw-bold shadow-primary">
+                        Crear Nueva Categoria Publicacion
+                    </a>
+                </div>
                 <div class="post-box p-3 border-bottom"> 
                     <div class="d-flex gap-3">
                         <img src="https://i.pravatar.cc/150?u=3" class="rounded-circle" width="48" height="48">
