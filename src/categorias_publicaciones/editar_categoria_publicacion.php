@@ -1,11 +1,14 @@
 <?php
     require_once __DIR__ . "/../../config/database.php";
-
+    $db = getDatabase();
     if(isset($_GET["id_enviado"])){
         $id_capturado = $_GET["id_enviado"];
-        $consulta = "SELECT * FROM categoria_publicacion WHERE id_categoria=$id_capturado";
-        $db = getDatabase();
-        $resultado =$db->query($consulta);
+        
+        
+        $resultado =$db->query(
+            "SELECT * FROM categoria_publicacion WHERE id_categoria = ?",
+            [$id_capturado]
+        );
         $fila = $resultado[0] ?? null;
 
         if(!$fila){
@@ -22,8 +25,10 @@
     if($_SERVER["REQUEST_METHOD"]=="POST"){
         $nuevo_nombre = $_POST["nombre"];
         if($nuevo_nombre !=""){
-            $update = "UPDATE categoria_publicacion SET nombre = '$nuevo_nombre' WHERE id_categoria = $id_capturado";
-            $resultado = $db->query($update);
+            $resultado = $db->execute(
+                "UPDATE categoria_publicacion SET nombre = ? WHERE id_categoria = ?",
+                [$nuevo_nombre,$id_capturado]
+            );
             
             if($resultado){
                 header("Location: leer_categoria_publicacion");
