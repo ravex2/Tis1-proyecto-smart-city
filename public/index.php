@@ -47,6 +47,8 @@ $mapaRutas = [
 
     'leer_categoria_reporte' => '/src/categorias_reporte/leer_categoria_reporte.php',
     'crear_categoria_reporte' => '/src/categorias_reporte/crear_categoria_reporte.php',
+    'editar_categoria_reporte' => '/src/categorias_reporte/editar_categoria_reporte.php',
+    'eliminar_categoria_reporte' => '/src/categorias_reporte/eliminar_categoria_reporte.php',
 
     'asignar_rol' => '/public/usuario_rol/editar.php',
 
