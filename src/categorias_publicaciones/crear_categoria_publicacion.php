@@ -5,12 +5,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nombre = $_POST["nombre"];
     if (!empty($nombre)) {
         $id_funcionario = 1;
-        $consulta = "INSERT INTO categoria_publicacion (nombre, id_funcionario) VALUES ('$nombre','$id_funcionario')";
         $db = getDatabase();
-        $resultado = $db->query($consulta);
+        $resultado = $db->execute(
+            "INSERT INTO categoria_publicacion (nombre, id_funcionario) VALUES(?,?)",
+            [$nombre, $id_funcionario]
+        );
 
         if ($resultado) {
-            echo "Categoria Creada correctamente";
+            header("Location: ?ruta=leer_categoria_publicacion");
+            exit();
         } else {
             echo "Error al crear";
         }
