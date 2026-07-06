@@ -42,8 +42,8 @@
 <h2>Editar Nombre Categoria Reporte</h2>
 
 <form method="POST">
-    <input type="text" name="nombre" 
-           value="<?php echo $fila['nombre']; ?>" required>
+    <input type="text" name="nombre_categoria" 
+           value="<?php echo $fila['nombre_categoria']; ?>" required>
 
     <button type="submit">Actualizar</button>
 </form>
