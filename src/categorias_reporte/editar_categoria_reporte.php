@@ -20,9 +20,9 @@
     }
 
     if($_SERVER["REQUEST_METHOD"]=="POST"){
-        $nuevo_nombre = $_POST["nombre"];
-        if($nuevo_nombre !=""){
-            $update = "UPDATE categoria_reporte SET nombre = '$nuevo_nombre' WHERE id_categoria = $id_capturado";
+        $nombre_categoria = $_POST["nombre_categoria"];
+        if($nombre_categoria !=""){
+            $update = "UPDATE categoria_reporte SET nombre_categoria = '$nombre_categoria' WHERE id_categoria = $id_capturado";
             $resultado = $db->query($update);
             
             if($resultado){
