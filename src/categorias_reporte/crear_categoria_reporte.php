@@ -6,13 +6,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (!empty($nombre_categoria)) {
         $id_funcionario = 1;
         $id_area_municipal = 1;
-        $consulta = "INSERT INTO categoria_reporte (nombre_categoria, id_funcionario,id_area_municipal) 
-                    VALUES ('$nombre_categoria','$id_funcionario','$id_area_municipal')";
+        
         $db = getDatabase();
-        $resultado = $db->query($consulta);
+
+        $resultado = $db->execute(
+            "INSERT INTO categoria_reporte (nombre_categoria, id_funcionario,id_area_municipal) VALUES(?,?,?)",
+            [$nombre_categoria, $id_funcionario, $id_area_municipal]
+        );
 
         if ($resultado) {
-            echo "Categoria Creada correctamente";
+            header("Location: ?ruta=leer_categoria_reporte");
+            exit();
         } else {
             echo "Error al crear";
         }
