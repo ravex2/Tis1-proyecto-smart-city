@@ -45,6 +45,9 @@ $mapaRutas = [
     'editar_categoria_publicacion' => '/src/categorias_publicaciones/editar_categoria_publicacion.php',
     'eliminar_categoria_publicacion' => '/src/categorias_publicaciones/eliminar_categoria_publicacion.php',
 
+    'leer_categoria_reporte' => '/src/categorias_reporte/leer_categoria_reporte.php',
+    'crear_categoria_reporte' => '/src/categorias_reporte/crear_categoria_reporte.php',
+
     'asignar_rol' => '/public/usuario_rol/editar.php',
 
     'eliminar_area' => '/public/areas_municipales/eliminar.php',
