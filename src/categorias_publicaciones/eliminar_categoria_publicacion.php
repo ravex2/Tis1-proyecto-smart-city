@@ -3,9 +3,9 @@
 
     if(isset($_GET["id_enviado"])){
         $id_capturado = $_GET["id_enviado"];
-        $consulta = "DELETE FROM categoria_publicacion WHERE id_categoria=$id_capturado";
+        $consulta = "DELETE FROM categoria_publicacion WHERE id_categoria=?";
         $db = getDatabase();
-        $resultado =$db->query($consulta);
+        $resultado =$db->execute($consulta,[$id_capturado]);
         if ($resultado) {
             header("Location: leer_categoria_publicacion");
             exit();
