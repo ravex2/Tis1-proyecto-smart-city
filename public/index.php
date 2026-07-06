@@ -40,6 +40,8 @@ $mapaRutas = [
     'editar_publicacion' => '/src/publicaciones/editar_publicacion.php',
     'eliminar_publicacion' => '/src/publicaciones/eliminar_publicacion.php',
 
+    'crear_reporte' => '/src/reportes/crear_reporte.php',
+
     'leer_categoria_publicacion' => '/src/categorias_publicaciones/leer_categoria_publicacion.php',
     'crear_categoria_publicacion' => '/src/categorias_publicaciones/crear_categoria_publicacion.php',
     'editar_categoria_publicacion' => '/src/categorias_publicaciones/editar_categoria_publicacion.php',
