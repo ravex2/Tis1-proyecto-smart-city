@@ -37,7 +37,7 @@
                         echo "<td>".$tipo_estado."</td>";
                         echo "<td>".$descripcion."</td>";
                         echo    "<td>
-                                    <a href='?ruta=ver_reporte&id=".$fila['id_reporte']."'
+                                    <a href='?ruta=ver_reporte&id_enviado=".$fila['id_reporte']."'
                                     class='btn btn-primary rounded-pill px-4 fw-bold shadow-primary'>
                                         Ver seguimiento
                                     </a>
