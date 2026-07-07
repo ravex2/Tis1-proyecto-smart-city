@@ -42,6 +42,8 @@ $mapaRutas = [
 
     'crear_reporte' => '/src/reportes/crear_reporte.php',
 
+    'leer_mis_reportes' => '/src/reporte_ciudadano/leer_mis_reportes.php',
+
     'leer_categoria_publicacion' => '/src/categorias_publicaciones/leer_categoria_publicacion.php',
     'crear_categoria_publicacion' => '/src/categorias_publicaciones/crear_categoria_publicacion.php',
     'editar_categoria_publicacion' => '/src/categorias_publicaciones/editar_categoria_publicacion.php',
