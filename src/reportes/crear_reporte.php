@@ -104,7 +104,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     
                 </div>
                 <div class="d-flex justify-content-end">
-                    <a href="?ruta=leer_publicacion" class="btn btn-primary rounded-pill px-5 fw-bold shadow-primary">
+                    <a href="?ruta=leer_mis_reportes" class="btn btn-primary rounded-pill px-5 fw-bold shadow-primary">
                         Ir al listado
                     </a>
                 </div>
