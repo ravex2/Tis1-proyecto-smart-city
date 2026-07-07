@@ -15,7 +15,7 @@
     <table class="table">
     <thead>
         <tr>
-        <th scope="col">Fecha</th>
+        <th scope="col">Fecha Reporte</th>
         <th scope="col">Estado</th>
         <th scope="col">Descripcion</th>
         <th scope="col">Leer Reporte</th>
