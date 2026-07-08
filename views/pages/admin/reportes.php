@@ -1,3 +1,22 @@
+<?php
+    require_once __DIR__ . "/../../../config/database.php";
+
+    $db = getDatabase();
+    $consulta = "SELECT 
+                COUNT(*) as total,
+                SUM(CASE WHEN tipo_estado = 'pendiente' THEN 1 ELSE 0 END) as pendiente,
+                SUM(CASE WHEN tipo_estado = 'rechazado' THEN 1 ELSE 0 END) as rechazado,
+                SUM(CASE WHEN tipo_estado = 'en proceso' THEN 1 ELSE 0 END) as en_proceso,
+                SUM(CASE WHEN tipo_estado = 'resuelto' THEN 1 ELSE 0 END) as resuelto
+             FROM reporte";
+
+$resultado = $db->query($consulta);
+
+
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -112,35 +131,65 @@
 
             <!-- Filtros Rápidos -->
             <div class="row mb-4 g-3">
-                <div class="col-md-3">
+
+                <!-- Total Reportes -->
+                <div class="col-md">
                     <div class="card shadow-card p-3 d-flex flex-row align-items-center">
                         <div class="icon-box bg-primary bg-opacity-10 text-primary p-3 rounded-4 me-3">
                             <i class="bi bi-list-task fs-4"></i>
                         </div>
                         <div>
-                            <h4 class="fw-bold mb-0">128</h4>
+                            <h4 class="fw-bold mb-0"><?php echo $resultado[0]['total'];?></h4>
                             <span class="text-muted tiny">Total Reportes</span>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <!-- Pendientes -->
+                <div class="col-md">
                     <div class="card shadow-card p-3 d-flex flex-row align-items-center">
                         <div class="icon-box bg-warning bg-opacity-10 text-warning p-3 rounded-4 me-3">
                             <i class="bi bi-clock-history fs-4"></i>
                         </div>
                         <div>
-                            <h4 class="fw-bold mb-0">42</h4>
+                            <h4 class="fw-bold mb-0"><?php echo $resultado[0]['pendiente'];?></h4>
                             <span class="text-muted tiny">Pendientes</span>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <!-- Rechazados -->
+                <div class="col-md">
+                    <div class="card shadow-card p-3 d-flex flex-row align-items-center">
+                        <div class="icon-box bg-danger bg-opacity-10 text-danger p-3 rounded-4 me-3">
+                            <i class="bi bi-x-circle fs-4"></i>
+                        </div>
+                        <div>
+                            <h4 class="fw-bold mb-0"><?php echo $resultado[0]['rechazado'];?></h4>
+                            <span class="text-muted tiny">Rechazados</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- En Proceso -->
+                 <div class="col-md">
+                    <div class="card shadow-card p-3 d-flex flex-row align-items-center">
+                        <div class="icon-box bg-info bg-opacity-10 text-info p-3 rounded-4 me-3">
+                            <i class="bi bi-gear fs-4"></i>
+                        </div>
+                        <div>
+                            <h4 class="fw-bold mb-0"><?php echo $resultado[0]['en_proceso'];?></h4>
+                            <span class="text-muted tiny">En Proceso</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Resueltos -->
+                <div class="col-md">
                     <div class="card shadow-card p-3 d-flex flex-row align-items-center">
                         <div class="icon-box bg-success bg-opacity-10 text-success p-3 rounded-4 me-3">
                             <i class="bi bi-check2-all fs-4"></i>
                         </div>
                         <div>
-                            <h4 class="fw-bold mb-0">86</h4>
+                            <h4 class="fw-bold mb-0"><?php echo $resultado[0]['resuelto'];?></h4>
                             <span class="text-muted tiny">Resueltos</span>
                         </div>
                     </div>
