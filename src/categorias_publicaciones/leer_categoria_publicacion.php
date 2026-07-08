@@ -24,7 +24,8 @@
     </thead>
     <tbody>
         <?php
-            $consulta = "SELECT * FROM categoria_publicacion";
+            $consulta = "SELECT cp.id_categoria , cp.nombre, u.nombre as nombre_p,u.apellido as apellido_p FROM categoria_publicacion cp JOIN funcionario_municipal f ON cp.id_funcionario = f.id_funcionario
+            JOIN usuario u ON f.rut_usuario = u.rut ";
             $db = getDatabase();
             $resultado =$db->query($consulta);
 
@@ -32,11 +33,12 @@
                 foreach($resultado as $fila){
                     $id_categoria =$fila['id_categoria'];
                     $nombre =$fila['nombre'];
-                    $id_funcionario =$fila['id_funcionario'];
+                    $nombre_p =$fila['nombre_p'];
+                    $apellido_p =$fila['apellido_p'];
                     echo "<tr>";
                         echo "<td>".$id_categoria."</td>";                
                         echo "<td>".$nombre."</td>";
-                        echo "<td>".$id_funcionario."</td>";
+                        echo "<td>".$nombre_p." ".$apellido_p."</td>";
                         echo "<td><a href='?ruta=editar_categoria_publicacion&id_enviado=".$id_categoria."'>Editar </a></td>";
                         echo "<td><a href='?ruta=eliminar_categoria_publicacion&id_enviado=".$id_categoria."'>Eliminar </a></td>";
                     echo "</tr>";
