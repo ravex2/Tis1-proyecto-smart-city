@@ -25,9 +25,10 @@
     <tbody>
         <?php
             $consulta = "SELECT * FROM categoria_publicacion";
-            $resultado =$conexion->query($consulta);
+            $db = getDatabase();
+            $resultado =$db->query($consulta);
 
-            if($resultado->rowCount() > 0){
+            if(count($resultado) > 0){
                 foreach($resultado as $fila){
                     $id_categoria =$fila['id_categoria'];
                     $nombre =$fila['nombre'];
@@ -36,8 +37,8 @@
                         echo "<td>".$id_categoria."</td>";                
                         echo "<td>".$nombre."</td>";
                         echo "<td>".$id_funcionario."</td>";
-                        echo "<td><a href='editar_categoria_publicacion?id_enviado=".$id_categoria."'>Editar </a></td>";
-                        echo "<td><a href='eliminar_categoria_publicacion?id_enviado=".$id_categoria."'>Eliminar </a></td>";
+                        echo "<td><a href='?ruta=editar_categoria_publicacion&id_enviado=".$id_categoria."'>Editar </a></td>";
+                        echo "<td><a href='?ruta=eliminar_categoria_publicacion&id_enviado=".$id_categoria."'>Eliminar </a></td>";
                     echo "</tr>";
                 }
             }else{

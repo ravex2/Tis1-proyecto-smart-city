@@ -3,13 +3,16 @@
 
     if(isset($_GET["id_enviado"])){
         $id_capturado = $_GET["id_enviado"];
-        $consulta = "DELETE FROM publicacion WHERE id_publicacion=$id_capturado";
-        $resultado =$conexion->query($consulta);
-        if ($resultado) {
-            header("Location: leer_publicacion");
+        $db = getDatabase();
+
+        try{
+            $db->execute("DELETE FROM reaccion WHERE id_publicacion = ?",[$id_capturado]);
+            $db->execute("DELETE FROM comentario WHERE id_publicacion = ?",[$id_capturado]);
+            $db->execute("DELETE FROM publicacion WHERE id_publicacion = ?",[$id_capturado]);
+            header("Location: ?ruta=leer_publicacion");
             exit();
-        } else {
-            echo "Error al eliminar";
+        }catch (Exception $e) {
+        echo "Error al eliminar: " . $e->getMessage();
         }
     }else{
         echo "No existe este ID";

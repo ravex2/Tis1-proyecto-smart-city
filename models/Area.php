@@ -4,11 +4,6 @@
     $db = getDatabase();
     $pdo = $db->connection();
 
-    function listarAreas(){
-        $db = getDatabase();
-        return $db->query("SELECT a.id_area, a.nombre_area, a.descripcion, m.nombre AS nombre_municipalidad FROM area_municipal a JOIN municipalidad m on a.id_municipalidad = m.id_municipalidad");
-    }
-
     function insertarArea(string $nombre,string $descripcion,int $id_municipalidad){
         $db = getDatabase();
         
@@ -21,8 +16,34 @@
         return $db->execute("UPDATE area_municipal SET nombre_area='$nombre', descripcion='$descripcion', id_municipalidad='$id_municipalidad' WHERE id_area='$id'");
     }
 
+    function contarAreas(): int {
+        $db = getDatabase();
+        $result = $db->query("SELECT COUNT(*) AS total FROM area_municipal");
+
+        return (int) $result[0]['total'];
+    }
+    function listarConFuncionarios(): array{
+        $db = getDatabase();
+        $consulta = "SELECT a.id_area,a.nombre_area,a.descripcion,m.nombre AS nombre_municipalidad, COUNT(f.id_funcionario) AS total_funcionarios
+            FROM area_municipal a
+            LEFT JOIN funcionario_municipal f ON f.id_area_municipal = a.id_area LEFT JOIN municipalidad m ON m.id_municipalidad = a.id_municipalidad
+            GROUP BY a.id_area,a.nombre_area,a.descripcion,m.nombre";
+
+        return $db->query($consulta);
+    }
     function borrarArea(int $id){
         $db = getDatabase();
-        return $db->execute("DELETE FROM area_municipal where id_area = ?",[$id]);
+
+        $db->execute("DELETE FROM area_municipal WHERE id_area = ?",[$id]);
+
+        $resultado = $db->query("SELECT COUNT(*) AS total FROM area_municipal");
+
+        if ((int)$resultado[0]['total'] === 0) {
+            $db->execute("ALTER TABLE area_municipal AUTO_INCREMENT = 1");
+        }
+
+        return true;
     }
+
+
 ?>

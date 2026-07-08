@@ -8,24 +8,28 @@ use Dotenv\Dotenv;
 $dotenv = Dotenv::createImmutable(__DIR__ . "/..");
 $dotenv->load();
 
-$ruta = $_GET["ruta"] ?? "login";
-$rutasPublicas = ['login', 'registro'];
 
-/*
-if (!isset($_SESSION['user']) && !in_array($ruta, $rutasPublicas)) {
-    $ruta = 'login'; // Fuerza el login si no hay sesión
+if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_start();
 }
-*/
 
+$ruta = $_GET["ruta"] ?? "publicaciones";
+$rutasPublicas = ['login', 'registro', 'publicaciones'];
+
+
+if (!isset($_SESSION['user']) && !in_array($ruta, $rutasPublicas)) {
+    $ruta = 'login';
+}
 
 $mapaRutas = [
     'login'  => '/views/base.php',
     'registro' => '/views/pages/registro.php',
-    'inicio' => '/views/pages/admin/panel.php',
+    'logout' => '/views/pages/admin/logout.php',
+    'dashboard' => '/views/pages/admin/panel_admin.php',
     'reportes' => '/views/pages/admin/reportes.php',
     'sector' => '/views/pages/admin/sector.php',
-    'logout' => '/views/pages/auth/logout.php',
     'usuarios' => '/views/pages/admin/usuarios.php',
+    'roles_usuarios' => '/views/pages/admin/asignacion_roles.php',
     'publicaciones' => '/src/publicaciones/feed_publicaciones.php',
     'departamentos' => '/views/pages/admin/area_municipal.php',
     'comercio' => '/views/pages/admin/comercio.php',
@@ -40,11 +44,17 @@ $mapaRutas = [
     'crear_categoria_publicacion' => '/src/categorias_publicaciones/crear_categoria_publicacion.php',
     'editar_categoria_publicacion' => '/src/categorias_publicaciones/editar_categoria_publicacion.php',
     'eliminar_categoria_publicacion' => '/src/categorias_publicaciones/eliminar_categoria_publicacion.php',
+
+    'asignar_rol' => '/public/usuario_rol/editar.php',
+
+    'eliminar_area' => '/public/areas_municipales/eliminar.php',
+    'ingresar_area' => '/public/areas_municipales/ingresar.php',
+    'editar_area' => '/public/areas_municipales/editar.php',
+    'listar_area' => '/public/areas_municipales/listar.php',
 ];
 
 $archivoRelativo = $mapaRutas[$ruta] ?? '/views/pages/404.php';
 $archivoCompleto = BASE_PATH . $archivoRelativo;
-
 
 $template = new TemplateController();
 $template->ctrtemplate($archivoCompleto);

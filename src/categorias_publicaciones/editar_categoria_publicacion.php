@@ -4,8 +4,9 @@
     if(isset($_GET["id_enviado"])){
         $id_capturado = $_GET["id_enviado"];
         $consulta = "SELECT * FROM categoria_publicacion WHERE id_categoria=$id_capturado";
-        $resultado =$conexion->query($consulta);
-        $fila = $resultado->fetch();
+        $db = getDatabase();
+        $resultado =$db->query($consulta);
+        $fila = $resultado[0] ?? null;
 
         if(!$fila){
             header("Location: leer_categoria_publicacion");
@@ -22,7 +23,7 @@
         $nuevo_nombre = $_POST["nombre"];
         if($nuevo_nombre !=""){
             $update = "UPDATE categoria_publicacion SET nombre = '$nuevo_nombre' WHERE id_categoria = $id_capturado";
-            $resultado = $conexion->query($update);
+            $resultado = $db->query($update);
             
             if($resultado){
                 header("Location: leer_categoria_publicacion");

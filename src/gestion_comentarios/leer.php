@@ -11,15 +11,19 @@ if (empty($id_publicacion)) {
 }
 
 try {
-    $stmt = $conexion->prepare("
-        SELECT c.id_comentario, c.comentario, c.fecha_comentario, com.rut_usuario 
-        FROM comentario c
-        LEFT JOIN comenta com ON c.id_comentario = com.id_comentario
-        WHERE c.id_publicacion = ?
-        ORDER BY c.fecha_comentario ASC
-    ");
-    $stmt->execute([$id_publicacion]);
-    $comentarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $db = getDatabase();
+    $comentarios = $db->query(
+    "SELECT c.id_comentario,
+            c.comentario,
+            c.fecha_comentario,
+            com.rut_usuario
+     FROM comentario c
+     LEFT JOIN comenta com
+        ON c.id_comentario = com.id_comentario
+     WHERE c.id_publicacion = ?
+     ORDER BY c.fecha_comentario ASC",
+    [$id_publicacion]
+    );
 
     echo json_encode($comentarios);
 } catch (Exception $e) {

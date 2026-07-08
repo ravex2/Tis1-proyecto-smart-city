@@ -15,14 +15,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'PUT' || $_SERVER['REQUEST_METHOD'] === 'POST
     }
 
     try {
-        $stmt = $conexion->prepare("UPDATE comentario SET comentario = ? WHERE id_comentario = ?");
-        $stmt->execute([$comentarioTexto, $id_comentario]);
+        $db = getDatabase();
+
+        $db->execute(
+            "UPDATE comentario SET comentario = ? WHERE id_comentario = ?",
+            [$comentarioTexto, $id_comentario]
+        );
 
         echo json_encode([
             'success' => true,
             'message' => 'Comentario actualizado con éxito.'
         ]);
     } catch (Exception $e) {
-        echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+        echo json_encode([
+            'success' => false,
+            'message' => $e->getMessage()
+        ]);
     }
 }
