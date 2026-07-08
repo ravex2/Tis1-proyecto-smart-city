@@ -110,6 +110,12 @@ if(isset($_GET["id_enviado"])){
                         Ir al listado
                     </a>
                 </div>
+                <div class="d-flex justify-content-end">
+                    <a href="?ruta=seguimiento_reporte_funcionario&id_enviado=<?php echo $fila['id_reporte'];?>" 
+                    class="btn btn-primary rounded-pill px-5 fw-bold shadow-primary">
+                        Seguir Reporte
+                    </a>
+                </div>
             </main>
 
             
