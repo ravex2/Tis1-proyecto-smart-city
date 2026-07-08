@@ -1,12 +1,27 @@
 <?php
 require_once __DIR__ . "/../../config/database.php";
 $db = getDatabase();
+if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_start();
+}
+$rut = $_SESSION['user']['rut'];
+
+$consultaFuncionario = "SELECT id_funcionario FROM funcionario_municipal WHERE rut_usuario = ? ";
+$resultado = $db->query($consultaFuncionario, [$rut]);
+$funcionario = $resultado[0] ?? null;
+
+if(!$funcionario){
+    header("Location: ?ruta=dashboard");
+    exit();
+}
+
+$id_funcionario = $funcionario['id_funcionario'];
 
 if (isset($_GET["id_enviado"])) {
     $id_reporte = $_GET["id_enviado"];
 
-    $consulta = "SELECT * FROM reporte WHERE id_reporte = $id_reporte";
-    $resultado = $db->query($consulta);
+    $consulta = "SELECT * FROM reporte WHERE id_reporte = ? ";
+    $resultado = $db->query($consulta,[$id_reporte]);
     $reporte = $resultado[0] ?? null;
 
     if (!$reporte) {
@@ -19,19 +34,30 @@ if (isset($_GET["id_enviado"])) {
 }
 
 if($_SERVER["REQUEST_METHOD"]=="POST"){
+    
     $observacion = $_POST["observacion"];
-    $imagen_evidencia = $_POST["imagen_evidencia"];
+    $imagen = $_POST["imagen_evidencia"];
     $tipo_estado = $_POST["tipo_estado"];
 
-    $id_funcionario =1;
-
     $insert = "INSERT INTO seguimiento_reporte (observacion, imagen_evidencia, tipo_estado, id_funcionario, id_reporte)
-    VALUES ('$observacion', '$imagen_evidencia', '$tipo_estado', $id_funcionario, $id_reporte)";
-    
-    $db->query($insert);
-    $update = "UPDATE reporte SET tipo_estado = '$tipo_estado' WHERE id_reporte = $id_reporte";
+    VALUES (?,?,? ,? ,? )";
 
-    $db->query($update);
+
+    $db->execute($insert,[
+        $observacion,
+        $imagen,
+        $tipo_estado,
+        $id_funcionario,
+        $id_reporte
+    ]);
+    
+    $update = "UPDATE reporte SET tipo_estado = ? WHERE id_reporte = ?";
+
+
+    $db->execute($update,[
+        $tipo_estado,
+        $id_reporte
+    ]);
 
     header("Location: ?ruta=leer_reportes");
     exit();
