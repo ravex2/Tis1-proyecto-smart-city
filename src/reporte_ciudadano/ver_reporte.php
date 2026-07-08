@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . "/../../config/database.php";
+$rut = $_SESSION['user']['rut'];
 $db = getDatabase();
 $cat_pub = $db->query("SELECT * FROM categoria_reporte");
 
@@ -10,7 +11,7 @@ $cat_pub2 = $db->query("SELECT fm.id_funcionario , fm.rut_usuario, u.nombre
 
         $id_capturado = $_GET["id_enviado"];
 
-        $consulta = "SELECT * FROM reporte WHERE id_reporte=$id_capturado";
+        $consulta = "SELECT * FROM reporte WHERE id_reporte=$id_capturado AND rut_usuario = '$rut'";
         $resultado = $db->query($consulta);
         $fila = $resultado[0] ?? null;
 
