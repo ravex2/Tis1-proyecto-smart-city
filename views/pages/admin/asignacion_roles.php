@@ -11,8 +11,7 @@
     $usuarios = $usuarioModelo->findAllWithRoles();
     $roles = $rolModelo->findAll();
     
-    
-    session_start();
+
 
     if (!isset($_SESSION['user'])) {
         header('Location: ?ruta=login');
