@@ -37,6 +37,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
         <link rel="stylesheet" href="assets/css/panel.css">
+        <link rel="stylesheet" href="assets/css/panel_admin.css">
     </head>
 
     <body>
@@ -147,19 +148,19 @@
                                     <h5 class="fw-bold mb-3">Acciones rápidas</h5>
 
                                     <div class="d-grid gap-2">
-                                        <a href="?ruta=crear_publicacion" class="btn btn-primary">
-                                            <i class="bi bi-plus-circle"></i> Nueva publicación
+                                        <a href="?ruta=crear_publicacion" class="btn border-primary rapida">
+                                            <i class="bi bi-plus-circle"> Nueva publicación</i> 
                                         </a>
 
-                                        <a href="?ruta=leer_publicacion" class="btn btn-success">
-                                            <i class="bi bi-eye"></i> Ver publicaciones
+                                        <a href="?ruta=leer_publicacion" class="btn border-primary rapida">
+                                            <i class="bi bi-eye"> Ver publicaciones</i> 
                                         </a>
 
-                                        <a href="?ruta=leer_categoria_publicacion" class="btn btn-warning">
-                                            <i class="bi bi-folder-plus"></i> Categorías
+                                        <a href="?ruta=leer_categoria_publicacion" class="btn border-primary rapida">
+                                            <i class="bi bi-folder-plus"> Categorías</i> 
                                         </a>
-                                        <a href="#" class="btn btn-danger">
-                                            <i class="bi bi-exclamation-triangle-fill"> Revisar Comercio Local</i> 
+                                        <a href="#" class="btn border-primary rapida">
+                                            <i class="bi bi-exclamation-triangle-fill">  Revisar Comercio Local</i> 
                                         </a>
                                     </div>
                                 </div>

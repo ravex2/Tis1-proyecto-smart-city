@@ -1,8 +1,11 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
 }
-
 
 require_once __DIR__ . '/../config/app.php';
 require_once __DIR__ . '/../controllers/autenticacion.controlador.php';
@@ -61,8 +64,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($user) {
         $_SESSION['user'] = $user;
 
-        header('Location: ?ruta=dashboard');
-        exit();
+        if ($_SESSION['user']['tipo_interfaz'] === 'interno') {
+            // Envía al Administrador y a los funcionarios a su panel de gestión
+            header('Location: ?ruta=dashboard');
+            exit();
+        } else {
+            // Envía a los Ciudadanos y Emprendedores al feed comunitario
+            header('Location: ?ruta=publicaciones');
+            exit();
+        }
 
     } else {
         $errorMessage = 'Credenciales incorrectas. Por favor, inténtalo de nuevo.';
