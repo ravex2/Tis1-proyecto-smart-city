@@ -1,0 +1,125 @@
+<?php
+require_once __DIR__ . "/../../config/database.php";
+$db = getDatabase();
+$cat_pub = $db->query("SELECT * FROM categoria_reporte");
+if(isset($_GET["id_enviado"])){
+
+        $id_capturado = $_GET["id_enviado"];
+        $consulta = "SELECT * FROM reporte WHERE id_reporte=$id_capturado";
+        $resultado = $db->query($consulta);
+        $fila = $resultado[0] ?? null;
+
+        if(!$fila){
+            header("Location: ?ruta=leer_reportes");
+            exit();
+        }
+
+
+    }else{
+        echo "No existe este ID";
+        exit();
+    }
+
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartCity</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/Tis1-proyecto-smart-city/assets/css/panel.css">
+
+
+</head>
+<body>
+
+    <div class="container-fluid">
+    <div class="row">
+
+        <?php include BASE_PATH . "/views/layout/sidebar.php"; ?>
+
+        <main class="col-md-10 ms-sm-auto px-4">
+                <div class="feed-header p-3 sticky-top bg-white-glass blur">
+                    <h5 class="fw-bold mb-0">Inicio</h5>
+                    
+                </div>
+                <div class="post-box p-3 border-bottom"> 
+                    <div class="d-flex gap-3">
+                        <img src="https://i.pravatar.cc/150?u=3" class="rounded-circle" width="48" height="48">
+                        <div class="flex-grow-1">
+
+                            <form method="POST" class="mt-2">
+                                
+                                <div class="mb-3">
+                                    <textarea name="descripcion" class="form-control rounded-4 px-3 py-2"
+                                    rows="3"  readonly><?php echo $fila['descripcion']; ?></textarea>
+                                </div>
+
+
+                                <div class="row g-2 mb-3">
+
+                                    <div class="col-md-6">
+                                        <input type="text" name="imagen" class="form-control rounded-pill px-3 py-2"
+                                        value="<?php echo $fila['imagen']; ?>"     readonly>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <select name = "id_categoria_reporte" class="form-select rounded-pill px-3 py-2" disabled>
+                                            <?php
+                                                foreach($cat_pub as $c){ ?>
+                                                    <option value="<?php echo $c['id_categoria']; ?>" 
+                                                    <?php if($c['id_categoria'] == $fila['id_categoria_reporte']) echo "selected"; ?>
+                                                    >
+                                                        <?php echo $c['nombre_categoria'];?>
+                                                    </option>
+
+                                            <?php } ?>
+
+                                        </select>
+                                    </div>
+
+                                </div>
+                                <div class="row g-2 mb-3">
+
+                                    <div class="col-md-6">
+                                        <input type="text" name="tipo_estado" class="form-control rounded-pill px-3 py-2"
+                                        value="<?php echo $fila['tipo_estado']; ?>"     readonly>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input type="text" name="fecha" class="form-control rounded-pill px-3 py-2"
+                                        value="<?php echo $fila['fecha']; ?>"     readonly>
+                                    </div>
+
+                                </div>
+
+                            </form>
+                            
+                        </div>
+
+                        
+                        
+                    </div>
+                    
+                </div>
+                <div class="d-flex justify-content-end">
+                    <a href="?ruta=leer_reportes" class="btn btn-primary rounded-pill px-5 fw-bold shadow-primary">
+                        Ir al listado
+                    </a>
+                </div>
+                <div class="d-flex justify-content-end">
+                    <a href="?ruta=seguimiento_reporte_funcionario&id_enviado=<?php echo $fila['id_reporte'];?>" 
+                    class="btn btn-primary rounded-pill px-5 fw-bold shadow-primary">
+                        Seguir Reporte
+                    </a>
+                </div>
+            </main>
+
+            
+        </div>
+    </div>
+</body>
+</html>

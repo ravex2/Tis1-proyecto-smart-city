@@ -3,16 +3,16 @@
     $db = getDatabase();
     if(isset($_GET["id_enviado"])){
         $id_capturado = $_GET["id_enviado"];
-        
+
         
         $resultado =$db->query(
-            "SELECT * FROM categoria_publicacion WHERE id_categoria = ?",
+            "SELECT * FROM categoria_reporte WHERE id_categoria = ?",
             [$id_capturado]
         );
         $fila = $resultado[0] ?? null;
 
         if(!$fila){
-            header("Location: leer_categoria_publicacion");
+            header("Location: leer_categoria_reporte");
             exit();
         }
 
@@ -23,15 +23,16 @@
     }
 
     if($_SERVER["REQUEST_METHOD"]=="POST"){
-        $nuevo_nombre = $_POST["nombre"];
-        if($nuevo_nombre !=""){
+        $nombre_categoria = $_POST["nombre_categoria"];
+        if($nombre_categoria !=""){
+
             $resultado = $db->execute(
-                "UPDATE categoria_publicacion SET nombre = ? WHERE id_categoria = ?",
-                [$nuevo_nombre,$id_capturado]
+                "UPDATE categoria_reporte SET nombre_categoria = ? WHERE id_categoria = ?",
+                [$nombre_categoria,$id_capturado]
             );
             
             if($resultado){
-                header("Location: leer_categoria_publicacion");
+                header("Location: leer_categoria_reporte");
                 exit();
             }else{
                 echo "Error al actualizar";
@@ -44,11 +45,11 @@
 
 ?>
 
-<h2>Editar Nombre Categoria Publicacion</h2>
+<h2>Editar Nombre Categoria Reporte</h2>
 
 <form method="POST">
-    <input type="text" name="nombre" 
-           value="<?php echo $fila['nombre']; ?>" required>
+    <input type="text" name="nombre_categoria" 
+           value="<?php echo $fila['nombre_categoria']; ?>" required>
 
     <button type="submit">Actualizar</button>
 </form>

@@ -3,11 +3,11 @@
 
     if(isset($_GET["id_enviado"])){
         $id_capturado = $_GET["id_enviado"];
-        $consulta = "DELETE FROM categoria_publicacion WHERE id_categoria=?";
+        $consulta = "DELETE FROM categoria_reporte WHERE id_categoria= ?";
         $db = getDatabase();
         $resultado =$db->execute($consulta,[$id_capturado]);
         if ($resultado) {
-            header("Location: leer_categoria_publicacion");
+            header("Location: leer_categoria_reporte");
             exit();
         } else {
             echo "Error al eliminar";

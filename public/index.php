@@ -40,10 +40,25 @@ $mapaRutas = [
     'editar_publicacion' => '/src/publicaciones/editar_publicacion.php',
     'eliminar_publicacion' => '/src/publicaciones/eliminar_publicacion.php',
 
+    'crear_reporte' => '/src/reportes/crear_reporte.php',
+
+    'leer_mis_reportes' => '/src/reporte_ciudadano/leer_mis_reportes.php',
+    'ver_reporte' => '/src/reporte_ciudadano/ver_reporte.php',
+
+    'leer_reportes' => '/src/reporte_funcionario/leer_reportes.php',
+    'ver_reporte_funcionario' => '/src/reporte_funcionario/ver_reporte_funcionario.php',
+    'seguimiento_reporte_funcionario' => '/src/reporte_funcionario/seguimiento_reporte_funcionario.php',
+
+
     'leer_categoria_publicacion' => '/src/categorias_publicaciones/leer_categoria_publicacion.php',
     'crear_categoria_publicacion' => '/src/categorias_publicaciones/crear_categoria_publicacion.php',
     'editar_categoria_publicacion' => '/src/categorias_publicaciones/editar_categoria_publicacion.php',
     'eliminar_categoria_publicacion' => '/src/categorias_publicaciones/eliminar_categoria_publicacion.php',
+
+    'leer_categoria_reporte' => '/src/categorias_reporte/leer_categoria_reporte.php',
+    'crear_categoria_reporte' => '/src/categorias_reporte/crear_categoria_reporte.php',
+    'editar_categoria_reporte' => '/src/categorias_reporte/editar_categoria_reporte.php',
+    'eliminar_categoria_reporte' => '/src/categorias_reporte/eliminar_categoria_reporte.php',
 
     'asignar_rol' => '/public/usuario_rol/editar.php',
 
