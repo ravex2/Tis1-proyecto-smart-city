@@ -17,15 +17,21 @@
         <tr>
         <th scope="col">id</th>
         <th scope="col">Nombre Categoria</th>
-        <th scope="col">ID Funcionario</th>
-        <th scope="col">ID Area Municipal</th>
+        <th scope="col">Funcionario</th>
+        <th scope="col">Area Municipal</th>
         <th scope="col">Editar</th>
         <th scope="col">Eliminar</th>
         </tr>
     </thead>
     <tbody>
         <?php
-            $consulta = "SELECT * FROM categoria_reporte";
+            $consulta = "SELECT cr.id_categoria,cr.nombre_categoria,u.nombre,u.apellido,am.nombre_area
+            FROM categoria_reporte cr JOIN  area_municipal am ON cr.id_area_municipal = am.id_area
+            JOIN funcionario_municipal f ON cr.id_funcionario = f.id_funcionario
+            JOIN usuario u ON f.rut_usuario = u.rut ";
+
+
+
             $db = getDatabase();
             $resultado =$db->query($consulta);
 
@@ -33,13 +39,14 @@
                 foreach($resultado as $fila){
                     $id_categoria =$fila['id_categoria'];
                     $nombre_categoria =$fila['nombre_categoria'];
-                    $id_funcionario =$fila['id_funcionario'];
-                    $id_area_municipal =$fila['id_area_municipal'];
+                    $nombre =$fila['nombre'];
+                    $apellido =$fila['apellido'];
+                    $nombre_area =$fila['nombre_area'];
                     echo "<tr>";
                         echo "<td>".$id_categoria."</td>";                
                         echo "<td>".$nombre_categoria."</td>";
-                        echo "<td>".$id_funcionario."</td>";
-                        echo "<td>".$id_area_municipal."</td>";
+                        echo "<td>".$nombre. " ".$apellido. "</td>";
+                        echo "<td>".$nombre_area."</td>";
                         echo "<td><a href='?ruta=editar_categoria_reporte&id_enviado=".$id_categoria."'>Editar </a></td>";
                         echo "<td><a href='?ruta=eliminar_categoria_reporte&id_enviado=".$id_categoria."'>Eliminar </a></td>";
                     echo "</tr>";
