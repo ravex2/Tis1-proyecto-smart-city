@@ -66,6 +66,8 @@ $mapaRutas = [
     'ingresar_area' => '/public/areas_municipales/ingresar.php',
     'editar_area' => '/public/areas_municipales/editar.php',
     'listar_area' => '/public/areas_municipales/listar.php',
+
+    'ingresar_emprendimiento' => '/public/negocios_locales/ingresar.php',
 ];
 
 $archivoRelativo = $mapaRutas[$ruta] ?? '/views/pages/404.php';
