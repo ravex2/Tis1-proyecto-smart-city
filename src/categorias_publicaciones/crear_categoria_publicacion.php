@@ -1,11 +1,28 @@
 <?php
 require_once __DIR__ . "/../../config/database.php";
 
+$db = getDatabase();
+$areas = $db->query("SELECT * FROM area_municipal");
+
+if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_start();
+}
+$rut = $_SESSION['user']['rut'];
+
+$consultaFuncionario = "SELECT id_funcionario FROM funcionario_municipal WHERE rut_usuario = ? ";
+$resultado = $db->query($consultaFuncionario, [$rut]);
+$funcionario = $resultado[0] ?? null;
+
+if(!$funcionario){
+    header("Location: ?ruta=dashboard");
+    exit();
+}
+
+$id_funcionario = $funcionario['id_funcionario'];
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nombre = $_POST["nombre"];
     if (!empty($nombre)) {
-        $id_funcionario = 1;
-        $db = getDatabase();
         $resultado = $db->execute(
             "INSERT INTO categoria_publicacion (nombre, id_funcionario) VALUES(?,?)",
             [$nombre, $id_funcionario]
