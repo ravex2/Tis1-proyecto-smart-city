@@ -39,6 +39,10 @@ $mapaRutas = [
     'crear_publicacion' => '/src/publicaciones/crear_publicacion.php',
     'editar_publicacion' => '/src/publicaciones/editar_publicacion.php',
     'eliminar_publicacion' => '/src/publicaciones/eliminar_publicacion.php',
+    'crear_votacion' => '/src/participacion_ciudadana/formulario_crear_votacion.php',
+    'lista_votaciones' => '/src/participacion_ciudadana/lista_votaciones.php',
+    'ver_votacion' => '/src/participacion_ciudadana/ver_votacion.php',
+    'resultados_votacion' => '/src/participacion_ciudadana/resultados_votacion.php',
 
     'leer_categoria_publicacion' => '/src/categorias_publicaciones/leer_categoria_publicacion.php',
     'crear_categoria_publicacion' => '/src/categorias_publicaciones/crear_categoria_publicacion.php',
