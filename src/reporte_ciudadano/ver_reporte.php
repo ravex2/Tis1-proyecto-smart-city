@@ -2,9 +2,14 @@
 require_once __DIR__ . "/../../config/database.php";
 $db = getDatabase();
 $cat_pub = $db->query("SELECT * FROM categoria_reporte");
-if(isset($_GET["id_enviado"])){
+
+$cat_pub2 = $db->query("SELECT fm.id_funcionario , fm.rut_usuario, u.nombre
+                     FROM funcionario_municipal fm JOIN usuario u ON fm.rut_usuario = u.rut ");
+
+    if(isset($_GET["id_enviado"])){
 
         $id_capturado = $_GET["id_enviado"];
+
         $consulta = "SELECT * FROM reporte WHERE id_reporte=$id_capturado";
         $resultado = $db->query($consulta);
         $fila = $resultado[0] ?? null;
@@ -14,12 +19,14 @@ if(isset($_GET["id_enviado"])){
             exit();
         }
 
+        $consultaSeguimientos = "SELECT * FROM seguimiento_reporte WHERE id_reporte = $id_capturado ORDER BY fecha ASC";
+        $seguimientos = $db->query($consultaSeguimientos);
+
 
     }else{
         echo "No existe este ID";
         exit();
     }
-
 ?>
 
 <!DOCTYPE html>
@@ -105,6 +112,62 @@ if(isset($_GET["id_enviado"])){
                     </div>
                     
                 </div>
+
+                <?php
+                if (count($seguimientos) > 0) {
+                    $contador =1;
+                    foreach ($seguimientos as $s) {
+                        ?>
+                        <div class="post-box p-3 border-bottom">
+                            <h1>Seguimiento <?php echo $contador; ?></h1>
+                            <div class="flex-grow-1">
+                                <div class="mb-3">
+                                    <textarea name="observacion" class="form-control rounded-4 px-3 py-2"
+                                    rows="3" readonly><?php echo $s['observacion']; ?></textarea>
+                                </div>
+                                <div class="row g-2 mb-3">
+                                    <div class="col-md-6">
+                                        <input type="text" name="imagen_evidencia" class="form-control rounded-pill px-3 py-2"
+                                        value="<?php echo $s['imagen_evidencia']; ?>" readonly>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input type="text" name="fecha" class="form-control rounded-pill px-3 py-2"
+                                        value="<?php echo $s['fecha']; ?>" readonly>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="col-md-6">
+                                        <select name = "id_funcionario" class="form-select rounded-pill px-3 py-2" disabled>
+                                            <?php
+                                                foreach($cat_pub2 as $c2){ ?>
+                                                    <option value="<?php echo $c2['id_funcionario']; ?>" 
+                                                    <?php if($c2['id_funcionario'] == $s['id_funcionario']) echo "selected"; ?>
+                                                    >
+                                                        <?php echo $c2['nombre'];?>
+                                                    </option>
+
+                                            <?php } ?>
+
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <?php
+                        $contador++;
+                    }
+
+                } else {
+                    echo "<p>Aún no existen seguimientos para este reporte.</p>";
+                }
+                ?>
+
+
+
+                
+
+
                 <div class="d-flex justify-content-end">
                     <a href="?ruta=leer_mis_reportes" class="btn btn-primary rounded-pill px-5 fw-bold shadow-primary">
                         Ir al listado
