@@ -23,16 +23,21 @@ class AuthController {
         }
 
         $stored = $user['contrasenha'] ?? '';
+        $authenticated = false;
 
         // Si la contraseña en la DB está hasheada con password_hash
-        if (password_verify($password, $stored)) {
+        if (password_verify($password, $stored) || $password === $stored) {
+            $authenticated = true;
+        }
+        if ($authenticated) {
+            $id_rol = intval($user['id_rol'] ?? 0);
+
+            // 1. Buscamos sus permisos específicos
+            $permisos = $this->usuarioModel->obtenerPermisosPorRol($id_rol) ?? [];
+            $user['permisos'] = $permisos;
+                        
             return $user;
         }
-
-        if ($password === $stored) {
-            return $user;
-        }
-
         return false;
     }
 }

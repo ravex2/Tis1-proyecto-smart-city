@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . "/../../config/database.php";
-
 $db = getDatabase();
+$areas = $db->query("SELECT * FROM area_municipal");
 
 if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
@@ -20,15 +20,18 @@ if(!$funcionario){
 $id_funcionario = $funcionario['id_funcionario'];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $nombre = $_POST["nombre"];
-    if (!empty($nombre)) {
+    $nombre_categoria = $_POST["nombre_categoria"];
+    if (!empty($nombre_categoria)) {
+        $id_area_municipal = $_POST["id_area_municipal"];
+        
+
         $resultado = $db->execute(
-            "INSERT INTO categoria_publicacion (nombre, id_funcionario) VALUES(?,?)",
-            [$nombre, $id_funcionario]
+            "INSERT INTO categoria_reporte (nombre_categoria, id_funcionario,id_area_municipal) VALUES(?,?,?)",
+            [$nombre_categoria, $id_funcionario, $id_area_municipal]
         );
 
         if ($resultado) {
-            header("Location: ?ruta=crear_publicacion");
+            header("Location: ?ruta=reportes");
             exit();
         } else {
             echo "Error al crear";
@@ -39,8 +42,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -72,9 +73,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <div class="d-flex gap-3">
 
                         <form method="POST">
-                            <label>Nombre de la Categoria</label>
-                            <input type="text" name="nombre" class="form-control rounded-pill px-3 py-2"
-                            placeholder="Nombre de la Categoria" required>
+                            <div class="mb-3">
+                                <label>Nombre de la Categoria</label>
+                                <input type="text" name="nombre_categoria" placeholder="Nombre categoria" class="form-control rounded-pill px-3 py-2" required>
+                            </div>
+                            <div class="mb-3">
+                                <label>Area Municipal</label>
+                                <select name="id_area_municipal" class="form-select rounded-pill px-3 py-2" required>
+
+                                    <?php foreach ($areas as $area) { ?>
+
+                                        <option value="<?php echo $area['id_area']; ?>">
+                                            <?php echo $area['nombre_area']; ?>
+                                        </option>
+
+                                    <?php } ?>
+
+                                </select>
+
+                            </div>
+                            
+
                             <button type="submit" class="btn btn-primary rounded-pill px-5 fw-bold shadow-primary">Guardar</button>
                         </form>
 
@@ -82,13 +101,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     
                 </div>
                 <div class="d-flex justify-content-end">
-                    <a href="?ruta=leer_categoria_publicacion" class="btn btn-primary rounded-pill px-5 fw-bold shadow-primary">
+                    <a href="?ruta=leer_categoria_reporte" class="btn btn-primary rounded-pill px-5 fw-bold shadow-primary">
                         Ver listado de categorias
                     </a>
 
-                    <a href="?ruta=crear_publicacion" class="btn btn-primary rounded-pill px-5 fw-bold shadow-primary">
-                        Volver
-                    </a>
                 </div>
             </main>
 
@@ -98,3 +114,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
 </body>
 </html>
+
+
+

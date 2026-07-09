@@ -15,6 +15,9 @@ logs/
 # archivos no necearios
 models/crudtrait.php
 
+public/uploads/*
+!.gitkee
+
 
 # archivos de confiuracion os
 .DS_Store

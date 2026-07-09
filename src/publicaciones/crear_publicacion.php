@@ -1,6 +1,20 @@
 <?php
 require_once __DIR__ . "/../../config/database.php";
 $db = getDatabase();
+if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_start();
+}
+$rut = $_SESSION['user']['rut'];
+$consultaFuncionario = "SELECT id_funcionario FROM funcionario_municipal WHERE rut_usuario = ? ";
+$resultado = $db->query($consultaFuncionario, [$rut]);
+$funcionario = $resultado[0] ?? null;
+
+if(!$funcionario){
+    header("Location: ?ruta=dashboard");
+    exit();
+}
+
+$id_funcionario = $funcionario['id_funcionario'];
 $cat_pub = $db->query("SELECT * FROM categoria_publicacion");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -21,7 +35,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
     $consulta = "INSERT INTO publicacion(contenido,titulo,fecha_evento,tipo_estado,lugar,imagen, visitas, id_funcionario,id_categoria) 
-                VALUES('$contenido','$titulo',".($fecha_evento ? "'$fecha_evento'" : "NULL").",'$tipo_estado','$lugar','$imagen',0,1,$id_categoria)";
+    VALUES('$contenido','$titulo',".($fecha_evento ? "'$fecha_evento'" : "NULL").",'$tipo_estado','$lugar','$imagen',0,'$id_funcionario',$id_categoria)";
+    
     $db->query($consulta);
     header("Location: ?ruta=crear_publicacion");
 
@@ -52,8 +67,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <main class="col-md-10 ms-sm-auto px-4">
                 <div class="feed-header p-3 sticky-top bg-white-glass blur">
                     <h5 class="fw-bold mb-0">Inicio</h5>
+                    
                 </div>
-
+                <div class="d-flex justify-content-end">
+                    <a href="?ruta=crear_categoria_publicacion" class="btn btn-primary rounded-pill px-5 fw-bold shadow-primary">
+                        Crear Nueva Categoria Publicacion
+                    </a>
+                </div>
                 <div class="post-box p-3 border-bottom"> 
                     <div class="d-flex gap-3">
                         <img src="https://i.pravatar.cc/150?u=3" class="rounded-circle" width="48" height="48">
@@ -64,11 +84,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                             <form method="POST" class="mt-2">
                                 <div class="mb-3">
+                                    <label>Titulo de la Publicacion</label>
                                     <input type="text" name="titulo" class="form-control rounded-pill px-3 py-2"
                                         placeholder="Titulo de la publicacion" required>
                                 </div>
 
                                 <div class="mb-3">
+                                    <label>Contenido de la publicacion</label>
                                     <textarea name="contenido" class="form-control rounded-4 px-3 py-2"
                                     placeholder="Descripcion de la publicacion" rows="3" required></textarea>
                                 </div>
@@ -76,11 +98,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <div class="row g-2 mb-3">
 
                                     <div class="col-md-6">
+                                        <label>Fecha</label>
                                         <input type="datetime-local" name="fecha_evento"
                                         class="form-control rounded-pill px-3 py-2">
                                     </div>
 
                                     <div class="col-md-6">
+                                        <label>Estado Publicacion</label>
                                         <select name="tipo_estado" class="form-select rounded-pill px-3 py-2">
                                             <option value="activa">Activa</option>
                                             <option value="desactivada">No activa</option>
@@ -90,6 +114,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 </div>
         
                                 <div class="mb-3">
+                                    <label>Lugar</label>
                                     <input type="text" name="lugar" class="form-control rounded-pill px-3 py-2"
                                     placeholder="Lugar del evento" required>
                                 </div>
@@ -97,11 +122,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <div class="row g-2 mb-3">
 
                                     <div class="col-md-6">
+                                        <label>Imagen</label>
                                         <input type="text" name="imagen" class="form-control rounded-pill px-3 py-2"
                                             placeholder="imagen_1.jpg" required>
                                     </div>
 
                                     <div class="col-md-6">
+                                        <label>Categoria</label>
                                         <select name = "id_categoria" class="form-select rounded-pill px-3 py-2">
                                             <?php
                                                 foreach($cat_pub as $c){ ?>
@@ -132,7 +159,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
                 <div class="d-flex justify-content-end">
                     <a href="?ruta=leer_publicacion" class="btn btn-primary rounded-pill px-5 fw-bold shadow-primary">
-                        Ir al listado
+                        Ir al listado de publicaciones
                     </a>
                 </div>
             </main>
