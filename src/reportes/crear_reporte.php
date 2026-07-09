@@ -6,119 +6,112 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
 }
 
 $rut_usuario = $_SESSION['user']['rut'];
-
-
 $db = getDatabase();
 $cat_pub = $db->query("SELECT * FROM categoria_reporte");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    
-
+    $titulo = $_POST["titulo"];
     $descripcion = $_POST["descripcion"];
-    $imagen = $_POST["imagen"];
     $id_categoria_reporte = $_POST["id_categoria_reporte"];
     $latitud = $_POST["latitud"];
     $longitud = $_POST["longitud"];
-    
+    $imagen = $_POST["imagen"];
 
-    $consulta = "INSERT INTO reporte(descripcion,id_categoria_reporte,latitud,longitud,imagen,rut_usuario) 
-                VALUES('$descripcion','$id_categoria_reporte','$latitud','$longitud','$imagen',$rut_usuario)";
+    
+    $consulta = "INSERT INTO reporte(titulo, descripcion, id_categoria_reporte, latitud, longitud, imagen, rut_usuario, tipo_estado) 
+    VALUES('$titulo', '$descripcion', '$id_categoria_reporte', '$latitud', '$longitud', '$imagen', '$rut_usuario', 'pendiente')";
+    
+    
     $db->query($consulta);
-    header("Location: ?ruta=crear_reporte");
 
-    
+    header("Location: ?ruta=crear_reporte");
+    exit;
 }
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SmartCity</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="/Tis1-proyecto-smart-city/assets/css/panel.css">
-
-
+    <link href="https://jsdelivr.net" rel="stylesheet">
+    <link href="https://googleapis.com" rel="stylesheet">
+    <link rel="stylesheet" href="https://jsdelivr.net">
+    <link rel="stylesheet" href="/TIS1-PROYECTO-SMART-CITY/assets/css/panel.css">
 </head>
+
 <body>
-
     <div class="container-fluid">
-    <div class="row">
+        <div class="row">
+            <?php include BASE_PATH . "/views/layout/sidebar.php"; ?>
 
-        <main class="col-md-10 ms-sm-auto px-4">
-                <div class="feed-header p-3 sticky-top bg-white-glass blur">
-                    <h5 class="fw-bold mb-0">Inicio</h5>
-                    
+            <main class="col-md-10 ms-sm-auto px-5 py-4">
+                <div class="feed-header p-3 sticky-top bg-white-glass blur mb-4">
+                    <h2 class="fw-bold mb-1">Ingresar Reporte Ciudadano</h2>
+                    <p class="text-muted small">Complete la información para reportar un incidente directamente al municipio.</p>
                 </div>
-                <div class="post-box p-3 border-bottom"> 
-                    <div class="d-flex gap-3">
-                        <img src="https://i.pravatar.cc/150?u=3" class="rounded-circle" width="48" height="48">
-                        <div class="flex-grow-1">
-
-                            <form method="POST" class="mt-2">
-
-                                <button type="button" class="btn btn-primary rounded-pill px-4 fw-bold shadow-primary" onclick="obtenerUbicacion()">
-                                    Obtener ubicación
-                                </button>
-
-                                <input type="hidden" name="latitud" id="latitud">
-                                <input type="hidden" name="longitud" id="longitud">
-
-                                <div class="mb-3">
-                                    <textarea name="descripcion" class="form-control rounded-4 px-3 py-2"
-                                    placeholder="Descripcion Reporte" rows="3" required></textarea>
-                                </div>
 
 
-                                <div class="row g-2 mb-3">
+                <div class="card border-0 p-4 bg-white rounded-4 shadow-sm mb-4" style="box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04) !important;">
+                    <form method="POST" class="mt-2">
 
-                                    <div class="col-md-6">
-                                        <input type="text" name="imagen" class="form-control rounded-pill px-3 py-2"
-                                            placeholder="imagen_1.jpg" required>
-                                    </div>
+                        <input type="hidden" name="latitud" id="latitud">
+                        <input type="hidden" name="longitud" id="longitud">
 
-                                    <div class="col-md-6">
-                                        <select name = "id_categoria_reporte" class="form-select rounded-pill px-3 py-2">
-                                            <?php
-                                                foreach($cat_pub as $c){ ?>
-                                                    <option value="<?php echo $c['id_categoria']; ?>" >
-                                                        <?php echo $c['nombre_categoria'];?>
-                                                    </option>
-
-                                            <?php } ?>
-
-                                        </select>
-                                    </div>
-
-                                </div>
-
-                                <div class="d-flex justify-content-end">
-                                    <button class="btn btn-primary rounded-pill px-4 fw-bold shadow-primary">
-                                        Publicar
-                                    </button>
-                                </div>
-                            </form>
-                            
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold small text-secondary">Título del Incidente</label>
+                            <input type="text" name="titulo" class="form-control rounded-3 py-2 px-3" placeholder="Ej: Bache profundo en calzada principal / Fuga de agua" required>
                         </div>
 
-                        
-                        
-                    </div>
-                    
-                </div>
-                <div class="d-flex justify-content-end">
-                    <a href="?ruta=leer_mis_reportes" class="btn btn-primary rounded-pill px-5 fw-bold shadow-primary">
-                        Ir al listado
-                    </a>
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold small text-secondary">Categoría del Incidente</label>
+                                <select name="id_categoria_reporte" class="form-select rounded-3 py-2 px-3">
+                                    <?php foreach ($cat_pub as $c) { ?>
+                                        <option value="<?php echo $c['id_categoria']; ?>">
+                                            <?php echo htmlspecialchars($c['nombre_categoria']); ?>
+                                        </option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold small text-secondary">Evidencia Fotográfica </label>
+                                <input type="text" name="imagen" class="form-control rounded-3 py-2 px-3" placeholder="Ej: imagen.jpg o bache.png" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold small text-secondary">Ubicación Geográfica</label>
+                            <div class="input-group">
+                                <button type="button" class="btn btn-primary px-4 fw-bold rounded-start-3" onclick="obtenerUbicacion()">
+                                    <i class="bi bi-geo-alt-fill me-2"></i> Obtener ubicación
+                                </button>
+                                <input type="text" class="form-control bg-light rounded-end-3 border-start-0 text-muted" id="coordenadas-texto-visible" placeholder="Coordenadas no obtenidas aún" readonly>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold small text-secondary">Descripción Detallada del Suceso</label>
+                            <textarea name="descripcion" class="form-control rounded-3 px-3 py-2" placeholder="Escriba de forma detallada el problema observado para facilitar la revisión del funcionario..." rows="4" required></textarea>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center border-top pt-3">
+                            <a href="?ruta=leer_mis_reportes" class="text-muted text-decoration-none small fw-medium">
+                                <i class="bi bi-arrow-left me-1"></i> Ir al listado
+                            </a>
+                            <button class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm">
+                                Publicar Reporte
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </main>
-
-            
         </div>
     </div>
     <script src="/Tis1-proyecto-smart-city/src/reportes/geolocalizacion.js"></script>
 </body>
+
 </html>
