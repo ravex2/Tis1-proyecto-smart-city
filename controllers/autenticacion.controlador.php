@@ -14,12 +14,8 @@ class AuthController {
     private $sessionController;
     
     public function __construct($usuarioModel = null) {
-        if ($usuarioModel) {
-            $this->usuarioModel = $usuarioModel;
-        } else {
-            $this->usuarioModel = new Usuario();
-            $this->sessionController = new SesionController();
-        }
+        $this->usuarioModel = $usuarioModel ?? new Usuario();
+        $this->sessionController = new SesionController();
         $this->emailService = new EmailService(); 
     }
 
@@ -133,34 +129,68 @@ class AuthController {
             'message' => 'Registro exitoso. Revisa tu email para confirmar tu cuenta.'
         ];
     }
-    public function verificarEmailUsuario($email,$rut) : bool {
-        $verification = $this->sessionController->verificarEmailSesion($email, $rut);
-        return !empty($verification);
+    public function verificarEmailUsuario(string $email, string $rut = ''): bool {
+        $user = $this->usuarioModel->findByCorreo($email);
+        if (!$user) {
+            return false;
+        }
+        /*
+        if ($rut !== '' && ($user['rut'] ?? '') !== $rut) {
+            return false;
+        }
+        */
+
+        return (int)($user['email_verificado'] ?? 0) === 1;
     }
-    public function enviarEmailVerificacion(string $email, string $nombre, string $token): bool {
+
+    public function procesarVerificacionCorreo(string $email, string $token, string $rut = ''): array {
+        if ($email === '' || $token === '') {
+            return ['success' => false, 'message' => 'Parámetros inválidos.'];
+        }
+
+        $user = $this->usuarioModel->findByCorreo($email);
+        if (!$user) {
+            return ['success' => false, 'message' => 'No se encontró el usuario.'];
+        }
+        /*
+        if ($rut !== '' && ($user['rut'] ?? '') !== $rut) {
+            return ['success' => false, 'message' => 'El enlace no corresponde a este usuario.'];
+        }
+        */
+
+        if ((int)($user['email_verificado'] ?? 0) === 1) {
+            echo "verificado";
+            return ['success' => true, 'message' => 'El correo ya estaba verificado.'];
+        }
+
+        if ($this->usuarioModel->marcarEmailVerificado($user['rut'])) {
+            echo "cambiando el valor";
+            return ['success' => true, 'message' => 'Email verificado correctamente.'];
+        }
+
+        return ['success' => false, 'message' => 'No se pudo verificar el email.'];
+    }
+
+    public function enviarEmailVerificacion(string $email, string $nombre,string $rut, string $token): bool {
         # email verificacion usando servicio de mailService
-        return $this->emailService->enviarVerificacion($email, $nombre, $token);
+        return $this->emailService->enviarVerificacion($email, $nombre,$rut, $token);
     }
     
     # actualizar que se verifico el email en la base de datos
-    /*
-    public function verificarEmail(string $email, string $token): bool {
-        $tokenHash = hash('sha256', $token);
-        
-        $sql = "SELECT rut FROM usuario WHERE correo = ? AND token_verificacion = ? AND email_verificado = 0";
-        $stmt = $this->usuarioModel->pdo->prepare($sql);
-        $stmt->execute([$email, $tokenHash]);
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    public function actualizarVerificarEmail(string $email): bool {
+        try {
+            $user = $this->usuarioModel->findByCorreo($email);
+            if (!$user) {
+                return false;
+            }
 
-        if ($user) {
-            $sql = "UPDATE usuario SET email_verificado = 1, token_verificacion = NULL WHERE rut = ?";
-            $stmt = $this->usuarioModel->pdo->prepare($sql);
-            return $stmt->execute([$user['rut']]);
+            return $this->usuarioModel->marcarEmailVerificado($user['rut']);
+        } catch (Exception $e) {
+            error_log("Error actualizando verificación: " . $e->getMessage());
+            return false;
         }
-
-        return false;
     }
-    */
+    
 
     /*
     public function cambioContrasenha(string $rut, string $nuevaContrasenha): bool {
