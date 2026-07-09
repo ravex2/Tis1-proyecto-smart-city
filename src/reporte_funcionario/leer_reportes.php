@@ -1,55 +1,25 @@
 <?php
-require_once __DIR__ . "/../../config/database.php";
-$db = getDatabase();
+    require_once __DIR__ . "/../../config/database.php";
+    $db = getDatabase();
 if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
 }
 $rut = $_SESSION['user']['rut'];
 $consultaFuncionario = "SELECT id_funcionario FROM funcionario_municipal WHERE rut_usuario = ? ";
-$resultadoo = $db->query($consultaFuncionario, [$rut]);
+$resultado = $db->query($consultaFuncionario, [$rut]);
+$funcionario = $resultado[0] ?? null;
 
-$funcionario = $resultadoo[0] ?? null;
-
-if (!$funcionario) {
+if(!$funcionario){
     header("Location: ?ruta=dashboard");
     exit();
 }
 
 $id_funcionario = $funcionario['id_funcionario'];
-
-
-
-
-$db = getDatabase();
-$consulta = "SELECT 
-                COUNT(*) as total,
-                SUM(CASE WHEN tipo_estado = 'pendiente' THEN 1 ELSE 0 END) as pendiente,
-                SUM(CASE WHEN tipo_estado = 'rechazado' THEN 1 ELSE 0 END) as rechazado,
-                SUM(CASE WHEN tipo_estado = 'en proceso' THEN 1 ELSE 0 END) as en_proceso,
-                SUM(CASE WHEN tipo_estado = 'resuelto' THEN 1 ELSE 0 END) as resuelto
-             FROM reporte";
-
-$resultado = $db->query($consulta);
-
-$consulta_lista = "SELECT r.*, c.nombre_categoria 
-                    FROM reporte r
-                    LEFT JOIN categoria_reporte c ON r.id_categoria_reporte = c.id_categoria
-                    ORDER BY r.fecha DESC";
-$resultado_lista = $db->query($consulta_lista);
-
-
-
-
-
-
-
-
 ?>
 
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -59,118 +29,12 @@ $resultado_lista = $db->query($consulta_lista);
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="/Tis1-proyecto-smart-city/assets/css/panel.css">
 
-    <style>
-        :root {
-            --primary-blue: #3d71ff;
-            --bg-light: #f8fafc;
-            --sidebar-text: #64748b;
-            --shadow-soft: 0 10px 40px rgba(0, 0, 0, 0.04);
-        }
 
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--bg-light);
-            color: #0f172a;
-        }
-
-        .sidebar {
-            background: #ffffff;
-            height: 100vh;
-            border-right: 1px solid #f1f5f9;
-            position: sticky;
-            top: 0;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .nav-link {
-            color: var(--sidebar-text);
-            font-size: 0.9rem;
-            font-weight: 500;
-            padding: 0.75rem 1rem;
-            border-radius: 12px;
-            transition: all 0.2s;
-        }
-
-        .nav-link.active {
-            background-color: #f0f4ff;
-            color: var(--primary-blue);
-        }
-
-        /* UI Components */
-        .shadow-card {
-            box-shadow: var(--shadow-soft);
-            border: none;
-            border-radius: 24px;
-        }
-
-        /* Table Styling - border-0 en tr */
-        .table-custom thead th {
-            background-color: #f8fafc;
-            border: 0 !important;
-            color: #64748b;
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            padding: 18px 24px;
-        }
-
-        .table-custom tbody tr td {
-            border: 0 !important;
-            padding: 18px 24px;
-            vertical-align: middle;
-        }
-
-        /* Status Badges */
-        .badge-status {
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
-
-        .status-pendiente {
-            background: #fff7ed;
-            color: #9a3412;
-        }
-
-        .status-revision {
-            background: #eff6ff;
-            color: #1e40af;
-        }
-
-        .status-resuelto {
-            background: #f0fdf4;
-            color: #166534;
-        }
-
-        .btn-action-soft {
-            width: 35px;
-            height: 35px;
-            border-radius: 10px;
-            border: none;
-            background: #f1f5f9;
-            color: #64748b;
-            transition: 0.2s;
-        }
-
-        .btn-action-soft:hover {
-            background: #e2e8f0;
-            color: #0f172a;
-        }
-
-        .img-report-preview {
-            width: 45px;
-            height: 45px;
-            border-radius: 10px;
-            object-fit: cover;
-        }
-    </style>
 </head>
-
 <body>
 
     <div class="container-fluid">
-        <div class="row">
+    <div class="row">
 
             <?php include BASE_PATH . "/views/layout/sidebar.php"; ?>
             <!-- Main  -->
@@ -381,10 +245,10 @@ $resultado_lista = $db->query($consulta_lista);
 
 
             </main>
+
+            
         </div>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
 </body>
-
 </html>

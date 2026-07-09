@@ -13,6 +13,8 @@
     $db = getDatabase();
     $municipalidades = $db->query("SELECT id_municipalidad, nombre FROM municipalidad");
 
+    session_start();
+
     $usuarioLogeado = $_SESSION['user'] ?? null;
 
 ?>

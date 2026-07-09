@@ -74,36 +74,5 @@ class NegocioLocal {
 
         return false;
     }
-
-    public function listarEmprendimientos(){
-        $db = getDatabase();
-
-        return $db->query("SELECT n.*, r.nombre_rubro AS rubro, s.nombre AS sector
-            FROM negocio_local n
-            LEFT JOIN rubro r ON n.id_rubro = r.id_rubro
-            LEFT JOIN sector s ON n.id_sector = s.id_sector
-            ORDER BY n.id_negocio DESC");
-    }
-
-    public function insertarRevision($id_funcionario, $estado, $observacion) {
-        $db = getDatabase();
-        
-        $sqlInsert = "INSERT INTO revision_negocio (tipo_estado, observacion, id_funcionario) 
-                    VALUES (?, ?, ?)";
-        $estadoLimpio = trim(strtolower($estado));
-        $obsFinal = ($estadoLimpio === 'rechazado') ? $observacion : null;
-        $db->execute($sqlInsert, [$estadoLimpio, $obsFinal, $id_funcionario]);
-        
-        $pdo = $db->connection();
-        
-        return $pdo->lastInsertId();
-    }
-
-
-    public function actualizarEstadoNegocio($id_negocio, $estado, $id_revision) {
-        $db = getDatabase();
-        $sql = "UPDATE negocio_local SET tipo_estado = ?, id_revision = ? WHERE id_negocio = ?";
-        return $db->execute($sql, [$estado, $id_revision, $id_negocio]);
-    }
 }
 ?>
