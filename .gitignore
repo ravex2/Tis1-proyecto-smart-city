@@ -25,3 +25,7 @@ doc/mejoras.md
 
 # database
 /database/
+
+# devices
+#mac
+.DS_Store
