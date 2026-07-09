@@ -1,98 +1,109 @@
 <?php
+require_once __DIR__ . '/../config/database.php';
 
-require_once __DIR__ . '/basemodel.php';
+class NegocioLocal {
+    
+    public function insertarEmprendimiento(
+        string $nombre, string $rubro, string $sector, string $direccion, 
+        string $correo, string $facebook, string $whatsapp, string $instagram, 
+        string $dias, string $apertura, string $cierre, string $descripcion, 
+        array $imagenes
+    ) {
+        $db = getDatabase();
 
-class NegocioLocal extends BaseModel {
-    protected string $table = 'negocio_local';
-    protected array $primaryKey = ['id_negocio'];
-    protected array $columns = ['nombre', 'direccion', 'telefono', 'correo_electronico', 'redes_sociales', 'horario_atencion', 'imagenes', 'tipo_estado', 'id_revision', 'id_rubro', 'id_sector'];
 
-    public function __construct(?\PDO $pdo = null) {
-        parent::__construct($pdo);
-    }
+        $sql = "INSERT INTO negocio_local (
+                    nombre, 
+                    id_rubro, 
+                    id_sector, 
+                    direccion, 
+                    correo_electronico, 
+                    facebook, 
+                    whatsapp, 
+                    instagram, 
+                    dias_abierto, 
+                    hora_apertura, 
+                    hora_cierre, 
+                    descripcion
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-    protected function fetch(string $sql, array $params = []): ?array {
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute($params);
-        $row = $stmt->fetch();
-        return $row ?: null;
-    }
 
-    protected function fetchAll(string $sql, array $params = []): array {
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute($params);
-        return $stmt->fetchAll();
-    }
+        $resultado_negocio = $db->execute($sql, [
+            $nombre, 
+            $rubro,       
+            $sector,     
+            $direccion,   
+            $correo,     
+            $facebook,   
+            $whatsapp,   
+            $instagram,   
+            $dias,        
+            $apertura,    
+            $cierre,      
+            $descripcion  
+        ]);
 
-    protected function execute(string $sql, array $params = []): bool {
-        $stmt = $this->pdo->prepare($sql);
-        return $stmt->execute($params);
-    }
+        if ($resultado_negocio) {
+            $pdo_nativo = $db->connection();
+            $id_negocio = $pdo_nativo->lastInsertId();
 
-    protected function filterData(array $data): array {
-        return array_intersect_key($data, array_flip($this->columns));
-    }
+            if ($id_negocio && !empty($imagenes['name'][0])) {
+                $cantidad = count($imagenes['name']);
 
-    protected function buildWhereClause(array|int $id): array {
-        if (is_int($id) && count($this->primaryKey) === 1) {
-            return [$this->primaryKey[0] . ' = ?', [$id]];
-        }
+                for ($i = 0; $i < $cantidad; $i++) {
+                    $nombre_original = $imagenes['name'][$i];
+                    $ruta_temporal = $imagenes['tmp_name'][$i];
+                    $error = $imagenes['error'][$i];
 
-        if (!is_array($id)) {
-            throw new InvalidArgumentException('Invalid identifier for model lookup.');
-        }
+                    if ($error === 0) {
+                        $info = pathinfo($nombre_original);
+                        $extension = strtolower($info['extension']);
+                        
+                        $nombre_unico = time() . "_" . $i . "." . $extension;
+                        $carpeta_destino = __DIR__ . '/../public/uploads/' . $nombre_unico;
 
-        $clauses = [];
-        $params = [];
-
-        foreach ($this->primaryKey as $key) {
-            if (!array_key_exists($key, $id)) {
-                throw new InvalidArgumentException(sprintf('Missing primary key column "%s".', $key));
+                        if (move_uploaded_file($ruta_temporal, $carpeta_destino)) {
+                            $sql_foto = "INSERT INTO imagenes_negocios (id_negocio, ruta_imagen) VALUES (?, ?)";
+                            $db->execute($sql_foto, [$id_negocio, $nombre_unico]);
+                        }
+                    }
+                }
             }
-            $clauses[] = sprintf('%s = ?', $key);
-            $params[] = $id[$key];
+            return true;
         }
 
-        return [implode(' AND ', $clauses), $params];
+        return false;
     }
 
-    public function findAll(): array {
-        return $this->fetchAll(sprintf('SELECT * FROM %s', $this->table));
+    public function listarEmprendimientos(){
+        $db = getDatabase();
+
+        return $db->query("SELECT n.*, r.nombre_rubro AS rubro, s.nombre AS sector
+            FROM negocio_local n
+            LEFT JOIN rubro r ON n.id_rubro = r.id_rubro
+            LEFT JOIN sector s ON n.id_sector = s.id_sector
+            ORDER BY n.id_negocio DESC");
     }
 
-    public function findById(array|int $id): ?array {
-        [$where, $params] = $this->buildWhereClause($id);
-        return $this->fetch(sprintf('SELECT * FROM %s WHERE %s LIMIT 1', $this->table, $where), $params);
+    public function insertarRevision($id_funcionario, $estado, $observacion) {
+        $db = getDatabase();
+        
+        $sqlInsert = "INSERT INTO revision_negocio (tipo_estado, observacion, id_funcionario) 
+                    VALUES (?, ?, ?)";
+        $estadoLimpio = trim(strtolower($estado));
+        $obsFinal = ($estadoLimpio === 'rechazado') ? $observacion : null;
+        $db->execute($sqlInsert, [$estadoLimpio, $obsFinal, $id_funcionario]);
+        
+        $pdo = $db->connection();
+        
+        return $pdo->lastInsertId();
     }
 
-    public function create(array $data): string {
-        $data = $this->filterData($data);
-        if (empty($data)) {
-            throw new InvalidArgumentException('No valid columns provided for insert.');
-        }
 
-        $columns = array_keys($data);
-        $placeholders = implode(', ', array_fill(0, count($columns), '?'));
-        $sql = sprintf('INSERT INTO %s (%s) VALUES (%s)', $this->table, implode(', ', $columns), $placeholders);
-
-        $this->execute($sql, array_values($data));
-        return $this->pdo->lastInsertId();
-    }
-
-    public function update(array|int $id, array $data): bool {
-        $data = $this->filterData($data);
-        if (empty($data)) {
-            return false;
-        }
-
-        [$where, $params] = $this->buildWhereClause($id);
-        $set = implode(', ', array_map(fn($column) => sprintf('%s = ?', $column), array_keys($data)));
-
-        return $this->execute(sprintf('UPDATE %s SET %s WHERE %s', $this->table, $set, $where), array_merge(array_values($data), $params));
-    }
-
-    public function delete(array|int $id): bool {
-        [$where, $params] = $this->buildWhereClause($id);
-        return $this->execute(sprintf('DELETE FROM %s WHERE %s', $this->table, $where), $params);
+    public function actualizarEstadoNegocio($id_negocio, $estado, $id_revision) {
+        $db = getDatabase();
+        $sql = "UPDATE negocio_local SET tipo_estado = ?, id_revision = ? WHERE id_negocio = ?";
+        return $db->execute($sql, [$estado, $id_revision, $id_negocio]);
     }
 }
+?>

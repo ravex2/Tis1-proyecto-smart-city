@@ -11,8 +11,7 @@
     $usuarios = $usuarioModelo->findAllWithRoles();
     $roles = $rolModelo->findAll();
     
-    
-    session_start();
+
 
     if (!isset($_SESSION['user'])) {
         header('Location: ?ruta=login');
@@ -129,7 +128,8 @@
                                             'Administrador Municipal' => 'danger',
                                             'Encargado de Comunicaciones' => 'primary',
                                             'Ciudadano' => 'secondary',
-                                            default => 'dark'
+                                            'Emprendedor' => 'secondary',
+                                            default => 'primary'
                                         };
                                         ?>
                                     <span class="badge bg-<?= $color ?>">

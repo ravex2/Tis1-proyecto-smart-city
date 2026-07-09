@@ -12,7 +12,7 @@ class Usuario extends BaseModel {
     }
 
     public function findByCorreo(string $correo): ?array {
-        return $this->fetch('SELECT * FROM usuario WHERE correo = ? LIMIT 1', [$correo]);
+        return $this->fetch('SELECT u.* , r.tipo_interfaz FROM usuario u JOIN rol r ON u.id_rol = r.id_rol WHERE correo = ? LIMIT 1', [$correo]);
     }
 
     protected function fetch(string $sql, array $params = []): ?array {
@@ -66,6 +66,17 @@ class Usuario extends BaseModel {
 
     public function findAllWithRoles(): array {
             return $this->fetchAll("SELECT u.rut,u.nombre, u.apellido, u.correo, u.id_rol,r.nombre_rol FROM usuario u JOIN rol r ON u.id_rol = r.id_rol");
+    }
+
+    public function obtenerPermisosPorRol(int $id_rol): array {
+        $consulta = "SELECT p.nombre_permiso 
+                    FROM permiso p 
+                    JOIN posee po ON p.id_permiso = po.id_permiso 
+                    WHERE po.id_rol = ?";
+
+        $resultado = $this->fetchAll($consulta, [$id_rol]) ?? [];
+
+        return array_column($resultado, 'nombre_permiso');
     }
 
     public function findById(array|int $id): ?array {
