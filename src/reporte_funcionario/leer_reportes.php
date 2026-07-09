@@ -41,7 +41,11 @@ $id_funcionario = $funcionario['id_funcionario'];
         <main class="col-md-10 ms-sm-auto px-4">
                 <div class="feed-header p-3 sticky-top bg-white-glass blur">
                     <h5 class="fw-bold mb-0">Inicio</h5>
-                    
+                </div>
+                <div class="d-flex justify-content-end">
+                    <a href="?ruta=crear_categoria_reporte" class="btn btn-primary rounded-pill px-5 fw-bold shadow-primary">
+                        Crear Nueva Categoria Reporte
+                    </a>
                 </div>
                 <div class="post-box p-3 border-bottom"> 
                     <div class="d-flex gap-3">
