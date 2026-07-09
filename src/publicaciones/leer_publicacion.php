@@ -30,6 +30,7 @@
         <main class="col-md-10 ms-sm-auto px-4">
                 <div class="feed-header p-3 sticky-top bg-white-glass blur">
                     <h5 class="fw-bold mb-0">Listado Publicaciones</h5>
+                    
                 </div>
                 
             <?php if(count($resultado) > 0){ ?>

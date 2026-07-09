@@ -23,7 +23,8 @@
     </thead>
     <tbody>
         <?php
-            $consulta = "SELECT * FROM reporte WHERE rut_usuario=20630531";
+            $rut = $_SESSION['user']['rut'];
+            $consulta = "SELECT * FROM reporte WHERE rut_usuario='$rut'";
             $db = getDatabase();
             $resultado =$db->query($consulta);
 

@@ -1,5 +1,13 @@
 <?php
 require_once __DIR__ . "/../../config/database.php";
+
+if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_start();
+}
+
+$rut_usuario = $_SESSION['user']['rut'];
+
+
 $db = getDatabase();
 $cat_pub = $db->query("SELECT * FROM categoria_reporte");
 
@@ -14,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
 
     $consulta = "INSERT INTO reporte(descripcion,id_categoria_reporte,latitud,longitud,imagen,rut_usuario) 
-                VALUES('$descripcion','$id_categoria_reporte','$latitud','$longitud','$imagen',20630531)";
+                VALUES('$descripcion','$id_categoria_reporte','$latitud','$longitud','$imagen',$rut_usuario)";
     $db->query($consulta);
     header("Location: ?ruta=crear_reporte");
 
@@ -39,8 +47,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <div class="container-fluid">
     <div class="row">
-
-        <?php include BASE_PATH . "/views/layout/sidebar.php"; ?>
 
         <main class="col-md-10 ms-sm-auto px-4">
                 <div class="feed-header p-3 sticky-top bg-white-glass blur">
