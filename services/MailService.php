@@ -1,47 +1,25 @@
 <?php
 
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
+require_once __DIR__ . '/../config/mailconfig.php';
 
-require_once __DIR__ . '/../vendor/autoload.php';
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 class EmailService {
     private $mailer;
 
     public function __construct() {
-        $this->mailer = new PHPMailer(true);
-        
-        try {
-            // Configuración SMTP moderna
-            $this->mailer->isSMTP();
-            $this->mailer->Host       = $_ENV['SMTP_HOST'] ?? 'smtp.gmail.com';
-            $this->mailer->SMTPAuth   = true;
-            $this->mailer->Username   = $_ENV['SMTP_USER'] ?? '';
-            $this->mailer->Password   = $_ENV['SMTP_PASS'] ?? '';
-            
-            // ✅ CORRECCIÓN: Usar string directo en lugar de constante deprecada
-            $this->mailer->SMTPSecure = 'starttls';  // En vez de PHPMailer::ENCRYPTION_STARTTLS
-            $this->mailer->Port       = 587;
-            
-            // Configuración adicional recomendada
-            $this->mailer->CharSet    = 'UTF-8';
-            $this->mailer->Timeout    = 30;
-            $this->mailer->SMTPDebug  = 0; // Cambia a 2 para debug
-            
-            $this->mailer->setFrom(
-                $_ENV['SMTP_USER'] ?? 'noreply@tudominio.com', 
-                'Portal Ciudadano'
-            );
-        } catch (Exception $e) {
-            error_log("Error inicializando mailer: " . $e->getMessage());
-        }
+        // Obtener mailer configurado desde MailConfig
+        $this->mailer = MailConfig::getMailer();
     }
 
     public function enviarVerificacion(string $email, string $nombre, string $token): bool {
+        echo "enviar verificacion";
+
         $link = "http://localhost/?ruta=verificar-email&token=" . $token . "&email=" . urlencode($email);
 
         try {
-            // ✅ CORRECCIÓN: Limpiar destinatarios correctamente
             $this->mailer->clearAllRecipients();
             $this->mailer->clearAttachments();
             
@@ -54,11 +32,13 @@ class EmailService {
             // Versión texto plano (para clientes que no soportan HTML)
             $this->mailer->AltBody = "Hola $nombre,\n\nPor favor confirma tu cuenta visitando este enlace:\n$link\n\nEste enlace expira en 24 horas.\n\nSaludos,\nPortal Ciudadano";
 
+            echo "enviando";
             $this->mailer->send();
             return true;
             
         } catch (Exception $e) {
-            error_log("Error enviando email a $email: " . $this->mailer->ErrorInfo);
+            echo "error encontrado";
+            echo "Error enviando email a $email: " . $this->mailer->ErrorInfo;
             return false;
         }
     }
