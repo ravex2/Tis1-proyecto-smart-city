@@ -1,5 +1,11 @@
 <?php
 require_once __DIR__ . "/../../config/database.php";
+
+if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_start();
+}
+
+$rut_usuario = $_SESSION['user']['rut'];
 $db = getDatabase();
 $cat_pub = $db->query("SELECT * FROM categoria_reporte");
 
@@ -11,15 +17,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $longitud = $_POST["longitud"];
     $imagen = $_POST["imagen"];
 
-    $consulta = "INSERT INTO 
-    reporte(titulo, descripcion, id_categoria_reporte, latitud, longitud, imagen, rut_usuario, tipo_estado) 
-    VALUES('$titulo', '$descripcion', '$id_categoria_reporte', '$latitud', '$longitud', '$imagen', 20630531, 'pendiente')";
-
+    
+    $consulta = "INSERT INTO reporte(titulo, descripcion, id_categoria_reporte, latitud, longitud, imagen, rut_usuario, tipo_estado) 
+    VALUES('$titulo', '$descripcion', '$id_categoria_reporte', '$latitud', '$longitud', '$imagen', '$rut_usuario', 'pendiente')";
+    
+    
     $db->query($consulta);
+
     header("Location: ?ruta=crear_reporte");
     exit;
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -39,10 +48,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <?php include BASE_PATH . "/views/layout/sidebar.php"; ?>
 
             <main class="col-md-10 ms-sm-auto px-5 py-4">
-                <div class="mb-4">
+                <div class="feed-header p-3 sticky-top bg-white-glass blur mb-4">
                     <h2 class="fw-bold mb-1">Ingresar Reporte Ciudadano</h2>
                     <p class="text-muted small">Complete la información para reportar un incidente directamente al municipio.</p>
                 </div>
+
 
                 <div class="card border-0 p-4 bg-white rounded-4 shadow-sm mb-4" style="box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04) !important;">
                     <form method="POST" class="mt-2">

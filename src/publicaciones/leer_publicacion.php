@@ -16,7 +16,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="">
+    <link rel="stylesheet" href="assets/css/panel.css">
 
 
 </head>
@@ -30,6 +30,7 @@
         <main class="col-md-10 ms-sm-auto px-4">
                 <div class="feed-header p-3 sticky-top bg-white-glass blur">
                     <h5 class="fw-bold mb-0">Listado Publicaciones</h5>
+                    
                 </div>
                 
             <?php if(count($resultado) > 0){ ?>

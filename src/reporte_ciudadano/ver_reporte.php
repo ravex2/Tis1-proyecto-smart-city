@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . "/../../config/database.php";
+$rut = $_SESSION['user']['rut'];
 $db = getDatabase();
 $cat_pub = $db->query("SELECT * FROM categoria_reporte");
 
@@ -10,7 +11,7 @@ $cat_pub2 = $db->query("SELECT fm.id_funcionario , fm.rut_usuario, u.nombre
 
         $id_capturado = $_GET["id_enviado"];
 
-        $consulta = "SELECT * FROM reporte WHERE id_reporte=$id_capturado";
+        $consulta = "SELECT * FROM reporte WHERE id_reporte=$id_capturado AND rut_usuario = '$rut'";
         $resultado = $db->query($consulta);
         $fila = $resultado[0] ?? null;
 
@@ -47,7 +48,6 @@ $cat_pub2 = $db->query("SELECT fm.id_funcionario , fm.rut_usuario, u.nombre
     <div class="container-fluid">
     <div class="row">
 
-        <?php include BASE_PATH . "/views/layout/sidebar.php"; ?>
 
         <main class="col-md-10 ms-sm-auto px-4">
                 <div class="feed-header p-3 sticky-top bg-white-glass blur">
