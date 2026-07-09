@@ -180,14 +180,7 @@ $resultado_lista = $db->query($consulta_lista);
                         <h2 class="fw-bold mb-0">Gestión de Reportes Ciudadanos</h2>
                         <p class="text-muted small">Administra, deriva y supervisa la resolución de incidentes en la comuna.</p>
                     </div>
-                    <div class="d-flex gap-2">
-                        <button class="btn btn-outline-secondary rounded-pill px-3 fw-bold shadow-sm">
-                            <i class="bi bi-file-earmark-excel me-1"></i> Excel
-                        </button>
-                        <button class="btn btn-outline-secondary rounded-pill px-3 fw-bold shadow-sm">
-                            <i class="bi bi-file-earmark-pdf me-1"></i> PDF
-                        </button>
-                    </div>
+
                 </header>
 
                 <!-- Filtros Rápidos -->
@@ -336,10 +329,31 @@ $resultado_lista = $db->query($consulta_lista);
 
 
                                             <td class="text-end">
-                                                <a href="?ruta=ver_reporte_funcionario&id_enviado=<?php echo $reporte['id_reporte']; ?>" class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm btn-sm">
-                                                    Ver reporte
-                                                </a>
+                                                <div class="d-flex justify-content-end align-items-center gap-1">
+                                                    <!-- Botón para ver el reporte en el sistema -->
+                                                    <a href="?ruta=ver_reporte_funcionario&id_enviado=<?php echo $reporte['id_reporte']; ?>"
+                                                        class="btn btn-primary rounded-pill px-3 fw-bold shadow-sm btn-sm">
+                                                        Ver reporte
+                                                    </a>
+
+                                                    <!-- Botón para Exportar la línea actual a PDF-->
+                                                    <a href="src/reporte_funcionario/exportar_pdf.php?id=<?php echo $reporte['id_reporte']; ?>"
+                                                        class="btn btn-outline-danger btn-action-soft d-flex align-items-center justify-content-center"
+                                                        target="_blank"
+                                                        title="Exportar esta fila a PDF">
+                                                        <i class="bi bi-file-earmark-pdf"></i>
+                                                    </a>
+
+                                                    <!-- Botón para Exportar la línea actual a Excel -->
+                                                    <a href="src/reporte_funcionario/exportar_excel.php?id=<?php echo $reporte['id_reporte']; ?>"
+                                                        class="btn btn-outline-success btn-action-soft d-flex align-items-center justify-content-center"
+                                                        title="Exportar esta fila a Excel">
+                                                        <i class="bi bi-file-earmark-excel"></i>
+                                                    </a>
+                                                </div>
                                             </td>
+
+
                                         </tr>
                                     <?php
                                     endforeach;
