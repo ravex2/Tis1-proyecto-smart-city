@@ -44,14 +44,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 </head>
 <body>
+    <?php include __DIR__ . "/../../views/layout/navbar_user.php"; ?>
+    <div class="container-fluid mt-4">
+        <div class="row">
 
-    <div class="container-fluid">
-    <div class="row">
-
-        <main class="col-md-10 ms-sm-auto px-4">
-                <div class="feed-header p-3 sticky-top bg-white-glass blur">
-                    <h5 class="fw-bold mb-0">Inicio</h5>
-                    
+            <main class="col-md-10 ms-sm-auto px-5 py-4">
+                <div class="feed-header p-3 sticky-top bg-white-glass blur mb-4">
+                    <h2 class="fw-bold mb-1">Ingresar Reporte Ciudadano</h2>
+                    <p class="text-muted small">Complete la información para reportar un incidente directamente al municipio.</p>
                 </div>
                 <div class="post-box p-3 border-bottom"> 
                     <div class="d-flex gap-3">

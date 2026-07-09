@@ -44,8 +44,9 @@ $cat_pub2 = $db->query("SELECT fm.id_funcionario , fm.rut_usuario, u.nombre
 
 </head>
 <body>
+    <?php include __DIR__ . "/../../views/layout/navbar_user.php"; ?>
 
-    <div class="container-fluid">
+    <div class="container-fluid mt-4">
     <div class="row">
 
 
@@ -119,7 +120,7 @@ $cat_pub2 = $db->query("SELECT fm.id_funcionario , fm.rut_usuario, u.nombre
                     foreach ($seguimientos as $s) {
                         ?>
                         <div class="post-box p-3 border-bottom">
-                            <h1>Seguimiento <?php echo $contador; ?></h1>
+                            <h4>Seguimiento <?php echo $contador; ?></h4>
                             <div class="flex-grow-1">
                                 <div class="mb-3">
                                     <textarea name="observacion" class="form-control rounded-4 px-3 py-2"

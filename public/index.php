@@ -4,15 +4,9 @@ require_once __DIR__ . "/../controllers/template.controller.php";
 
 define('BASE_PATH', realpath(__DIR__ . '/..'));
 
-
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
 use Dotenv\Dotenv;
 $dotenv = Dotenv::createImmutable(__DIR__ . "/..");
 $dotenv->load();
-
 
 
 if (session_status() !== PHP_SESSION_ACTIVE) {
@@ -20,19 +14,7 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
 }
 
 $ruta = $_GET["ruta"] ?? "publicaciones";
-$rutasPublicas = [
-    'login',
-    'registro',
-    'publicaciones',
-    'auth/google',
-    'auth/callback',
-    'auth/complete-profile',
-    'completar_perfil',
-    'verificacion_correo',
-    'verificar-email',
-    'recuperar-contrasena',
-    'restablecer-contrasena',
-];
+$rutasPublicas = ['login', 'registro', 'publicaciones'];
 
 
 if (!isset($_SESSION['user']) && !in_array($ruta, $rutasPublicas)) {
@@ -44,13 +26,12 @@ $mapaRutas = [
     'registro' => '/views/pages/registro.php',
     'logout' => '/views/pages/admin/logout.php',
     'dashboard' => '/views/pages/admin/panel_admin.php',
-    'reportes' => '/src/reporte_funcionario/leer_reportes.php',
     'sector' => '/views/pages/admin/sector.php',
     'usuarios' => '/views/pages/admin/usuarios.php',
     'roles_usuarios' => '/views/pages/admin/asignacion_roles.php',
     'publicaciones' => '/src/publicaciones/feed_publicaciones.php',
     'departamentos' => '/views/pages/admin/area_municipal.php',
-    'comercio' => '/views/pages/admin/comercio.php',
+    'comercio' => '/views/pages/usuario/listado_comercio.php',
     'rubros' => '/views/pages/admin/rubros.php',
     'votaciones' => '/views/pages/admin/votaciones.php',
     'leer_publicacion' => '/src/publicaciones/leer_publicacion.php',
@@ -63,7 +44,7 @@ $mapaRutas = [
     'leer_mis_reportes' => '/src/reporte_ciudadano/leer_mis_reportes.php',
     'ver_reporte' => '/src/reporte_ciudadano/ver_reporte.php',
 
-    'leer_reportes' => '/src/reporte_funcionario/leer_reportes.php',
+    'reportes' => '/src/reporte_funcionario/leer_reportes.php',
     'ver_reporte_funcionario' => '/src/reporte_funcionario/ver_reporte_funcionario.php',
     'seguimiento_reporte_funcionario' => '/src/reporte_funcionario/seguimiento_reporte_funcionario.php',
 
@@ -85,21 +66,26 @@ $mapaRutas = [
     'editar_area' => '/public/areas_municipales/editar.php',
     'listar_area' => '/public/areas_municipales/listar.php',
 
-    // login google
-    'auth/google' => '/src/autentication/google_auth.php',
-    'auth/callback' => '/src/autentication/google_callback.php',
-    'auth/complete-profile' => '/src/autentication/completar_perfil.php',
-    'completar_perfil' => '/src/autentication/completar_perfil.php',    
-
-    'verificacion_correo' => '/views/pages/verificacion_correo.php',
-    'verificar-email' => '/src/autentication/verificacion_correo.php',
-    'recuperar-contrasena' => '/views/pages/recuperar_contrasena.php',
-    'restablecer-contrasena' => '/views/pages/restablecer_contrasena.php',
-    'ingresar_emprendimiento' => '/public/negocios_locales/ingresar.php'
+    'gestion_comercio' => '/views/pages/admin/gestion_emprendimientos.php',
+    'registrar_emprendimiento' => '/views/pages/usuario/comercio.php',
+    'ingresar_emprendimiento' => '/public/negocios_locales/ingresar.php',
+    'actualizar_revision' => '/public/negocios_locales/actualizar.php',
 ];
 
 $archivoRelativo = $mapaRutas[$ruta] ?? '/views/pages/404.php';
 $archivoCompleto = BASE_PATH . $archivoRelativo;
 
-$template = new TemplateController();
-$template->ctrtemplate($archivoCompleto);
+if (isset($_GET['ajax']) && $_GET['ajax'] == '1') {
+
+    require_once $archivoCompleto;
+
+} else {
+
+    $template = new TemplateController();
+    $template->ctrtemplate($archivoCompleto);
+
+}
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);

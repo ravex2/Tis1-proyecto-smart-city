@@ -4,16 +4,21 @@
         exit();
     }
 
-
     require_once __DIR__ . '/../../../models/Area.php';
     require_once __DIR__ . '/../../../models/usuario.php';
     require_once __DIR__ . '/../../../models/publicacion.php';
+    require_once __DIR__ . "/../../../config/database.php";
+    $db = getDatabase();
+
     $usuarios = new Usuario();
     $publicaciones = new Publicacion();
     
     $totalUsuarios = $usuarios->countAll();
     $totalPublicaciones = $publicaciones->countAll();
     $totalDepartamentos = contarAreas();
+
+    $emprendimientosEnRevision = $db->query("SELECT COUNT(*) as total FROM negocio_local WHERE tipo_estado = 'pendiente a aprobacion'")[0]['total'] ?? 0;
+    $reportesEnRevision = $db->query("SELECT COUNT(*) as total FROM reporte WHERE tipo_estado = 'pendiente'")[0]['total'] ?? 0;
 
     $usuarioLogeado = $_SESSION['user'] ?? null;    
 ?>
@@ -22,11 +27,9 @@
 <html lang="es">
     <head>
         <title>Dashboard Administrativo - Smart City</title>
-        <!-- Required meta tags -->
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-        <!-- Bootstrap CSS v5.3.8 -->
         <link
             href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
             rel="stylesheet"
@@ -53,18 +56,15 @@
                         </div>
 
                         <div class="dropdown text-end">
-                            
                             <a class="d-flex align-items-center text-decoration-none dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-
                                 <div class="text-start">
                                     <div class="fw-semibold">
-                                        <?= $usuarioLogeado['nombre'] . ' ' . $usuarioLogeado['apellido'] ?>
+                                        <?= htmlspecialchars($usuarioLogeado['nombre'] . ' ' . $usuarioLogeado['apellido']) ?>
                                     </div>
                                     <small class="text-muted">
-                                        <?= $usuarioLogeado['correo'] ?>
+                                        <?= htmlspecialchars($usuarioLogeado['correo']) ?>
                                     </small>
                                 </div>
-
                                 <div class="me-2">
                                     <img src="https://ui-avatars.com/api/?name=<?= urlencode($usuarioLogeado['nombre'].' '.$usuarioLogeado['apellido']) ?>&background=3d71ff&color=fff&rounded=true&size=40"
                                         class="rounded-circle"
@@ -72,99 +72,85 @@
                                         height="40"
                                         alt="usuario">
                                 </div>
-
                             </a>
 
                             <ul class="dropdown-menu dropdown-menu-end shadow-sm">
-
                                 <li><hr class="dropdown-divider"></li>
-
                                 <li>
                                     <a class="dropdown-item text-danger" href="?ruta=logout">
                                         <i class="bi bi-box-arrow-right"></i> Cerrar sesión
                                     </a>
                                 </li>
-
                             </ul>
-
                         </div>
 
                     </div>
+
                     <div class="row g-4 mb-3">
                         <div class="col-md-4">
                             <div class="card border-0 shadow-sm h-100">
                                 <div class="card-body d-flex align-items-center justify-content-between">
-
                                     <div>
                                         <h6 class="text-muted mb-1">Total de usuarios</h6>
                                         <h3 class="fw-bold mb-0"><?= $totalUsuarios ?></h3>
                                     </div>
-
                                     <div class="text-primary fs-1">
                                         <i class="bi bi-people-fill"></i>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="card border-0 shadow-sm h-100">
                                 <div class="card-body d-flex align-items-center justify-content-between">
-
                                     <div>
                                         <h6 class="text-muted mb-1">Total de Publicaciones</h6>
                                         <h3 class="fw-bold mb-0"><?= $totalPublicaciones ?></h3>
                                     </div>
-
                                     <div class="text-primary fs-1">
                                         <i class="bi bi-file-earmark-text"></i>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="card border-0 shadow-sm h-100">
                                 <div class="card-body d-flex align-items-center justify-content-between">
-
                                     <div>
                                         <h6 class="text-muted mb-1">Total de Departamentos</h6>
                                         <h3 class="fw-bold mb-0"><?= $totalDepartamentos ?></h3>
                                     </div>
-
                                     <div class="text-primary fs-1">
                                         <i class="bi bi-building"></i>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
                     </div>
+
                     <div class="row g-4 mb-3">
                         <div class="col-md-6">
                             <div class="card border-0 shadow-sm h-100">
                                 <div class="card-body">
                                     <h5 class="fw-bold mb-3">Acciones rápidas</h5>
-
                                     <div class="d-grid gap-2">
                                         <a href="?ruta=crear_publicacion" class="btn border-primary rapida">
                                             <i class="bi bi-plus-circle"> Nueva publicación</i> 
                                         </a>
-
                                         <a href="?ruta=leer_publicacion" class="btn border-primary rapida">
                                             <i class="bi bi-eye"> Ver publicaciones</i> 
                                         </a>
-
                                         <a href="?ruta=leer_categoria_publicacion" class="btn border-primary rapida">
                                             <i class="bi bi-folder-plus"> Categorías</i> 
                                         </a>
-                                        <a href="#" class="btn border-primary rapida">
+                                        <a href="?ruta=gestion_comercio" class="btn border-primary rapida">
                                             <i class="bi bi-exclamation-triangle-fill">  Revisar Comercio Local</i> 
                                         </a>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
                         <div class="col-md-6">
                             <div class="card border-0 shadow-sm h-100">
                                 <div class="card-body">
@@ -172,29 +158,31 @@
 
                                     <div class="mb-3">
                                         <p class="text-muted mb-1">Emprendimientos en revisión</p>
-                                        <h3 class="fw-bold text-warning">
-                                            8
+                                        <h3 class="fw-bold <?= $emprendimientosEnRevision > 0 ? 'text-danger' : 'text-secondary' ?>">
+                                            <?= $emprendimientosEnRevision ?>
                                         </h3>
                                     </div>
 
                                     <div>
                                         <p class="text-muted mb-1">Reportes en revisión</p>
-                                        <h3 class="fw-bold text-danger">
-                                            3
+                                        <h3 class="fw-bold <?= $reportesEnRevision > 0 ? 'text-danger' : 'text-secondary' ?>">
+                                            <?= $reportesEnRevision ?>
                                         </h3>
                                     </div>
 
                                     <div class="mt-3">
-                                        <span class="badge bg-warning text-dark">Pendiente moderación</span>
+                                        <?php if ($emprendimientosEnRevision > 0 || $reportesEnRevision > 0): ?>
+                                            <span class="badge bg-warning text-dark">Pendiente moderación</span>
+                                        <?php else: ?>
+                                            <span class="badge bg-success text-white">Sistema al día</span>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
                     </div>
-                    <div class="row g-4">
 
-                        <!-- PARTICIPACIÓN EN VOTACIONES -->
+                    <div class="row g-4">
                         <div class="col-md-6">
                             <div class="card border-0 shadow-sm">
                                 <div class="card-body">
@@ -203,8 +191,6 @@
                                 </div>
                             </div>
                         </div>
-
-                        <!-- SECTOR MÁS PARTICIPATIVO -->
                         <div class="col-md-6">
                             <div class="card border-0 shadow-sm">
                                 <div class="card-body">
@@ -213,11 +199,12 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
+
                 </div>
             </div>
         </div>
+
         <script
             src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
@@ -239,9 +226,7 @@
                         backgroundColor: 'rgba(61,113,255,0.1)'
                     }]
                 },
-                options: {
-                    responsive: true
-                }
+                options: { responsive: true }
             });
 
             /* Sector más participativo */
@@ -252,21 +237,11 @@
                     datasets: [{
                         label: 'Participación',
                         data: [65, 40, 80, 55, 70],
-                        backgroundColor: [
-                            '#3d71ff',
-                            '#28a745',
-                            '#ffc107',
-                            '#dc3545',
-                            '#6f42c1'
-                        ]
+                        backgroundColor: ['#3d71ff', '#3d71ff', '#3d71ff', '#3d71ff', '#3d71ff']
                     }]
                 },
-                options: {
-                    responsive: true
-                }
+                options: { responsive: true }
             });
         </script>
-
-        
     </body>
 </html>
