@@ -128,8 +128,7 @@
                                             'Administrador Municipal' => 'danger',
                                             'Encargado de Comunicaciones' => 'primary',
                                             'Ciudadano' => 'secondary',
-                                            'Emprendedor' => 'secondary',
-                                            default => 'primary'
+                                            default => 'dark'
                                         };
                                         ?>
                                     <span class="badge bg-<?= $color ?>">
