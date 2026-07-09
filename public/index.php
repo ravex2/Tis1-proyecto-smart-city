@@ -14,8 +14,19 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
 }
 
 $ruta = $_GET["ruta"] ?? "publicaciones";
-$rutasPublicas = ['login', 'registro', 'publicaciones'];
-
+$rutasPublicas = [
+    'login',
+    'registro',
+    'publicaciones',
+    'auth/google',
+    'auth/callback',
+    'auth/complete-profile',
+    'completar_perfil',
+    'verificacion_correo',
+    'verificar-email',
+    'recuperar-contrasena',
+    'restablecer-contrasena',
+];
 
 if (!isset($_SESSION['user']) && !in_array($ruta, $rutasPublicas)) {
     $ruta = 'login';
