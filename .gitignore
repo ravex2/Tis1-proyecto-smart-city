@@ -22,3 +22,6 @@ models/crudtrait.php
 
 # archivos doc
 doc/mejoras.md
+
+# database
+/database/
