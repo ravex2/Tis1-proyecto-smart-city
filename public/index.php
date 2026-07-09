@@ -14,7 +14,15 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
 }
 
 $ruta = $_GET["ruta"] ?? "publicaciones";
-$rutasPublicas = ['login', 'registro', 'publicaciones'];
+$rutasPublicas = [
+    'login', 
+    'registro', 
+    'publicaciones',
+    'auth/google',             
+    'auth/callback',    
+    'auth/complete-profile',
+    'completar_perfil'
+];
 
 
 if (!isset($_SESSION['user']) && !in_array($ruta, $rutasPublicas)) {
@@ -51,6 +59,14 @@ $mapaRutas = [
     'ingresar_area' => '/public/areas_municipales/ingresar.php',
     'editar_area' => '/public/areas_municipales/editar.php',
     'listar_area' => '/public/areas_municipales/listar.php',
+
+
+
+    // login google
+    'auth/google' => '/src/autentication/google_auth.php',
+    'auth/callback' => '/src/autentication/google_callback.php',
+    'auth/complete-profile' => '/src/autentication/completar_perfil.php',
+    'completar_perfil' => '/src/autentication/completar_perfil.php',    
 ];
 
 $archivoRelativo = $mapaRutas[$ruta] ?? '/views/pages/404.php';
