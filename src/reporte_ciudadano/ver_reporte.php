@@ -48,7 +48,6 @@ $cat_pub2 = $db->query("SELECT fm.id_funcionario , fm.rut_usuario, u.nombre
     <div class="container-fluid">
     <div class="row">
 
-        <?php include BASE_PATH . "/views/layout/sidebar.php"; ?>
 
         <main class="col-md-10 ms-sm-auto px-4">
                 <div class="feed-header p-3 sticky-top bg-white-glass blur">
