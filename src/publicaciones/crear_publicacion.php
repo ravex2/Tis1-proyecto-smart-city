@@ -84,11 +84,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                             <form method="POST" class="mt-2">
                                 <div class="mb-3">
+                                    <label>Titulo de la Publicacion</label>
                                     <input type="text" name="titulo" class="form-control rounded-pill px-3 py-2"
                                         placeholder="Titulo de la publicacion" required>
                                 </div>
 
                                 <div class="mb-3">
+                                    <label>Contenido de la publicacion</label>
                                     <textarea name="contenido" class="form-control rounded-4 px-3 py-2"
                                     placeholder="Descripcion de la publicacion" rows="3" required></textarea>
                                 </div>
@@ -96,11 +98,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <div class="row g-2 mb-3">
 
                                     <div class="col-md-6">
+                                        <label>Fecha</label>
                                         <input type="datetime-local" name="fecha_evento"
                                         class="form-control rounded-pill px-3 py-2">
                                     </div>
 
                                     <div class="col-md-6">
+                                        <label>Estado Publicacion</label>
                                         <select name="tipo_estado" class="form-select rounded-pill px-3 py-2">
                                             <option value="activa">Activa</option>
                                             <option value="desactivada">No activa</option>
@@ -110,6 +114,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 </div>
         
                                 <div class="mb-3">
+                                    <label>Lugar</label>
                                     <input type="text" name="lugar" class="form-control rounded-pill px-3 py-2"
                                     placeholder="Lugar del evento" required>
                                 </div>
@@ -117,11 +122,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <div class="row g-2 mb-3">
 
                                     <div class="col-md-6">
+                                        <label>Imagen</label>
                                         <input type="text" name="imagen" class="form-control rounded-pill px-3 py-2"
                                             placeholder="imagen_1.jpg" required>
                                     </div>
 
                                     <div class="col-md-6">
+                                        <label>Categoria</label>
                                         <select name = "id_categoria" class="form-select rounded-pill px-3 py-2">
                                             <?php
                                                 foreach($cat_pub as $c){ ?>
