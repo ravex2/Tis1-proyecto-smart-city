@@ -37,7 +37,7 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link <?= $rutaActual === 'gestion_comercio' ? 'active' : '' ?>" href="?ruta=gestion_comercio">
+                <a class="nav-link <?= $rutaActual === 'comercio' ? 'active' : '' ?>" href="?ruta=comercio">
                     <i class="bi bi-shop me-2"></i> Emprendedores y Comercio
                 </a>
             </li>
@@ -59,6 +59,11 @@
             <li class="nav-item">
                 <a class="nav-link <?= $rutaActual === 'crear_publicacion' ? 'active' : '' ?>" href="?ruta=crear_publicacion">
                     <i class="bi bi-newspaper me-2"></i> Publicaciones
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link <?= $rutaActual === 'usuarios' ? 'active' : '' ?>" href="?ruta=usuarios">
+                    <i class="bi bi-person-gear me-2"></i> Usuarios
                 </a>
             </li>
 
