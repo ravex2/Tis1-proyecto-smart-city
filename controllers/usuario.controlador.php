@@ -36,30 +36,47 @@
                     'message' => 'No se pudo actualizar el rol'
                 ];
             }
-            $rolesMunicipales = [2, 3]; // Funcionario, Administrador
+        $id_rol_ciudadano = 1; 
 
-            if (in_array($id_rol, $rolesMunicipales)) {
+        if ($id_rol != $id_rol_ciudadano) {
+            $funcionarioModel = new FuncionarioMunicipal();
+            $funcionario = $funcionarioModel->findByRut($rut);
 
-                $funcionarioModel = new FuncionarioMunicipal();
-
-                $funcionario = $funcionarioModel->findByRut($rut);
-
-                if (!$funcionario) {
-                    $funcionarioModel->create([
-                        'rut_usuario' => $rut,
-                        'id_area_municipal' => 1]);
-                }
+            if (!$funcionario) {
+                $funcionarioModel->create([
+                    'rut_usuario' => $rut,
+                    'id_area_municipal' => 1 // Área por defecto inicial
+                ]);
             }
+        }
 
-                return [
-                    'ok' => true,
-                    'message' => 'Rol asignado correctamente'
-                ];
+            return [
+                'ok' => true,
+                'message' => 'Rol asignado correctamente'
+            ];
         }
 
         public function eliminarUsuario(string $rut){
             return $this->model->delete(['rut' => $rut]);
         }
-        
+        public static function tienePermiso(string $permisoRequerido): bool {
+            if (session_status() === PHP_SESSION_NONE) {
+                session_start();
+            }
+            if (isset($_SESSION['user']['permisos'])) {
+                return in_array($permisoRequerido, $_SESSION['user']['permisos']);
+            }
+            $id_rol = $_SESSION['user']['id_rol'] ?? null;
+            if (!$id_rol) {
+                return false;
+            }
+
+            $model = new Usuario();
+            $permisos = $model->obtenerPermisosPorRol($id_rol);
+
+            $_SESSION['user']['permisos'] = $permisos;
+
+            return in_array($permisoRequerido, $permisos);
+        }
     }
 ?>
