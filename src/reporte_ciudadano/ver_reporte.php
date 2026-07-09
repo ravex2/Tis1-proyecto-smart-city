@@ -44,8 +44,9 @@ $cat_pub2 = $db->query("SELECT fm.id_funcionario , fm.rut_usuario, u.nombre
 
 </head>
 <body>
+    <?php include __DIR__ . "/../../views/layout/navbar_user.php"; ?>
 
-    <div class="container-fluid">
+    <div class="container-fluid mt-4">
     <div class="row">
 
 
