@@ -90,7 +90,7 @@ $mapaRutas = [
     'completar_perfil' => '/src/autentication/completar_perfil.php',    
 
     'verificacion_correo' => '/views/pages/verificacion_correo.php',
-    'verificar-email' => '/src/autentication/verificar_email.php',
+    'verificar-email' => '/src/autentication/verificacion_correo.php',
 
     'ingresar_emprendimiento' => '/public/negocios_locales/ingresar.php'
 ];
