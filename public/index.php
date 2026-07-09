@@ -2,6 +2,7 @@
 require_once __DIR__ . "/../vendor/autoload.php";
 require_once __DIR__ . "/../controllers/template.controller.php";
 
+
 define('BASE_PATH', realpath(__DIR__ . '/..'));
 
 use Dotenv\Dotenv;
@@ -81,15 +82,27 @@ $mapaRutas = [
     'registrar_emprendimiento' => '/views/pages/usuario/comercio.php',
     'ingresar_emprendimiento' => '/public/negocios_locales/ingresar.php',
     'actualizar_revision' => '/public/negocios_locales/actualizar.php',
+
+
+    // login google
+    'auth/google' => '/src/autentication/google_auth.php',
+    'auth/callback' => '/src/autentication/google_callback.php',
+    'auth/complete-profile' => '/src/autentication/completar_perfil.php',
+    'completar_perfil' => '/src/autentication/completar_perfil.php',    
+
+    'verificacion_correo' => '/views/pages/verificacion_correo.php',
+    'verificar-email' => '/src/autentication/verificacion_correo.php',
+    'recuperar-contrasena' => '/views/pages/recuperar_contrasena.php',
+    'restablecer-contrasena' => '/views/pages/restablecer_contrasena.php',
+    'ingresar_emprendimiento' => '/public/negocios_locales/ingresar.php'
+
 ];
 
 $archivoRelativo = $mapaRutas[$ruta] ?? '/views/pages/404.php';
 $archivoCompleto = BASE_PATH . $archivoRelativo;
 
 if (isset($_GET['ajax']) && $_GET['ajax'] == '1') {
-
     require_once $archivoCompleto;
-
 } else {
 
     $template = new TemplateController();
