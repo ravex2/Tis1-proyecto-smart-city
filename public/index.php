@@ -26,7 +26,6 @@ $mapaRutas = [
     'registro' => '/views/pages/registro.php',
     'logout' => '/views/pages/admin/logout.php',
     'dashboard' => '/views/pages/admin/panel_admin.php',
-    'reportes' => '/views/pages/admin/reportes.php',
     'sector' => '/views/pages/admin/sector.php',
     'usuarios' => '/views/pages/admin/usuarios.php',
     'roles_usuarios' => '/views/pages/admin/asignacion_roles.php',
@@ -45,7 +44,7 @@ $mapaRutas = [
     'leer_mis_reportes' => '/src/reporte_ciudadano/leer_mis_reportes.php',
     'ver_reporte' => '/src/reporte_ciudadano/ver_reporte.php',
 
-    'leer_reportes' => '/src/reporte_funcionario/leer_reportes.php',
+    'reportes' => '/src/reporte_funcionario/leer_reportes.php',
     'ver_reporte_funcionario' => '/src/reporte_funcionario/ver_reporte_funcionario.php',
     'seguimiento_reporte_funcionario' => '/src/reporte_funcionario/seguimiento_reporte_funcionario.php',
 
