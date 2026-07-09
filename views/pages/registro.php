@@ -27,7 +27,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     echo $user['message'];
     if ($user['success']) {
         $_SESSION['user'] = $user;
-
+        header('Location: ?ruta=verificacion_correo');
+        /*
         if ($_SESSION['user']['tipo_interfaz'] === 'interno') {
             // Envía al Administrador y a los funcionarios a su panel de gestión
             header('Location: ?ruta=verificacion_correo');
@@ -37,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             //header('Location: ?ruta=registro');
             exit();
         }
-
+        */
     } else {
         $errorMessage = 'Credenciales incorrectas. Por favor, inténtalo de nuevo.';
     }

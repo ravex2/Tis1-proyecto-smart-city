@@ -14,11 +14,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $auth = new AuthController();
     $email = $_SESSION['user']['correo'] ?? '';
     $nombre = $_SESSION['user']['nombre'] ?? '';
+    $rut = $_SESSION['user']['rut'] ?? '';
+
     $token = $_COOKIE['session_token'] ?? '';
 
     echo "$email" . " $nombre" . " $token";
 
-    if ($auth->enviarEmailVerificacion($email, $nombre, $token)) {
+    if ($auth->enviarEmailVerificacion($email, $nombre,$rut, $token)) {
         $mensaje = 'Se ha enviado un email de verificación. Revisa tu bandeja de entrada.';
         $tipoMensaje = 'success';
     } else {
