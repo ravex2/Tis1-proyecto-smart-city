@@ -5,7 +5,7 @@ require_once __DIR__ . '/basemodel.php';
 class Usuario extends BaseModel {
     protected string $table = 'usuario';
     protected array $primaryKey = ['rut'];
-    protected array $columns = ['nombre', 'apellido', 'correo', 'direccion', 'contrasenha', 'id_rol', 'id_sector'];
+    protected array $columns = ['rut', 'nombre', 'apellido', 'correo', 'direccion', 'contrasenha', 'id_rol', 'id_sector'];
 
     public function __construct(?\PDO $pdo = null) {
         parent::__construct($pdo);
@@ -83,8 +83,11 @@ class Usuario extends BaseModel {
             throw new InvalidArgumentException('No valid columns provided for insert.');
         }
 
+
         $columns = array_keys($data);
+        echo "Columns: " . implode(", ", $columns) . "\n"; // Debugging line
         $placeholders = implode(', ', array_fill(0, count($columns), '?'));
+        echo "Placeholders: " . $placeholders . "\n";
         $sql = sprintf('INSERT INTO %s (%s) VALUES (%s)', $this->table, implode(', ', $columns), $placeholders);
 
         $this->execute($sql, array_values($data));
