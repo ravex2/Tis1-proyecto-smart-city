@@ -48,8 +48,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div class="container-fluid">
     <div class="row">
 
-        <?php include BASE_PATH . "/views/layout/sidebar.php"; ?>
-
         <main class="col-md-10 ms-sm-auto px-4">
                 <div class="feed-header p-3 sticky-top bg-white-glass blur">
                     <h5 class="fw-bold mb-0">Inicio</h5>
