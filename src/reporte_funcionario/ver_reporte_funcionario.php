@@ -106,7 +106,7 @@ if(isset($_GET["id_enviado"])){
                     
                 </div>
                 <div class="d-flex justify-content-end">
-                    <a href="?ruta=leer_reportes" class="btn btn-primary rounded-pill px-5 fw-bold shadow-primary">
+                    <a href="?ruta=reportes" class="btn btn-primary rounded-pill px-5 fw-bold shadow-primary">
                         Ir al listado
                     </a>
                 </div>

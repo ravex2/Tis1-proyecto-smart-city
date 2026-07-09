@@ -182,8 +182,12 @@ $resultado_lista = $db->query($consulta_lista);
                     </div>
 
                 </header>
-
-                <!-- Filtros Rápidos -->
+                <div class="d-flex justify-content-end">
+                    
+                    <a href="?ruta=crear_categoria_reporte" class="btn btn-primary rounded-pill px-5 fw-bold shadow-primary">
+                        Crear Categoria Reporte
+                    </a>
+                </div>
                 <div class="row mb-4 g-3">
 
                     <!-- Total Reportes -->
