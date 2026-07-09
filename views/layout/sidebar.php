@@ -37,7 +37,7 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link <?= $rutaActual === 'comercio' ? 'active' : '' ?>" href="?ruta=comercio">
+                <a class="nav-link <?= $rutaActual === 'gestion_comercio' ? 'active' : '' ?>" href="?ruta=gestion_comercio">
                     <i class="bi bi-shop me-2"></i> Emprendedores y Comercio
                 </a>
             </li>
