@@ -95,4 +95,14 @@ class Sesion extends BaseModel {
         [$where, $params] = $this->buildWhereClause($id);
         return $this->execute(sprintf('DELETE FROM %s WHERE %s', $this->table, $where), $params);
     }
+    public function verificarEmailSesion(string $rut): ?array {
+        $sql = "SELECT * FROM sesion 
+                WHERE rut_usuario = ? 
+                AND tipo_sesion = 'activa' 
+                AND (fecha_termino IS NULL OR fecha_termino > NOW()) 
+                LIMIT 1";
+        
+        return $this->fetch($sql, [$rut]);
+    }
+
 }
