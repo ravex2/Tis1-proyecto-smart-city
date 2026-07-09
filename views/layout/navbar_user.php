@@ -1,5 +1,4 @@
 <?php
-    // Solo dejamos la lógica PHP necesaria (evitamos duplicar consultas si ya se hicieron en el index)
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
     }   

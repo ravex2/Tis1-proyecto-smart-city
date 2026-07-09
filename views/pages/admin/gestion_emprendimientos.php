@@ -230,12 +230,11 @@
 ></script>
 
 <script>
-    // Lógica para rellenar el Modal automáticamente con los datos del botón cliqueado
+
     const modalGestionar = document.getElementById('modalGestionar');
     modalGestionar.addEventListener('show.bs.modal', function (event) {
-        const boton = event.relatedTarget; // Botón que gatilló el modal
-        
-        // Extraemos la información de los atributos 'data-*'
+        const boton = event.relatedTarget; 
+
         const id = boton.getAttribute('data-id');
         const nombre = boton.getAttribute('data-nombre');
         const direccion = boton.getAttribute('data-direccion');

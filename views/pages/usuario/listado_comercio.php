@@ -2,11 +2,9 @@
 require_once __DIR__ . "/../../../config/database.php";
 $db = getDatabase();
 
-// --- 1. DATOS PARA LOS SELECTORES ---
 $sectores = $db->query("SELECT id_sector, nombre FROM sector");
 $rubros = $db->query("SELECT id_rubro, nombre_rubro FROM rubro");
 
-// --- 2. CAPTURAR FILTROS (Detección robusta para AJAX o GET convencional) ---
 $queryParams = [];
 if (!empty($_SERVER['QUERY_STRING'])) {
     parse_str($_SERVER['QUERY_STRING'], $queryParams);
@@ -17,7 +15,6 @@ $filtro_sector = $queryParams['sector'] ?? $_GET['sector'] ?? '';
 $filtro_rubro = $queryParams['rubro'] ?? $_GET['rubro'] ?? '';
 $isAjax = isset($queryParams['ajax']) || isset($_GET['ajax']);
 
-// --- 3. CONSULTA SQL DINÁMICA ---
 $consulta = "SELECT n.*, s.nombre AS nombre_sector, r.nombre_rubro 
              FROM negocio_local n
              INNER JOIN sector s ON n.id_sector = s.id_sector
@@ -43,7 +40,6 @@ foreach ($emprendimientos as $biz) {
     $lista_emprendimientos[] = $biz;
 }
 
-// --- RETORNO DE PETICIÓN ASÍNCRONA ---
 if ($isAjax) {
     header('Content-Type: application/json; charset=utf-8');
     echo json_encode($lista_emprendimientos, JSON_UNESCAPED_UNICODE);
