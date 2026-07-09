@@ -14,10 +14,10 @@ class EmailService {
         $this->mailer = MailConfig::getMailer();
     }
 
-    public function enviarVerificacion(string $email, string $nombre, string $token): bool {
+    public function enviarVerificacion(string $email, string $nombre,string $rut, string $token): bool {
         echo "enviar verificacion";
 
-        $link = "http://localhost/?ruta=verificar-email&token=" . $token . "&email=" . urlencode($email);
+        $link = "http://localhost/Tis1-proyecto-smart-city/?ruta=verificar-email&token=" . $token . "&email=" . urlencode($email) . "&rut=" . urlencode($rut);
 
         try {
             $this->mailer->clearAllRecipients();
