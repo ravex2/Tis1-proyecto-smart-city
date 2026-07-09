@@ -4,9 +4,15 @@ require_once __DIR__ . "/../controllers/template.controller.php";
 
 define('BASE_PATH', realpath(__DIR__ . '/..'));
 
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 use Dotenv\Dotenv;
 $dotenv = Dotenv::createImmutable(__DIR__ . "/..");
 $dotenv->load();
+
 
 
 if (session_status() !== PHP_SESSION_ACTIVE) {
@@ -22,7 +28,8 @@ $rutasPublicas = [
     'auth/callback',    
     'auth/complete-profile',
     'completar_perfil',
-    'verificacion_correo'
+    'verificacion_correo',
+    'verificar-email',
 ];
 
 
@@ -81,8 +88,9 @@ $mapaRutas = [
     'auth/callback' => '/src/autentication/google_callback.php',
     'auth/complete-profile' => '/src/autentication/completar_perfil.php',
     'completar_perfil' => '/src/autentication/completar_perfil.php',    
-    #'verificacion_correo' => '/src/autentication/verificacion_correo.php',
+
     'verificacion_correo' => '/views/pages/verificacion_correo.php',
+    'verificar-email' => '/src/autentication/verificar_email.php',
 
     'ingresar_emprendimiento' => '/public/negocios_locales/ingresar.php'
 ];
@@ -92,7 +100,3 @@ $archivoCompleto = BASE_PATH . $archivoRelativo;
 
 $template = new TemplateController();
 $template->ctrtemplate($archivoCompleto);
-
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
