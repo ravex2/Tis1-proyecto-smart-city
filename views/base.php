@@ -49,6 +49,10 @@ if ($ruta == "editar_publicacion") {
     include __DIR__ . "/../src/publicaciones/editar_publicacion.php";
     return;
 }
+if ($ruta == "crear_votacion") {
+    include __DIR__ . "/../src/participacion_ciudadana/formulario_crear_votacion.php";
+    return;
+}
 
 $errorMessage = "";
 
