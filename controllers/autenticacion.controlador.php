@@ -119,13 +119,27 @@ class AuthController {
             error_log("Error creando usuario: " . $e->getMessage());
             return ['success' => false, 'message' => 'Error al crear la cuenta'];
         }
-        
+
         if ($rememberMe) {
             $this->crearSesionPersistente($datos['rut']);
         }
-        
+
+        // Recuperar el usuario recién creado para devolver sus datos completos
+        $createdUser = $this->usuarioModel->findByCorreo($email);
+        if ($createdUser) {
+            $id_rol = intval($createdUser['id_rol'] ?? 0);
+            $permisos = $this->usuarioModel->obtenerPermisosPorRol($id_rol) ?? [];
+            $createdUser['permisos'] = $permisos;
+
+            return [
+                'success' => true,
+                'message' => 'Registro exitoso. Revisa tu email para confirmar tu cuenta.',
+                'user' => $createdUser
+            ];
+        }
+
         return [
-            'success' => true, 
+            'success' => true,
             'message' => 'Registro exitoso. Revisa tu email para confirmar tu cuenta.'
         ];
     }
