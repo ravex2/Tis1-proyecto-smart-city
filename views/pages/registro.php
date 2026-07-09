@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'direccion' => $_POST['direccion'] ?? '',
     ];
     
-    $user = $auth->registro(trim($email), $password, $confirm_password,$data,false);
+    $user = $auth->registro(trim($email), $password, $confirm_password,$data,true);
     echo $user['message'];
     if ($user['success']) {
         $_SESSION['user'] = $user;

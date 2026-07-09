@@ -59,15 +59,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $login = $_POST['login'] ?? '';
     $password = $_POST['password'] ?? '';
 
-    $user = $auth->login(trim($login), $password,true);
+    $user = $auth->login(trim($login), $password, true);
 
     if ($user) {
         $_SESSION['user'] = $user;
 
         if ($_SESSION['user']['tipo_interfaz'] === 'interno') {
             // Envía al Administrador y a los funcionarios a su panel de gestión
-            header('Location: ?ruta=dashboard');
-            exit();
+            $vemail = $auth->verificarEmailUsuario($login,$user['rut']);
+            if($vemail){
+                header('Location: ?ruta=dashboard');
+                exit();
+            } else {
+                header('Location: ?ruta=verificacion_correo');
+                exit();
+            }
         } else {
             // Envía a los Ciudadanos y Emprendedores al feed comunitario
             header('Location: ?ruta=publicaciones');
