@@ -21,7 +21,8 @@ $rutasPublicas = [
     'auth/google',             
     'auth/callback',    
     'auth/complete-profile',
-    'completar_perfil'
+    'completar_perfil',
+    'verificacion_correo'
 ];
 
 
@@ -74,6 +75,16 @@ $mapaRutas = [
     'ingresar_area' => '/public/areas_municipales/ingresar.php',
     'editar_area' => '/public/areas_municipales/editar.php',
     'listar_area' => '/public/areas_municipales/listar.php',
+
+    // login google
+    'auth/google' => '/src/autentication/google_auth.php',
+    'auth/callback' => '/src/autentication/google_callback.php',
+    'auth/complete-profile' => '/src/autentication/completar_perfil.php',
+    'completar_perfil' => '/src/autentication/completar_perfil.php',    
+    #'verificacion_correo' => '/src/autentication/verificacion_correo.php',
+    'verificacion_correo' => '/views/pages/verificacion_correo.php',
+
+    'ingresar_emprendimiento' => '/public/negocios_locales/ingresar.php'
 ];
 
 $archivoRelativo = $mapaRutas[$ruta] ?? '/views/pages/404.php';
