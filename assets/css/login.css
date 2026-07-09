@@ -62,3 +62,21 @@
         box-shadow: 0 20px 40px rgba(0,0,0,0.05);
     }
 }
+
+
+.googlebtn {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    color: black;
+    padding: 12px 24px;
+    border: 2px solid gray;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
