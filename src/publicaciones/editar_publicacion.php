@@ -167,6 +167,9 @@
                     
                 </div>
                 <div class="d-flex justify-content-end">
+                    <a href="?ruta=crear_publicacion" class="btn btn-primary rounded-pill px-5 fw-bold shadow-primary">
+                        Volver a Publicacion
+                    </a>
                     <a href="leer_publicacion" class="btn btn-primary rounded-pill px-5 fw-bold shadow-primary">
                         Ir al listado
                     </a>
