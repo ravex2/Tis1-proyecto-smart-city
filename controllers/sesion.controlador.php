@@ -27,5 +27,8 @@
         public function eliminarSesion($id){
             return $this->model->delete($id);
         }
+        public function verificarEmailSesion(string $rut): ?array {
+            return $this->model->verificarEmailSesion($rut);
+        }
     }
 ?>

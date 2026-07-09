@@ -3,16 +3,24 @@
 require_once __DIR__ . '/../models/usuario.php';
 require_once __DIR__ . '/../services/MailService.php';
 require_once __DIR__ . '/../controllers/sesion.controlador.php';
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 class AuthController {
     private $usuarioModel;
-
+    private $emailService;
+    private $sessionController;
+    
     public function __construct($usuarioModel = null) {
         if ($usuarioModel) {
             $this->usuarioModel = $usuarioModel;
         } else {
             $this->usuarioModel = new Usuario();
+            $this->sessionController = new SesionController();
         }
-        $this->emailService = new EmailService();
+        $this->emailService = new EmailService(); 
     }
 
     // login with cookie
@@ -20,8 +28,7 @@ class AuthController {
         $token = bin2hex(random_bytes(32));
         $tokenHash = hash('sha256', $token); // Guardamos el hash en la BD por seguridad
 
-        $sesionController = new SesionController();
-        $sesionController->crearSesion([
+        $this->sessionController->crearSesion([
             'token_sesion' => $tokenHash,
             'rut_usuario' => $rut,
             'tipo_sesion' => 'activa',
@@ -109,7 +116,6 @@ class AuthController {
             'id_rol'             => 2,
             'id_sector'          => 1,
         ];
-        echo $datos['rut'];
 
         try {
             $this->usuarioModel->create($datos);
@@ -117,30 +123,27 @@ class AuthController {
             error_log("Error creando usuario: " . $e->getMessage());
             return ['success' => false, 'message' => 'Error al crear la cuenta'];
         }
-        /*
+        
         if ($rememberMe) {
-            $this->crearSesionPersistente($user['rut']);
+            $this->crearSesionPersistente($datos['rut']);
         }
-        */
-            
-        // 7. Enviar email de verificación
-        /*
-        if (!$this->emailService->enviarVerificacion($email, $datosUsuario['nombre'] ?? '', $token)) {
-            return [
-                'success' => false, 
-                'message' => 'Cuenta creada, pero hubo un error al enviar el email de verificación.'
-            ];
-        }
-        */
-
+        
         return [
             'success' => true, 
             'message' => 'Registro exitoso. Revisa tu email para confirmar tu cuenta.'
         ];
     }
-
-    private function enviarEmailVerificacion(string $email, string $token): bool {}
+    public function verificarEmailUsuario($email,$rut) : bool {
+        $verification = $this->sessionController->verificarEmailSesion($email, $rut);
+        return !empty($verification);
+    }
+    public function enviarEmailVerificacion(string $email, string $nombre, string $token): bool {
+        # email verificacion usando servicio de mailService
+        return $this->emailService->enviarVerificacion($email, $nombre, $token);
+    }
+    
     # actualizar que se verifico el email en la base de datos
+    /*
     public function verificarEmail(string $email, string $token): bool {
         $tokenHash = hash('sha256', $token);
         
@@ -157,7 +160,7 @@ class AuthController {
 
         return false;
     }
-
+    */
 
     /*
     public function cambioContrasenha(string $rut, string $nuevaContrasenha): bool {
