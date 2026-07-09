@@ -172,7 +172,6 @@ class AuthController {
     }
 
     public function enviarEmailVerificacion(string $email, string $nombre,string $rut, string $token): bool {
-        # email verificacion usando servicio de mailService
         return $this->emailService->enviarVerificacion($email, $nombre,$rut, $token);
     }
     
@@ -192,12 +191,6 @@ class AuthController {
     }
     
 
-    /*
-    public function cambioContrasenha(string $rut, string $nuevaContrasenha): bool {
-        $hashedPassword = password_hash($nuevaContrasenha, PASSWORD_DEFAULT);
-        return $this->usuarioModel->actualizarContrasenha($rut, $hashedPassword);
-    }
-    */
 
     public function eliminarCookiesSesion() {
         // 1. Eliminar la cookie
@@ -213,48 +206,6 @@ class AuthController {
         }
     }
 
-
-    /*
-    public function verificarSesion(): ?array {
-        if (!isset($_COOKIE['session_token'])) {
-            return null;
-        }
-
-        $token = $_COOKIE['session_token'];
-        $tokenHash = hash('sha256', $token);
-
-        // 1. Verificar en la base de datos
-        $sql = "SELECT s.*, u.* FROM sesion s 
-                JOIN usuario u ON s.rut_usuario = u.rut 
-                WHERE s.token_sesion = ? AND s.tipo_sesion = 'activa' LIMIT 1";
-        
-        $stmt = $this->usuarioModel->pdo->prepare($sql);
-        $stmt->execute([$tokenHash]);
-        $sessionData = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if (!$sessionData) {
-            return null;
-        }
-
-        // 2. Validar IP y User-Agent
-        $currentIp = $_SERVER['REMOTE_ADDR'] ?? null;
-        $currentUserAgent = $_SERVER['HTTP_USER_AGENT'] ?? null;
-
-        if ($sessionData['ip_address'] !== $currentIp || $sessionData['user_agent'] !== $currentUserAgent) {
-            return null;
-        }
-
-        // 3. Retornar datos del usuario
-        return [
-            'rut' => $sessionData['rut'],
-            'nombre' => $sessionData['nombre'],
-            'apellido' => $sessionData['apellido'],
-            'correo' => $sessionData['correo'],
-            'id_rol' => intval($sessionData['id_rol']),
-            'permisos' => $this->usuarioModel->obtenerPermisosPorRol(intval($sessionData['id_rol'])) ?? []
-        ];
-    }
-    */
 
 
 }

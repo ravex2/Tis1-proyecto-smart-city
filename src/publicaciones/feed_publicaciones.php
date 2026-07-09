@@ -1,6 +1,10 @@
 <?php
 require_once __DIR__ . "/../../config/database.php";
 
+if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_start();
+}
+
 $consulta = "SELECT * FROM publicacion WHERE tipo_estado = 'activa'
 ORDER BY fecha DESC";
 $db = getDatabase();
@@ -63,10 +67,22 @@ if (isset($_GET['voto_pub']) && isset($_GET['tipo_voto'])) {
                 <a class="nav-link" href="#"><i class="bi bi-person me-3"></i> Perfil</a>
             </nav>
 
-            <a class="btn btn-primary rounded-pill py-3 fw-bold shadow-primary mb-4 w-100"
-                href="?ruta=login"
-            >Iniciar Sesion</a>
-
+            <?php if (isset($_SESSION['user'])): ?>
+                <div class="card rounded-4 p-4 mb-4 shadow-sm">
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                        <div class="avatar rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" style="width:56px; height:56px;">
+                            <?= strtoupper(substr($_SESSION['user']['nombre'] ?? '', 0, 1)) ?>
+                        </div>
+                        <div>
+                            <h6 class="mb-0 fw-semibold"><?= htmlspecialchars($_SESSION['user']['nombre'] . ' ' . $_SESSION['user']['apellido']) ?></h6>
+                            <p class="mb-0 text-muted small"><?= htmlspecialchars($_SESSION['user']['correo']) ?></p>
+                        </div>
+                    </div>
+                    <div class="text-muted small">Bienvenido al feed comunitario</div>
+                </div>
+            <?php else: ?>
+                <a class="btn btn-primary rounded-pill py-3 fw-bold shadow-primary mb-4 w-100" href="?ruta=login">Iniciar Sesión</a>
+            <?php endif; ?>
 
         </aside>
 

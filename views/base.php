@@ -65,7 +65,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['user'] = $user;
 
         if ($_SESSION['user']['tipo_interfaz'] === 'interno') {
-            // Envía al Administrador y a los funcionarios a su panel de gestión
             $vemail = $auth->verificarEmailUsuario($login,$user['rut']);
             if($vemail){
                 header('Location: ?ruta=dashboard');
@@ -190,6 +189,10 @@ include __DIR__ . "/layout/header.php";
                     <button type="submit" class="btn btn-primary w-100 py-3 fw-bold">
                         Iniciar Sesión
                     </button>
+
+                    <div class="text-end mt-3">
+                        <a href="?ruta=recuperar-contrasena" class="small text-primary fw-bold text-decoration-none">¿Olvidaste tu contraseña?</a>
+                    </div>
 
                     <button id="google-login-btn" class="googlebtn mt-2 mx-auto">
                         <svg width="18" height="18" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">

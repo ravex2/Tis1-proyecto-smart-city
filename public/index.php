@@ -21,15 +21,17 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
 
 $ruta = $_GET["ruta"] ?? "publicaciones";
 $rutasPublicas = [
-    'login', 
-    'registro', 
+    'login',
+    'registro',
     'publicaciones',
-    'auth/google',             
-    'auth/callback',    
+    'auth/google',
+    'auth/callback',
     'auth/complete-profile',
     'completar_perfil',
     'verificacion_correo',
     'verificar-email',
+    'recuperar-contrasena',
+    'restablecer-contrasena',
 ];
 
 
@@ -91,7 +93,8 @@ $mapaRutas = [
 
     'verificacion_correo' => '/views/pages/verificacion_correo.php',
     'verificar-email' => '/src/autentication/verificacion_correo.php',
-
+    'recuperar-contrasena' => '/views/pages/recuperar_contrasena.php',
+    'restablecer-contrasena' => '/views/pages/restablecer_contrasena.php',
     'ingresar_emprendimiento' => '/public/negocios_locales/ingresar.php'
 ];
 
