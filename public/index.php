@@ -32,7 +32,7 @@ $mapaRutas = [
     'roles_usuarios' => '/views/pages/admin/asignacion_roles.php',
     'publicaciones' => '/src/publicaciones/feed_publicaciones.php',
     'departamentos' => '/views/pages/admin/area_municipal.php',
-    'comercio' => '/views/pages/admin/comercio.php',
+    'comercio' => '/views/pages/usuario/comercio.php',
     'rubros' => '/views/pages/admin/rubros.php',
     'votaciones' => '/views/pages/admin/votaciones.php',
     'leer_publicacion' => '/src/publicaciones/leer_publicacion.php',
@@ -67,7 +67,9 @@ $mapaRutas = [
     'editar_area' => '/public/areas_municipales/editar.php',
     'listar_area' => '/public/areas_municipales/listar.php',
 
+    'gestion_comercio' => '/views/pages/admin/gestion_emprendimientos.php',
     'ingresar_emprendimiento' => '/public/negocios_locales/ingresar.php',
+    'actualizar_revision' => '/public/negocios_locales/actualizar.php',
 ];
 
 $archivoRelativo = $mapaRutas[$ruta] ?? '/views/pages/404.php';
