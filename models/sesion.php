@@ -5,7 +5,7 @@ require_once __DIR__ . '/basemodel.php';
 class Sesion extends BaseModel {
     protected string $table = 'sesion';
     protected array $primaryKey = ['id_sesion'];
-    protected array $columns = ['token_sesion', 'fecha_inicio', 'fecha_termino', 'tipo_sesion', 'rut_usuario'];
+    protected array $columns = ['token_sesion', 'fecha_inicio', 'fecha_termino', 'tipo_sesion', 'rut_usuario','email_verificado'];
 
     public function __construct(?\PDO $pdo = null) {
         parent::__construct($pdo);
@@ -80,7 +80,9 @@ class Sesion extends BaseModel {
     }
 
     public function update(array|int $id, array $data): bool {
+
         $data = $this->filterData($data);
+        echo $data;
         if (empty($data)) {
             return false;
         }
@@ -91,15 +93,19 @@ class Sesion extends BaseModel {
         return $this->execute(sprintf('UPDATE %s SET %s WHERE %s', $this->table, $set, $where), array_merge(array_values($data), $params));
     }
 
+    public function verificarEmailPorRut(string $rut): bool {
+        $sql = "UPDATE sesion SET email_verificado = 1 WHERE rut_usuario = ?";
+        return $this->execute($sql, [$rut]);
+    }
+
     public function delete(array|int $id): bool {
         [$where, $params] = $this->buildWhereClause($id);
         return $this->execute(sprintf('DELETE FROM %s WHERE %s', $this->table, $where), $params);
     }
-    public function verificarEmailSesion(string $rut): ?array {
+    public function verificarEmailSesionModel(string $rut): ?array {
         $sql = "SELECT * FROM sesion 
                 WHERE rut_usuario = ? 
-                AND tipo_sesion = 'activa' 
-                AND (fecha_termino IS NULL OR fecha_termino > NOW()) 
+                AND email_verificado = 1 
                 LIMIT 1";
         
         return $this->fetch($sql, [$rut]);

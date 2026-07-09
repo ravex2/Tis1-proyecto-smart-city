@@ -5,7 +5,7 @@ require_once __DIR__ . '/basemodel.php';
 class Usuario extends BaseModel {
     protected string $table = 'usuario';
     protected array $primaryKey = ['rut'];
-    protected array $columns = ['rut', 'nombre', 'apellido', 'correo', 'direccion', 'contrasenha', 'id_rol', 'id_sector'];
+    protected array $columns = ['rut', 'nombre', 'apellido', 'correo', 'direccion', 'contrasenha', 'id_rol', 'id_sector', 'email_verificado'];
 
     public function __construct(?\PDO $pdo = null) {
         parent::__construct($pdo);
@@ -113,6 +113,15 @@ class Usuario extends BaseModel {
         $set = implode(', ', array_map(fn($column) => sprintf('%s = ?', $column), array_keys($data)));
 
         return $this->execute(sprintf('UPDATE %s SET %s WHERE %s', $this->table, $set, $where), array_merge(array_values($data), $params));
+    }
+
+    public function verificarEmailPorRut(string $rut): bool {
+        $user = $this->findById($rut);
+        return !empty($user) && (int)($user['email_verificado'] ?? 0) === 1;
+    }
+
+    public function marcarEmailVerificado(string $rut): bool {
+        return $this->update($rut, ['email_verificado' => 1]);
     }
 
     public function delete(array|int $id): bool {
