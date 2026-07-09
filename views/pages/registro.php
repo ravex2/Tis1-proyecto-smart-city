@@ -2,14 +2,16 @@
 require_once __DIR__ . '/../../config/app.php';
 require_once __DIR__ . '/../../controllers/autenticacion.controlador.php';
 
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    echo "POST request received";
-
     $auth = new AuthController();
 
     $email = $_POST['email'] ?? '';
@@ -23,11 +25,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'direccion' => $_POST['direccion'] ?? '',
     ];
     
-    $user = $auth->registro(trim($email), $password, $confirm_password,$data,true);
-    echo $user['message'];
-    if ($user['success']) {
-        $_SESSION['user'] = $user;
+    $result = $auth->registro(trim($email), $password, $confirm_password, $data, true);
+
+    if (!empty($result['success'])) {
+        // Si el controlador devolvió los datos del usuario, poblar la sesión con ellos
+        if (!empty($result['user']) && is_array($result['user'])) {
+            $_SESSION['user'] = $result['user'];
+        }
         header('Location: ?ruta=verificacion_correo');
+        exit();
+    }
+
+    // Mostrar mensaje de error cuando no hubo éxito
+    if (!empty($result['message'])) {
+        echo $result['message'];
         /*
         if ($_SESSION['user']['tipo_interfaz'] === 'interno') {
             // Envía al Administrador y a los funcionarios a su panel de gestión
