@@ -41,10 +41,29 @@ cp .env.example .env
 Configurar las variables necesarias:
 
 ```env
-DB_HOST=localhost
-DB_NAME=smartcity
-DB_USER=root
+# database info
+DB_HOST=
+DB_NAME=
+DB_USER=
 DB_PASS=
+
+# google auth
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+GOOGLE_REDIRECT_URI=
+
+# email
+SMTP_HOST=
+SMTP_USER=
+SMTP_PASS=
+SMTP_PORT=
+
+# aws s3
+AWS_ACCESS_KEY_ID=
+AWS_SECRET_ACCESS_KEY=
+AWS_DEFAULT_REGION=us-east-1
+AWS_BUCKET=
+AWS_S3_ENDPOINT=
 ```
 
 ## Instalación
@@ -119,6 +138,7 @@ SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ '70a3f71e-6864-11f1-a2f5-244bfee1da32:1-
 * **src**: recursos visuales de los módulos del proyecto. Por el momento, `views` y `src` contienen elementos similares.
 * **public**: archivos públicos para producción, assets, `.htaccess` e `index.php`.
 * **doc**: documentación del proyecto, arquitectura, dependencias y flujo de trabajo.
+* **services**: recursos externos adaptados al proyecto
 
 ## Equipo de desarrolladores
 
