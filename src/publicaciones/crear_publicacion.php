@@ -9,6 +9,8 @@ $consultaFuncionario = "SELECT id_funcionario FROM funcionario_municipal WHERE r
 $resultado = $db->query($consultaFuncionario, [$rut]);
 $funcionario = $resultado[0] ?? null;
 
+ $usuarioLogeado = $_SESSION['user'] ?? null;
+
 if(!$funcionario){
     header("Location: ?ruta=dashboard");
     exit();
@@ -65,10 +67,52 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <?php include BASE_PATH . "/views/layout/sidebar.php"; ?>
 
         <main class="col-md-10 ms-sm-auto px-4">
-                <div class="feed-header p-3 sticky-top bg-white-glass blur">
-                    <h5 class="fw-bold mb-0">Inicio</h5>
-                    
-                </div>
+                <div class="mb-3 d-flex justify-content-between align-items-center">
+                    <div>
+                        <h3 class="fw-bold mb-1">Gestión de Publicaciones</h3>
+                        <small class="text-muted">Moderación y administración de publicaciones</small>
+                    </div>
+                    <div>
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="dropdown text-end">
+                                
+                                <a class="d-flex align-items-center text-decoration-none dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+
+                                    <div class="text-start">
+                                        <div class="fw-semibold">
+                                            <?= $usuarioLogeado['nombre'] . ' ' . $usuarioLogeado['apellido'] ?>
+                                        </div>
+                                        <small class="text-muted">
+                                            <?= $usuarioLogeado['correo'] ?>
+                                        </small>
+                                    </div>
+
+                                    <div class="me-2">
+                                        <img src="https://ui-avatars.com/api/?name=<?= urlencode($usuarioLogeado['nombre'].' '.$usuarioLogeado['apellido']) ?>&background=3d71ff&color=fff&rounded=true&size=40"
+                                            class="rounded-circle"
+                                            width="40"
+                                            height="40"
+                                            alt="usuario">
+                                    </div>
+
+                                </a>
+
+                                <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+
+                                    <li><hr class="dropdown-divider"></li>
+
+                                    <li>
+                                        <a class="dropdown-item text-danger" href="?ruta=logout">
+                                            <i class="bi bi-box-arrow-right"></i> Cerrar sesión
+                                        </a>
+                                    </li>
+
+                                </ul>
+
+                            </div>
+                        </div>
+                    </div>
+            </div> 
                 <div class="d-flex justify-content-end">
                     <a href="?ruta=crear_categoria_publicacion" class="btn btn-primary rounded-pill px-5 fw-bold shadow-primary">
                         Crear Nueva Categoria Publicacion
