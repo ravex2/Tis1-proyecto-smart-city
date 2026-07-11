@@ -17,3 +17,20 @@ models/crudtrait.php
 
 public/uploads/*
 !.gitkee
+
+
+# archivos de confiuracion os
+.DS_Store
+
+
+# archivos doc
+doc/mejoras.md
+
+# database
+/database/
+/seguridad/
+
+
+# devices
+#mac
+.DS_Store
