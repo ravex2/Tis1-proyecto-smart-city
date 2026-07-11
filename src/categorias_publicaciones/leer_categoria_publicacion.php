@@ -22,7 +22,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="/Tis1-proyecto-smart-city/assets/css/panel.css">
+    <link rel="stylesheet" href="/assets/css/panel.css">
 </head>
 <body>
 
@@ -34,8 +34,8 @@
         <main class="col-md-10 ms-sm-auto px-4">
                 <div class="mb-3 d-flex justify-content-between align-items-center">
                     <div>
-                        <h3 class="fw-bold mb-1">Gestión de Publicaciones</h3>
-                        <small class="text-muted">Moderación y administración de publicaciones</small>
+                        <h3 class="fw-bold mb-1">Gestión de Categorias Publicaciones</h3>
+                        <small class="text-muted">Gestiona facilmente las categorias correspondientes a las publicaciones</small>
                     </div>
                     <div>
                         <div class="d-flex align-items-center gap-2">
