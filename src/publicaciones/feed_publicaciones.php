@@ -44,7 +44,7 @@ if (isset($_GET['voto_pub']) && isset($_GET['tipo_voto'])) {
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="social-style.css">
-    <link rel="stylesheet" href="/Tis1-proyecto-smart-city/assets/css/publicaciones.css">
+    <link rel="stylesheet" href="/assets/css/publicaciones.css">
     
 </head>
 <body>
