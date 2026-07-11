@@ -23,15 +23,9 @@
         public function editarSesion($id, array $data){
             return $this->model->update($id, $data);
         }
-        public function editarSesionByRut($rut){
-            return $this->model->verificarEmailPorRut($rut);
-        }
 
         public function eliminarSesion($id){
             return $this->model->delete($id);
-        }
-        public function verificarEmailSesion(string $rut): ?array {
-            return $this->model->verificarEmailSesionModel($rut);
         }
     }
 ?>

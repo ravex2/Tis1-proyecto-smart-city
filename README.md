@@ -41,29 +41,10 @@ cp .env.example .env
 Configurar las variables necesarias:
 
 ```env
-# database info
-DB_HOST=
-DB_NAME=
-DB_USER=
+DB_HOST=localhost
+DB_NAME=smartcity
+DB_USER=root
 DB_PASS=
-
-# google auth
-GOOGLE_CLIENT_ID=
-GOOGLE_CLIENT_SECRET=
-GOOGLE_REDIRECT_URI=
-
-# email
-SMTP_HOST=
-SMTP_USER=
-SMTP_PASS=
-SMTP_PORT=
-
-# aws s3
-AWS_ACCESS_KEY_ID=
-AWS_SECRET_ACCESS_KEY=
-AWS_DEFAULT_REGION=us-east-1
-AWS_BUCKET=
-AWS_S3_ENDPOINT=
 ```
 
 ## Instalación
@@ -111,14 +92,8 @@ http://localhost:8000
 ### Base de datos MySQL
 
 1. Crear una base de datos llamada `smartcity`.
-2. Editar archivo smartcity.sql
-```sql
--- comentar esta linea dentro del sql
-SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ '70a3f71e-6864-11f1-a2f5-244bfee1da32:1-87';
-```
-3. Importar el archivo `smartcity.sql`.
-4. Configurar las credenciales en el archivo `.env`.
-
+2. Importar el archivo `smartcity.sql`.
+3. Configurar las credenciales en el archivo `.env`.
 
 ## Instrucciones de uso
 
@@ -141,28 +116,11 @@ SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ '70a3f71e-6864-11f1-a2f5-244bfee1da32:1-
 
 ## Equipo de desarrolladores
 
-* Oscar Gonzalez
-* Felipe Alarcon
-* Benjamin Cisternas
-* Hector Contreras
-* Matias Altamirano
-
-## Contribuciones
-
-
-* Oscar Gonzalez: 
-    * mantenedor de publicaciones
-* Felipe Alarcon
-    * mantenedores de reacciones
-* Benjamin Cisternas
-    * mantenedor area_municipal
-    * panel de admin
-    * asignacion de roles
-* Hector Contreras
-    * mentanedor de los comentarios
-* Matias Altamirano
-    * login y cierre de sesión
-    * mantenedores de admin, sector, usuarios, rubro
+* Oscar
+* Felipe
+* Benjamin
+* Hector
+* Matias
 
 ## Licencia
 
