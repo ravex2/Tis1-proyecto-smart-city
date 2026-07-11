@@ -5,7 +5,7 @@ require_once __DIR__ . '/basemodel.php';
 class Usuario extends BaseModel {
     protected string $table = 'usuario';
     protected array $primaryKey = ['rut'];
-    protected array $columns = ['nombre', 'apellido', 'correo', 'direccion', 'contrasenha', 'id_rol', 'id_sector'];
+    protected array $columns = ['rut', 'nombre', 'apellido', 'correo', 'direccion', 'contrasenha', 'id_rol', 'id_sector', 'email_verificado'];
 
     public function __construct(?\PDO $pdo = null) {
         parent::__construct($pdo);
@@ -68,15 +68,13 @@ class Usuario extends BaseModel {
             return $this->fetchAll("SELECT u.rut,u.nombre, u.apellido, u.correo, u.id_rol,r.nombre_rol FROM usuario u JOIN rol r ON u.id_rol = r.id_rol");
     }
 
-    public function obtenerPermisosPorRol(int $id_rol): array {
-        $consulta = "SELECT p.nombre_permiso 
-                    FROM permiso p 
-                    JOIN posee po ON p.id_permiso = po.id_permiso 
-                    WHERE po.id_rol = ?";
+    public function obtenerPermisosPorRol(int $id_rol): array{
+        $consulta = "SELECT p.nombre_permiso FROM permiso p JOIN posee po ON p.id_permiso = po.id_permiso WHERE po.id_rol = ?";
 
-        $resultado = $this->fetchAll($consulta, [$id_rol]) ?? [];
+        $resultado = $this->fetchAll($consulta, [$id_rol]);
 
-        return array_column($resultado, 'nombre_permiso');
+        return array_column($resultado,'nombre_permiso');
+
     }
 
     public function findById(array|int $id): ?array {
@@ -94,8 +92,11 @@ class Usuario extends BaseModel {
             throw new InvalidArgumentException('No valid columns provided for insert.');
         }
 
+
         $columns = array_keys($data);
+        echo "Columns: " . implode(", ", $columns) . "\n"; // Debugging line
         $placeholders = implode(', ', array_fill(0, count($columns), '?'));
+        echo "Placeholders: " . $placeholders . "\n";
         $sql = sprintf('INSERT INTO %s (%s) VALUES (%s)', $this->table, implode(', ', $columns), $placeholders);
 
         $this->execute($sql, array_values($data));
@@ -112,6 +113,15 @@ class Usuario extends BaseModel {
         $set = implode(', ', array_map(fn($column) => sprintf('%s = ?', $column), array_keys($data)));
 
         return $this->execute(sprintf('UPDATE %s SET %s WHERE %s', $this->table, $set, $where), array_merge(array_values($data), $params));
+    }
+
+    public function verificarEmailPorRut(string $rut): bool {
+        $user = $this->findById($rut);
+        return !empty($user) && (int)($user['email_verificado'] ?? 0) === 1;
+    }
+
+    public function marcarEmailVerificado(string $rut): bool {
+        return $this->update($rut, ['email_verificado' => 1]);
     }
 
     public function delete(array|int $id): bool {
