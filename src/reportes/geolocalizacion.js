@@ -10,6 +10,10 @@ function obtenerUbicacion() {
             document.getElementById("longitud").value =
                 posicion.coords.longitude;
 
+            document.getElementById('coordenadas-texto-visible').value = "Latitud: " + posicion.coords.latitude.toFixed(6) + " | Longitud: " + posicion.coords.longitude.toFixed(6);
+
+
+
         });
 
     } else {
