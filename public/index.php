@@ -104,10 +104,8 @@ $archivoCompleto = BASE_PATH . $archivoRelativo;
 if (isset($_GET['ajax']) && $_GET['ajax'] == '1') {
     require_once $archivoCompleto;
 } else {
-
     $template = new TemplateController();
     $template->ctrtemplate($archivoCompleto);
-
 }
 
 ini_set('display_errors', 1);
