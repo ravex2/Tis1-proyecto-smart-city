@@ -20,22 +20,31 @@ if(!$funcionario){
 $id_funcionario = $funcionario['id_funcionario'];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $nombre_categoria = $_POST["nombre_categoria"];
+    $nombre_categoria = trim($_POST["nombre_categoria"]);
+    
     if (!empty($nombre_categoria)) {
-        $id_area_municipal = $_POST["id_area_municipal"];
+        $existe = $db->query("SELECT * FROM categoria_reporte WHERE LOWER(nombre_categoria)=LOWER(?)",[$nombre_categoria]);
+        if(count($existe)>0){
+            echo "La categoria ya existe";
+        }else{
+            $id_area_municipal = $_POST["id_area_municipal"];
         
 
-        $resultado = $db->execute(
-            "INSERT INTO categoria_reporte (nombre_categoria, id_funcionario,id_area_municipal) VALUES(?,?,?)",
-            [$nombre_categoria, $id_funcionario, $id_area_municipal]
-        );
+            $resultado = $db->execute(
+                "INSERT INTO categoria_reporte (nombre_categoria, id_funcionario,id_area_municipal) VALUES(?,?,?)",
+                [$nombre_categoria, $id_funcionario, $id_area_municipal]
+            );
 
-        if ($resultado) {
-            header("Location: ?ruta=reportes");
-            exit();
-        } else {
-            echo "Error al crear";
+            if ($resultado) {
+                header("Location: ?ruta=reportes");
+                exit();
+            } else {
+                echo "Error al crear";
+            }
         }
+
+
+       
 
     } else {
         echo "La categoria nesesita un nombre";
