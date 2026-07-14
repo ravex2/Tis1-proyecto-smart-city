@@ -16,13 +16,14 @@
   <body>
     <?php include __DIR__ . "/../../views/layout/navbar_user.php"; ?>
     <div class="container-fluid mt-4">
-        <table class="table table-hover align-middle mb-0 text-center">
-        <thead class="table-light">
+        <span><br></span>
+        <table class="table table-hover align-middle mb-0 text-center mt-3">
+        <thead class="table-light mt-10">
             <tr>
-            <th scope="col">Fecha Reporte</th>
-            <th scope="col">Estado</th>
-            <th scope="col">Descripcion</th>
-            <th scope="col">Leer Reporte</th>
+                <th scope="col">Fecha Reporte</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Descripcion</th>
+                <th scope="col">Leer Reporte</th>
             </tr>
         </thead>
         <tbody>
