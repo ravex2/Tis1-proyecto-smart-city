@@ -41,3 +41,4 @@ doc/mejoras.md
 # servidor de notificaciones
 /node_modules/
 /notificacion-server/node_modules/
+dump.rdb
