@@ -40,16 +40,26 @@ if(isset($_GET["id_enviado"])){
 
 if($_SERVER["REQUEST_METHOD"]=="POST"){
     $nombre_categoria = $_POST["nombre_categoria"];
-    if($nombre_categoria !=""){
-
-        $resultado = $db->execute("UPDATE categoria_reporte SET nombre_categoria = ? WHERE id_categoria = ?",[$nombre_categoria,$id_capturado]);
-            
-        if($resultado){
-            header("Location: leer_categoria_reporte");
-            exit();
+    
+    if (!empty($nombre_categoria)) {
+        $existe = $db->query("SELECT * FROM categoria_reporte WHERE LOWER(nombre_categoria)=LOWER(?)",[$nombre_categoria]);
+        if(count($existe)>0){
+            echo "La categoria ya existe";
         }else{
-            echo "Error al actualizar";
+            $id_area_municipal = $_POST["id_area_municipal"];
+            $resultado = $db->execute("UPDATE categoria_reporte SET nombre_categoria = ? , id_funcionario = ?, id_area_municipal = ?
+            WHERE id_categoria = ?",[$nombre_categoria,$id_funcionario,$id_area_municipal,$id_capturado]);
+
+           if($resultado){
+                header("Location: ?ruta=reportes");
+                exit();
+            }else{
+                echo "Error al actualizar";
+            } 
         }
+        
+            
+        
     }else{
         echo "El nombre no puede estar vacio";
     }

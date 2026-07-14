@@ -11,7 +11,7 @@ $resultadoo = $db->query($consultaFuncionario, [$rut]);
 $funcionario = $resultadoo[0] ?? null;
 
 if (!$funcionario) {
-    header("Location: ?ruta=dashboard");
+    header("Location: ?ruta=publicaciones");
     exit();
 }
 
