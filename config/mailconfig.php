@@ -9,14 +9,15 @@ class MailConfig {
     public static function getMailer(): PHPMailer {
         $mailer = new PHPMailer(true);
         
-        echo $_ENV['SMTP_HOST'];
         try {
             // Configuración SMTP
             $mailer->isSMTP();
             $mailer->Host       = $_ENV['SMTP_HOST'] ?? 'smtp.gmail.com';
             $mailer->SMTPAuth   = true;
             $mailer->Username   = $_ENV['SMTP_USER'] ?? '';
-            $mailer->Password   = str_replace(' ', '', $_ENV['SMTP_PASS'] ?? '');
+            $mailer->Password   = str_replace(' ', '', $_ENV['SMTP_PASS']);
+
+            echo $_ENV['SMTP_PASS'];
             
             $mailer->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $mailer->Port       = $_ENV['SMTP_PORT'] ?? 587;
