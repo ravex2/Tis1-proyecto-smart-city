@@ -11,6 +11,13 @@
 
     $db = getDatabase();
     $usuarioLogeado = $_SESSION['user'] ?? null;
+
+    if (isset($_GET["error"])) {
+
+        if ($_GET["error"] == "existen_publicaciones") {
+            echo '<div class="alert alert-danger">La categoria tiene publicaciones asociadas.</div>';
+        }
+    }
 ?>
 
 <!DOCTYPE html>
