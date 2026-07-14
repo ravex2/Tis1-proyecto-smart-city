@@ -59,6 +59,11 @@
             ?>
         </tbody>
         </table>
+        <div class="d-flex justify-content-end">
+            <a href="?ruta=crear_reporte" class="btn btn-primary rounded-pill px-5 fw-bold shadow-primary">
+                Volver
+            </a>
+        </div>
     </div>
   
     
