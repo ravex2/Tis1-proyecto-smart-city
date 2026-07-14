@@ -19,6 +19,17 @@ if(!$funcionario){
 $id_funcionario = $funcionario['id_funcionario'];
 $cat_pub = $db->query("SELECT * FROM categoria_publicacion");
 
+if (isset($_GET["error"])) {
+
+    if ($_GET["error"] == "fecha_pasada") {
+        echo '<div class="alert alert-danger">La fecha del evento debe ser futura.</div>';
+    }
+
+    if ($_GET["error"] == "fecha_invalida") {
+        echo '<div class="alert alert-danger"> La fecha ingresada no es válida. </div>';
+    }
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
 
@@ -26,7 +37,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $titulo = $_POST["titulo"];
     $fecha_evento = $_POST["fecha_evento"] ?? null;
     if ($fecha_evento != "") {
-        $fecha_evento = str_replace("T", " ", $fecha_evento) . ":00";
+
+        $fecha = DateTime::createFromFormat("Y-m-d\TH:i", $fecha_evento);
+
+        if (!$fecha) {
+            header("Location: ?ruta=crear_publicacion&error=fecha_invalida");
+            exit();
+        }
+
+        if ($fecha < new DateTime()) {
+            header("Location: ?ruta=crear_publicacion&error=fecha_pasada");
+            exit();
+        }
+        $fecha_evento = $fecha->format("Y-m-d H:i:s");
+
     } else {
         $fecha_evento = null;
     }
@@ -143,7 +167,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                                     <div class="col-md-6">
                                         <label>Fecha</label>
-                                        <input type="datetime-local" name="fecha_evento"
+                                        <input type="datetime-local" name="fecha_evento" min="<?= date('Y-m-d\TH:i') ?>"
                                         class="form-control rounded-pill px-3 py-2">
                                     </div>
 
