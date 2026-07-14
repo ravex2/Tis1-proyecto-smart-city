@@ -18,6 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $imagen = $_POST["imagen"];
 
     
+    // Consulta para insertar reporte
     $consulta = "INSERT INTO reporte(titulo, descripcion, id_categoria_reporte, latitud, longitud, imagen, rut_usuario, tipo_estado) 
     VALUES('$titulo', '$descripcion', '$id_categoria_reporte', '$latitud', '$longitud', '$imagen', '$rut_usuario', 'pendiente')";
     
