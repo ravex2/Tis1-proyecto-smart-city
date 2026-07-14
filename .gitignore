@@ -34,3 +34,10 @@ doc/mejoras.md
 # devices
 #mac
 .DS_Store
+
+
+
+
+# servidor de notificaciones
+/node_modules/
+/notificacion-server/node_modules/
