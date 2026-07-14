@@ -22,15 +22,11 @@ $cat_pub = $db->query("SELECT * FROM categoria_publicacion");
 if (isset($_GET["error"])) {
 
     if ($_GET["error"] == "fecha_pasada") {
-        echo '<div class="alert alert-danger">
-                La fecha del evento debe ser futura.
-              </div>';
+        echo '<div class="alert alert-danger">La fecha del evento debe ser futura.</div>';
     }
 
     if ($_GET["error"] == "fecha_invalida") {
-        echo '<div class="alert alert-danger">
-                La fecha ingresada no es válida.
-              </div>';
+        echo '<div class="alert alert-danger"> La fecha ingresada no es válida. </div>';
     }
 }
 
