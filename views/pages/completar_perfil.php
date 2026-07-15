@@ -1,3 +1,9 @@
+<?php
+    require_once __DIR__ . "/../../config/database.php";
+    $db = getDatabase();
+    $sectores = $db->query("SELECT id_sector, nombre FROM sector");
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -52,6 +58,17 @@
                                        placeholder="Opcional">
                             </div>
 
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Sector</label>
+                                <select name="id_sector" class="form-select py-2">  
+                                    <?php foreach ($sectores as $sector): ?>
+                                        <option value="<?= htmlspecialchars($sector['id_sector']) ?>">
+                                            <?= htmlspecialchars($sector['nombre']) ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+
                             <div class="mb-4">
                                 <label class="form-label fw-semibold">Correo electrónico</label>
                                 <input type="email" class="form-control py-2" 
@@ -59,6 +76,9 @@
                                        disabled>
                                 <small class="text-muted">Este correo no se puede modificar</small>
                             </div>
+
+
+
 
                             <button type="submit" class="btn btn-primary w-100 py-3 fw-bold">
                                 Crear Cuenta y Continuar

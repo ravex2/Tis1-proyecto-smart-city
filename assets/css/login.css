@@ -1,11 +1,11 @@
+
 :root {
     --primary-blue: #3d71ff;
-    --bg-light: #ffffff; /* Aseguramos que el fondo base sea blanco */
+    --bg-light: #ffffff;
 }
 
-/* Contenedor del lado izquierdo */
 .left-side-container {
-    background-color: #ffffff; /* Espacio dividido en blanco */
+    background-color: #ffffff;
     position: relative;
     height: 100vh;
     overflow: hidden;
@@ -17,14 +17,10 @@
     left: 0;
     width: 100%;
     height: 100%;
-    /* Imagen con un degradado más sutil para que no mate el blanco */
     background: linear-gradient(rgba(255, 255, 255, 0.1), rgba(13, 30, 76, 0.2)), 
                 url('https://images.unsplash.com/photo-1577495508048-b635879837f1?auto=format&fit=crop&q=80&w=1920');
     background-size: cover;
     background-position: center;
-    
-    /* Corte diagonal ajustado para que el área de la imagen sea la que termina en punta */
-    /* Dejamos el espacio de la derecha (el 30%) en blanco total */
     clip-path: polygon(0 0, 95% 0, 65% 100%, 0% 100%);
     z-index: 1;
 }
@@ -37,12 +33,9 @@
     flex-direction: column;
     justify-content: center;
     padding-left: 10%;
-    /* Color de texto oscuro para que resalte sobre el blanco si es necesario, 
-    o mantenemos blanco si la imagen es oscura */
-    color: white; 
+    color: white;
 }
 
-/* Sombra interna para suavizar la unión con el blanco */
 .diagonal-bg::after {
     content: '';
     position: absolute;
@@ -52,17 +45,6 @@
     height: 100%;
     box-shadow: inset -20px 0 30px -20px rgba(0,0,0,0.3);
 }
-
-
-/* Responsive adjustments */
-@media (max-width: 991.98px) {
-    .login-box {
-        background: white;
-        border-radius: 24px;
-        box-shadow: 0 20px 40px rgba(0,0,0,0.05);
-    }
-}
-
 
 .googlebtn {
     width: 100%;

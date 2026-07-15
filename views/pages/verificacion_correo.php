@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $token = $_COOKIE['session_token'] ?? '';
 
-    echo "$email" . " $nombre" . " $token";
+    echo "$email" . " $nombre" . "$rut" . " $token";
 
     $verificado = $auth->enviarEmailVerificacion($email, $nombre,$rut, $token);
     if ($verificado) {

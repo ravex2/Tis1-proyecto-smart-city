@@ -19,7 +19,7 @@ $consulta = "SELECT n.*, s.nombre AS nombre_sector, r.nombre_rubro
              FROM negocio_local n
              INNER JOIN sector s ON n.id_sector = s.id_sector
              INNER JOIN rubro r ON n.id_rubro = r.id_rubro
-             WHERE 1=1";
+             WHERE 1=1 AND n.tipo_estado = 'aprobado'";
 $parametros = [];
 
 if (!empty($buscar)) {

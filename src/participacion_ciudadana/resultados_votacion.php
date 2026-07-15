@@ -32,52 +32,78 @@ foreach ($resultados as $res) {
 }
 ?>
 
-<div class="container mt-4 mb-5">
-    <div class="card shadow-sm border-0 rounded-4">
-        <div class="card-body p-4">
-            <div class="d-flex gap-2 mb-3">
-                <a href="?ruta=lista_votaciones" class="btn btn-sm btn-outline-secondary rounded-pill">
-                    ← Volver a Votaciones
-                </a>
-                <a href="?ruta=dashboard" class="btn btn-sm btn-outline-primary rounded-pill">
-                    🏠 Volver al Inicio
-                </a>
-            </div>
-            
-            <h3 class="card-title fw-bold text-center mb-1">Resultados: <?= htmlspecialchars($consulta['titulo']) ?></h3>
-            <p class="text-muted text-center mb-4">Total de votos emitidos: <strong><?= $total_votos_totales ?></strong></p>
-            
-            <?php if ($total_votos_totales == 0): ?>
-                <div class="alert alert-warning text-center rounded-4 p-4">
-                    <h5 class="fw-bold mb-0">Aún no hay votos registrados para esta consulta.</h5>
-                </div>
-            <?php else: ?>
-                <div class="row align-items-center mt-4">
-                    <!-- Gráfico -->
-                    <div class="col-md-7 mb-4">
-                        <canvas id="resultadosChart"></canvas>
+<!doctype html>
+<html lang="es">
+    <head>
+        <title>Title</title>
+        <!-- Required meta tags -->
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <!-- Bootstrap CSS v5.3.8 -->
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+            crossorigin="anonymous"
+        />
+    </head>
+
+    <body class="bg-light" style="font-family: sans-serif;">
+        
+        <?php include __DIR__ . "/../../views/layout/navbar_user.php"; ?>
+        <div class="container mb-5" style="margin-top: 90px; max-width: 1100px;">
+            <div class="card shadow-sm border-0 rounded-4">
+                <div class="card-body p-4">
+                    <div class="d-flex gap-2 mb-3">
+                        
+                        <a href="?ruta=listado_votaciones" class="btn btn-sm btn-outline-secondary rounded-pill">
+                            ← Volver a Votaciones
+                        </a>
                     </div>
                     
-                    <!-- Leyenda / Porcentajes -->
-                    <div class="col-md-5">
-                        <ul class="list-group list-group-flush">
-                            <?php foreach ($resultados as $res): 
-                                $porcentaje = ($res['total_votos'] / $total_votos_totales) * 100;
-                            ?>
-                                <li class="list-group-item d-flex justify-content-between align-items-center border-0 mb-2 rounded-3 bg-light">
-                                    <span class="fw-medium"><?= htmlspecialchars($res['texto_alternativa']) ?></span>
-                                    <span class="badge bg-primary rounded-pill" style="font-size: 14px;">
-                                        <?= number_format($porcentaje, 1) ?>% (<?= $res['total_votos'] ?> votos)
-                                    </span>
-                                </li>
-                            <?php endforeach; ?>
-                        </ul>
-                    </div>
+                    <h3 class="card-title fw-bold text-center mb-1">Resultados: <?= htmlspecialchars($consulta['titulo']) ?></h3>
+                    <p class="text-muted text-center mb-4">Total de votos emitidos: <strong><?= $total_votos_totales ?></strong></p>
+                    
+                    <?php if ($total_votos_totales == 0): ?>
+                        <div class="alert alert-warning text-center rounded-4 p-4">
+                            <h5 class="fw-bold mb-0">Aún no hay votos registrados para esta consulta.</h5>
+                        </div>
+                    <?php else: ?>
+                        <div class="row align-items-center mt-4">
+                            <!-- Gráfico -->
+                            <div class="col-md-7 mb-4">
+                                <canvas id="resultadosChart"></canvas>
+                            </div>
+                            
+                            <!-- Leyenda / Porcentajes -->
+                            <div class="col-md-5">
+                                <ul class="list-group list-group-flush">
+                                    <?php foreach ($resultados as $res): 
+                                        $porcentaje = ($res['total_votos'] / $total_votos_totales) * 100;
+                                    ?>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center border-0 mb-2 rounded-3 bg-light">
+                                            <span class="fw-medium"><?= htmlspecialchars($res['texto_alternativa']) ?></span>
+                                            <span class="badge bg-primary rounded-pill" style="font-size: 14px;">
+                                                <?= number_format($porcentaje, 1) ?>% (<?= $res['total_votos'] ?> votos)
+                                            </span>
+                                        </li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            </div>
+                        </div>
+                    <?php endif; ?>
                 </div>
-            <?php endif; ?>
+            </div>
         </div>
-    </div>
-</div>
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+            crossorigin="anonymous"
+        ></script>
+    </body>
+</html>
+
 
 <!-- Incluir Chart.js para el gráfico -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
