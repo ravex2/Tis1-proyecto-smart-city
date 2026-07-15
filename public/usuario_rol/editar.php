@@ -4,10 +4,9 @@
     
     if($_SERVER['REQUEST_METHOD'] == 'POST') {
         $controller = new UsuarioController();
-        session_start();
 
         $resultado = $controller->cambiarRol($_POST['rut'],
-            $_POST['id_rol']);
+            $_POST['id_rol'],$_POST['id_area']);
 
         if ($resultado['ok']) {
             $_SESSION['success'] = $resultado['message'];

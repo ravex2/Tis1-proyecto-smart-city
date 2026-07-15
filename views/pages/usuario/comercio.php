@@ -28,7 +28,7 @@
                 <p class="text-muted">Da a conocer tu negocio a todos los vecinos de la comunidad</p>
             </div>
 
-            <form class="card border-0 rounded-4 shadow-sm p-4 p-md-5 bg-white" action="?ruta=ingresar_emprendimiento" method="POST" enctype="multipart/form-data">
+            <form id="formEmprendimiento" class="card border-0 rounded-4 shadow-sm p-4 p-md-5 bg-white" action="?ruta=ingresar_emprendimiento" method="POST" enctype="multipart/form-data">
                 
                 <h5 class="fw-bold text-secondary mb-3"><i class="bi bi-info-circle me-2"></i>Información General</h5>
                 <div class="row g-3 mb-4">
@@ -95,12 +95,12 @@
 
                     <div class="col-md-4">
                         <label class="form-label fw-semibold small text-muted">Hora Apertura</label>
-                        <input type="time" name="hora_apertura" class="form-control bg-light border-0 py-2" required>
+                        <input id="hora_apertura" type="time" name="hora_apertura" class="form-control bg-light border-0 py-2" required>
                     </div>
 
                     <div class="col-md-4">
                         <label class="form-label fw-semibold small text-muted">Hora Cierre</label>
-                        <input type="time" name="hora_cierre" class="form-control bg-light border-0 py-2" required>
+                        <input id="hora_cierre" type="time" name="hora_cierre" class="form-control bg-light border-0 py-2" required>
                     </div>
                 </div>
 
@@ -167,5 +167,18 @@
             integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
             crossorigin="anonymous"
         ></script>
+        <script>
+            document.getElementById("formEmprendimiento").addEventListener("submit", function(e) {
+
+                const apertura = document.getElementById("hora_apertura").value;
+                const cierre = document.getElementById("hora_cierre").value;
+
+                if (apertura >= cierre) {
+                    e.preventDefault();
+                    alert("La hora de apertura debe ser menor que la hora de cierre.");
+                }
+
+            });
+        </script>
     </body>
 </html>
