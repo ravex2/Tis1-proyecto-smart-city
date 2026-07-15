@@ -49,7 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
 
-        header("Location: ?ruta=crear_votacion&success=1");
+        header("Location: ?ruta=votaciones&success=1");
         exit;
     } catch (Exception $e) {
         $error = $e->getMessage();
