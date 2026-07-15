@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btn_crear'])) {
         $resultado = $controlador->crearRubro($datos);
         
         if ($resultado) {
-            echo "<script>alert('Rubro creado con éxito'); window.location='rubros.php';</script>";
+            echo "<script>alert('Rubro creado con éxito'); window.location='?ruta=rubros';</script>";
         }
     } catch (Exception $e) {
         echo "<script>alert('Error al crear rubro: " . $e->getMessage() . "');</script>";
@@ -23,7 +23,7 @@ if (isset($_POST['btn_eliminar'])) {
     try {
         $resultado = $controlador->eliminarRubro($_POST['id_rubro']);
         if ($resultado) {
-            echo "<script>alert('Rubro eliminado con éxito'); window.location='rubros.php';</script>";
+            echo "<script>alert('Rubro eliminado con éxito'); window.location='?ruta=rubros';</script>";
         }
     } catch (Exception $e) {
         echo "<script>alert('Error al eliminar rubro: " . $e->getMessage() . "');</script>";
