@@ -15,7 +15,6 @@ logs/
 # archivos no necearios
 models/crudtrait.php
 
-public/uploads/*
 !.gitkee
 
 
@@ -34,3 +33,11 @@ doc/mejoras.md
 # devices
 #mac
 .DS_Store
+
+
+
+
+# servidor de notificaciones
+/node_modules/
+/notificacion-server/node_modules/
+dump.rdb

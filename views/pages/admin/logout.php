@@ -4,6 +4,7 @@
     }
     $_SESSION = array(); // Vacía los datos
     session_destroy();   // Destruye el archivo de sesión
+    // borrar la sesion de cookie si es que existe
     header('Location: ?ruta=login');
     exit();
 ?>

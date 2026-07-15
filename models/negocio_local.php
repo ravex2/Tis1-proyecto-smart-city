@@ -105,5 +105,10 @@ class NegocioLocal {
         $sql = "UPDATE negocio_local SET tipo_estado = ?, id_revision = ? WHERE id_negocio = ?";
         return $db->execute($sql, [$estado, $id_revision, $id_negocio]);
     }
+
+    public function countByEstado(string $estado): int {
+        $db = getDatabase();
+        $result = $db->query("SELECT COUNT(*) AS total FROM negocio_local WHERE tipo_estado = ?", [$estado]);
+        return (int) ($result[0]['total'] ?? 0);
+    }
 }
-?>

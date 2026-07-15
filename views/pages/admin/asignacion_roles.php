@@ -1,16 +1,20 @@
 <?php
-    ini_set('display_errors',1);
-    ini_set('display_startup_errors',1);
-    error_reporting(E_ALL);
+
     require_once __DIR__ . '/../../../models/usuario.php';
     require_once __DIR__ . '/../../../models/rol.php';
+    require_once __DIR__ . '/../../../models/Area.php';
     
     $usuarioModelo = new Usuario();
     $rolModelo = new Rol();
     
     $usuarios = $usuarioModelo->findAllWithRoles();
     $roles = $rolModelo->findAll();
-    
+
+
+
+    $departamentoModelo = new Departamento();
+    $departamentos = $departamentoModelo->findAll();
+        
 
 
     if (!isset($_SESSION['user'])) {
@@ -21,25 +25,8 @@
     $usuarioLogeado = $_SESSION['user'] ?? null;
 ?>
 
-<!doctype html>
-<html lang="es">
-    <head>
-        <title>Title</title>
-        <!-- Required meta tags -->
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+<? include __DIR__ . "../../../layout/header.php"; ?>
 
-        <!-- Bootstrap CSS v5.3.8 -->
-        <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-            rel="stylesheet"
-            integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
-            crossorigin="anonymous"
-        />
-        <link rel="stylesheet" href="assets/css/panel.css">
-    </head>
-
-    <body>
         <div class="container-fluid">
             <div class="row">
                 <?php include __DIR__ . "/../../layout/sidebar.php"; ?>
@@ -181,10 +168,30 @@
                                     <?php foreach ($roles as $rol): ?>
                                         <option value="<?= $rol['id_rol'] ?>">
                                             <?= $rol['nombre_rol'] ?>
+
                                         </option>
                                     <?php endforeach; ?>
 
                                 </select>
+                                <div class="mt-3 d-none" id="contenedor_departamento">
+
+                                    <label>Departamento:</label>
+
+                                    <select name="id_area" id="select_departamento" class="form-select">
+
+                                        <option value="">Seleccione un departamento</option>
+
+                                        <?php foreach($departamentos as $departamento): ?>
+
+                                            <option value="<?= $departamento['id_area'] ?>">
+                                                <?= $departamento['nombre_area'] ?>
+                                            </option>
+
+                                        <?php endforeach; ?>
+
+                                    </select>
+
+                                </div>
                             </div>
                             <div class="modal-footer">
                                 <button
@@ -203,12 +210,38 @@
         </div>
         <script>
             function abrirModal(rut, idRol) {
+
                 document.getElementById('rut_usuario').value = rut;
                 document.getElementById('select_rol').value = idRol;
+
+                actualizarDepartamento();
 
                 const modal = new bootstrap.Modal(document.getElementById('modalId'));
                 modal.show();
             }
+
+            function actualizarDepartamento() {
+
+                const rol = parseInt(document.getElementById("select_rol").value);
+
+                const contenedor = document.getElementById("contenedor_departamento");
+                const departamento = document.getElementById("select_departamento");
+
+                if (rol !== 1 && rol !== 4) {
+
+                    contenedor.classList.remove("d-none");
+                    departamento.required = true;
+
+                } else {
+
+                    contenedor.classList.add("d-none");
+                    departamento.required = false;
+                    departamento.value = "";
+
+                }
+            }
+
+            document.getElementById("select_rol").addEventListener("change", actualizarDepartamento);
         </script>
         <script>
             document.getElementById('buscar').addEventListener('keyup', function () {
@@ -218,6 +251,7 @@
                 });
             });
         </script>
+
         <script
             src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"

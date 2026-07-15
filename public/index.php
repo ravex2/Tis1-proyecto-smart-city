@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . "/../vendor/autoload.php";
 require_once __DIR__ . "/../controllers/template.controller.php";
+require_once __DIR__ . "/../controllers/rol.controlador.php";
 
 
 define('BASE_PATH', realpath(__DIR__ . '/..'));
@@ -31,13 +32,69 @@ $rutasPublicas = [
 
 if (!isset($_SESSION['user']) && !in_array($ruta, $rutasPublicas)) {
     $ruta = 'login';
+} 
+
+
+//$rolUsuario = $_SESSION['user']['rol'] ?? $_SESSION['rol'] ?? 'invitado';
+//echo print_r($_SESSION['user']);
+
+
+//$rolController = new RolController();
+//$resultado = $rolController->obtenerRol($rol_usuario);
+//echo print_r($resultado);
+if (isset($_SESSION['user'])) {
+    $rol_usuario = $_SESSION['user']['id_rol'];
+} 
+
+$restriccionesRutas = [
+    // --- Rutas exclusivas de ADMINISTRADOR (Rol 3) ---
+    'dashboard'                 => [3],
+    'sector'                    => [3],
+    'usuarios'                  => [3],
+    'roles_usuarios'            => [3],
+    'departamentos'             => [3],
+    'rubros'                    => [3],
+    'gestion_comercio'          => [3],
+    'asignar_rol'               => [3],
+    'eliminar_area'             => [3],
+    'ingresar_area'             => [3],
+    'editar_area'               => [3],
+    'listar_area'               => [3],
+    'leer_categoria_publicacion'=> [3],
+    'crear_categoria_publicacion'=> [3],
+    'editar_categoria_publicacion'=> [3],
+    'eliminar_categoria_publicacion'=> [3],
+    'leer_categoria_reporte'    => [3],
+    'crear_categoria_reporte'   => [3],
+    'editar_categoria_reporte'  => [3],
+    'eliminar_categoria_reporte'=> [3],
+    'api_analiticas'            => [3],
+
+    // Rutas de FUNCIONARIO  ADMINISTRADOR (Rol 3) ---
+    'reportes'                      => [3, 2],
+    'ver_reporte_funcionario'       => [3, 2],
+    'seguimiento_reporte_funcionario'=> [3, 2],
+    'actualizar_revision'           => [3, 2],
+];
+
+if (isset($restriccionesRutas[$ruta])) {
+    if (!in_array($rol_usuario, $restriccionesRutas[$ruta])) {
+        $ruta = 'publicaciones';
+    }
 }
+
+
+
+
+
+
 
 $mapaRutas = [
     'login'  => '/views/base.php',
     'registro' => '/views/pages/registro.php',
     'logout' => '/views/pages/admin/logout.php',
     'dashboard' => '/views/pages/admin/panel_admin.php',
+    'api_analiticas' => '/controllers/analiticas.endpoint.php',
     'sector' => '/views/pages/admin/sector.php',
     'usuarios' => '/views/pages/admin/usuarios.php',
     'roles_usuarios' => '/views/pages/admin/asignacion_roles.php',
@@ -45,7 +102,7 @@ $mapaRutas = [
     'departamentos' => '/views/pages/admin/area_municipal.php',
     'comercio' => '/views/pages/usuario/listado_comercio.php',
     'rubros' => '/views/pages/admin/rubros.php',
-    'votaciones' => '/views/pages/admin/votaciones.php',
+    'votaciones' => '/src/participacion_ciudadana/formulario_crear_votacion.php',
     'leer_publicacion' => '/src/publicaciones/leer_publicacion.php',
     'crear_publicacion' => '/src/publicaciones/crear_publicacion.php',
     'editar_publicacion' => '/src/publicaciones/editar_publicacion.php',
@@ -83,6 +140,9 @@ $mapaRutas = [
     'ingresar_emprendimiento' => '/public/negocios_locales/ingresar.php',
     'actualizar_revision' => '/public/negocios_locales/actualizar.php',
 
+    'listado_votaciones' => '/src/participacion_ciudadana/lista_votaciones.php',
+    'resultados_votacion' => '/src/participacion_ciudadana/resultados_votacion.php',
+    'ver_votacion' => '/src/participacion_ciudadana/ver_votacion.php',
 
     // login google
     'auth/google' => '/src/autentication/google_auth.php',
@@ -94,7 +154,6 @@ $mapaRutas = [
     'verificar-email' => '/src/autentication/verificacion_correo.php',
     'recuperar-contrasena' => '/views/pages/recuperar_contrasena.php',
     'restablecer-contrasena' => '/views/pages/restablecer_contrasena.php',
-    'ingresar_emprendimiento' => '/public/negocios_locales/ingresar.php'
 
 ];
 

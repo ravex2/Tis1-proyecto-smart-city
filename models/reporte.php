@@ -95,4 +95,9 @@ class Reporte extends BaseModel {
         [$where, $params] = $this->buildWhereClause($id);
         return $this->execute(sprintf('DELETE FROM %s WHERE %s', $this->table, $where), $params);
     }
+
+    public function countByEstado(string $estado): int {
+        $row = $this->fetch("SELECT COUNT(*) AS total FROM {$this->table} WHERE tipo_estado = ?", [$estado]);
+        return (int) ($row['total'] ?? 0);
+    }
 }

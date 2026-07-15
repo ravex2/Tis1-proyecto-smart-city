@@ -62,60 +62,84 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_alternativa'])) {
 }
 ?>
 
-<div class="container mt-4 mb-5">
-    <?php if ($mensaje): ?>
-        <div class="alert alert-success fw-bold">✔️ <?= htmlspecialchars($mensaje) ?></div>
-    <?php endif; ?>
-    <?php if ($error): ?>
-        <div class="alert alert-danger fw-bold">❌ <?= htmlspecialchars($error) ?></div>
-    <?php endif; ?>
+<!doctype html>
+<html lang="es">
+    <head>
+        <title>Title</title>
+        <!-- Required meta tags -->
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <div class="card shadow-sm border-0 rounded-4">
-        <div class="card-body p-4">
-            <div class="d-flex gap-2 mb-3">
-                <a href="?ruta=lista_votaciones" class="btn btn-sm btn-outline-secondary rounded-pill">
-                    ← Volver a Votaciones
-                </a>
-                <a href="?ruta=dashboard" class="btn btn-sm btn-outline-primary rounded-pill">
-                    🏠 Volver al Inicio
-                </a>
-            </div>
-            
-            <h3 class="card-title fw-bold mb-3"><?= htmlspecialchars($consulta['titulo']) ?></h3>
-            <p class="text-muted mb-4"><?= htmlspecialchars($consulta['descripcion']) ?></p>
-            
-            <div class="bg-light p-4 rounded-4 mb-4">
-                <h5 class="fw-bold mb-0"><?= htmlspecialchars($consulta['pregunta']) ?></h5>
-            </div>
+        <!-- Bootstrap CSS v5.3.8 -->
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+            crossorigin="anonymous"
+        />
+    </head>
+    
+    <body class="bg-light" style="font-family: sans-serif;">
+        <?php include __DIR__ . "/../../views/layout/navbar_user.php"; ?>
+        <div class="container mb-5"style="margin-top: 90px; max-width: 1100px;" >
+            <?php if ($mensaje): ?>
+                <div class="alert alert-success fw-bold">✔️ <?= htmlspecialchars($mensaje) ?></div>
+            <?php endif; ?>
+            <?php if ($error): ?>
+                <div class="alert alert-danger fw-bold">❌ <?= htmlspecialchars($error) ?></div>
+            <?php endif; ?>
 
-            <?php if ($ya_voto): ?>
-                <div class="alert alert-info text-center rounded-4 p-4">
-                    <h5 class="fw-bold mb-2">Ya participaste en esta votación</h5>
-                    <p class="mb-0">Gracias por tu participación. Tu voto ha sido registrado y asegurado por tu RUT.</p>
-                </div>
-            <?php else: ?>
-                <form action="" method="POST">
-                    <div class="mb-4">
-                        <?php foreach ($alternativas as $alt): ?>
-                            <div class="form-check custom-radio mb-3 p-3 border rounded-3 hover-bg-light">
-                                <input class="form-check-input ms-1 me-3" type="radio" name="id_alternativa" 
-                                       id="alt_<?= $alt['id_alternativa'] ?>" 
-                                       value="<?= $alt['id_alternativa'] ?>" required>
-                                <label class="form-check-label w-100 fw-medium" for="alt_<?= $alt['id_alternativa'] ?>" style="cursor: pointer;">
-                                    <?= htmlspecialchars($alt['texto_alternativa']) ?>
-                                </label>
-                            </div>
-                        <?php endforeach; ?>
+            <div class="card shadow-sm border-0 rounded-4">
+                <div class="card-body p-4">
+                    <div class="d-flex gap-2 mb-3">
+                        <a href="?ruta=listado_votaciones" class="btn btn-sm btn-outline-secondary rounded-pill">
+                            ← Volver a Votaciones
+                        </a>
                     </div>
                     
-                    <button type="submit" class="btn btn-primary btn-lg w-100 rounded-pill fw-bold">
-                        Votar Ahora
-                    </button>
-                </form>
-            <?php endif; ?>
+                    <h3 class="card-title fw-bold mb-3"><?= htmlspecialchars($consulta['titulo']) ?></h3>
+                    <p class="text-muted mb-4"><?= htmlspecialchars($consulta['descripcion']) ?></p>
+                    
+                    <div class="bg-light p-4 rounded-4 mb-4">
+                        <h5 class="fw-bold mb-0"><?= htmlspecialchars($consulta['pregunta']) ?></h5>
+                    </div>
+
+                    <?php if ($ya_voto): ?>
+                        <div class="alert alert-info text-center rounded-4 p-4">
+                            <h5 class="fw-bold mb-2">Ya participaste en esta votación</h5>
+                            <p class="mb-0">Gracias por tu participación. Tu voto ha sido registrado y asegurado por tu RUT.</p>
+                        </div>
+                    <?php else: ?>
+                        <form action="" method="POST">
+                            <div class="mb-4">
+                                <?php foreach ($alternativas as $alt): ?>
+                                    <div class="form-check custom-radio mb-3 p-3 border rounded-3 hover-bg-light">
+                                        <input class="form-check-input ms-1 me-3" type="radio" name="id_alternativa" 
+                                            id="alt_<?= $alt['id_alternativa'] ?>" 
+                                            value="<?= $alt['id_alternativa'] ?>" required>
+                                        <label class="form-check-label w-100 fw-medium" for="alt_<?= $alt['id_alternativa'] ?>" style="cursor: pointer;">
+                                            <?= htmlspecialchars($alt['texto_alternativa']) ?>
+                                        </label>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary btn-lg w-100 rounded-pill fw-bold">
+                                Votar Ahora
+                            </button>
+                        </form>
+                    <?php endif; ?>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+            crossorigin="anonymous"
+        ></script>
+    </body>
+</html>
+
 
 <style>
     .custom-radio { transition: all 0.2s; }

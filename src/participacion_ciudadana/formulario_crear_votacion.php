@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . "/../../config/database.php";
 $db = getDatabase();
+$usuarioLogeado = $_SESSION['user'] ?? null;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $titulo = $_POST["titulo"];
@@ -72,14 +73,54 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body class="bg-light">
     <div class="container-fluid">
         <div class="row">
-            <!-- Asume que BASE_PATH está configurado si se llama desde el router, o ajustamos ruta -->
             <?php include __DIR__ . "/../../views/layout/sidebar.php"; ?>
 
             <main class="col-md-10 ms-sm-auto px-4 py-3">
-                <div class="feed-header p-3 sticky-top bg-white border-bottom mb-4 rounded shadow-sm">
-                    <h5 class="fw-bold mb-0 text-primary"><i class="bi bi-ui-radios"></i> Crear Nueva Votación o Consulta</h5>
-                </div>
+                    <div class="d-flex justify-content-between">
+                       <div>
+                            <h3 class="fw-bold mb-1">Gestión de Consultas ciudadanas</h3>
+                            <small class="text-muted">Registra una nueva consulta ciudadana</small>
+                        </div>
 
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="dropdown text-end">
+                                
+                                <a class="d-flex align-items-center text-decoration-none dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+
+                                    <div class="text-start">
+                                        <div class="fw-semibold">
+                                            <?= $usuarioLogeado['nombre'] . ' ' . $usuarioLogeado['apellido'] ?>
+                                        </div>
+                                        <small class="text-muted">
+                                            <?= $usuarioLogeado['correo'] ?>
+                                        </small>
+                                    </div>
+
+                                    <div class="me-2">
+                                        <img src="https://ui-avatars.com/api/?name=<?= urlencode($usuarioLogeado['nombre'].' '.$usuarioLogeado['apellido']) ?>&background=3d71ff&color=fff&rounded=true&size=40"
+                                            class="rounded-circle"
+                                            width="40"
+                                            height="40"
+                                            alt="usuario">
+                                    </div>
+
+                                </a>
+
+                                <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+
+                                    <li><hr class="dropdown-divider"></li>
+
+                                    <li>
+                                        <a class="dropdown-item text-danger" href="?ruta=logout">
+                                            <i class="bi bi-box-arrow-right"></i> Cerrar sesión
+                                        </a>
+                                    </li>
+
+                                </ul>
+
+                            </div>
+                        </div>
+                    </div>
                 <?php if (isset($_GET['success'])): ?>
                     <div class="alert alert-success alert-dismissible fade show rounded-3 shadow-sm" role="alert">
                         <strong>¡Éxito!</strong> La votación y sus alternativas se han guardado correctamente en la base de datos.
@@ -145,7 +186,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
 
     <!-- Bootstrap JS para componentes como las alertas -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+            crossorigin="anonymous"
+        ></script>
     <script>
         let alternativaCount = 0;
 

@@ -1,8 +1,11 @@
 <?php
     require_once __DIR__ . '/../config/database.php';
+    require_once __DIR__ . '/basemodel.php';
 
     $db = getDatabase();
     $pdo = $db->connection();
+
+
 
     function insertarArea(string $nombre,string $descripcion,int $id_municipalidad){
         $db = getDatabase();
@@ -45,5 +48,19 @@
         return true;
     }
 
+
+    class Departamento extends BaseModel{
+        protected string $table = 'area_municipal';
+        protected array $primaryKey = ['id_area'];
+        protected array $columns = ['nombre_area', 'descripcion', 'id_municipalidad'];
+        protected function fetchAll(string $sql, array $params = []): array {
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute($params);
+            return $stmt->fetchAll();
+        }   
+        public function findAll(): array {
+            return $this->fetchAll(sprintf('SELECT * FROM %s', $this->table));
+        }
+    }
 
 ?>
