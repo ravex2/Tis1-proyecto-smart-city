@@ -13,9 +13,19 @@ if ($email && $token) {
     $resultado = $auth->procesarVerificacionCorreo($email, $token, $rut);
     echo $resultado["message"];
     if ($resultado['success']) {
+
         $_SESSION['mensaje_exito'] = $resultado['message'];
-        header('Location: ?ruta=dashboard');
-        exit();
+
+        if (isset($resultado['user'])) {
+            $_SESSION['user'] = $resultado['user'];
+
+            if ($resultado['user']['tipo_interfaz'] === 'interno') {
+                header('Location: ?ruta=dashboard');
+            } else {
+                header('Location: ?ruta=publicaciones');
+            }
+            exit();
+        }
     }
 
     $_SESSION['login_error'] = $resultado['message'];

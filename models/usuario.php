@@ -86,6 +86,11 @@ class Usuario extends BaseModel {
         return (int) $row['total'];
     }
 
+    public function countCiudadanos(): int {
+        $row = $this->fetch("SELECT COUNT(*) AS total FROM {$this->table} WHERE id_rol = 1");
+        return (int) ($row['total'] ?? 0);
+    }
+
     public function create(array $data): string {
         $data = $this->filterData($data);
         if (empty($data)) {

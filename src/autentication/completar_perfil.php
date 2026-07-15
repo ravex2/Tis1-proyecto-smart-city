@@ -10,7 +10,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'rut' => $_POST['rut'] ?? '',
         'nombre' => $_POST['nombre'] ?? '',
         'apellido' => $_POST['apellido'] ?? '',
-        'direccion' => $_POST['direccion'] ?? ''
+        'direccion' => $_POST['direccion'] ?? '',
+        'id_sector' => $_POST['id_sector'] ?? 1,
     ];
     
     $success = $auth->completeProfile($data);

@@ -11,6 +11,13 @@
 
     $db = getDatabase();
     $usuarioLogeado = $_SESSION['user'] ?? null;require_once __DIR__ . "/../../config/database.php";
+
+    if (isset($_GET["error"])) {
+
+        if ($_GET["error"] == "existen_reportes") {
+            echo '<div class="alert alert-danger">La categoria tiene reportes asociados.</div>';
+        }
+    }
 ?>
 
 <!doctype html>

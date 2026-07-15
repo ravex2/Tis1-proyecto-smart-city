@@ -96,16 +96,10 @@
 
         <!-- Main Content -->
         <main class="col-md-10 ms-sm-auto px-md-5">
-            <header class="d-flex justify-content-between align-items-center py-4">
-                <div>
-                    <h2 class="fw-bold mb-0">Nueva Consulta Ciudadana</h2>
-                    <p class="text-muted small">Crea procesos participativos para la comunidad.</p>
-                </div>
-                <div class="d-flex gap-3">
-                    <button class="btn btn-outline-secondary rounded-pill px-4 btn-sm">Guardar Borrador</button>
-                    <button class="btn btn-primary-custom text-white btn-sm px-4">Publicar Ahora</button>
-                </div>
+            <header class="d-flex justify-content-end align-items-center py-4">
+                <?php include __DIR__ . "../../../layout/panel/navbar_user_panel.php"; ?>
             </header>
+
 
             <div class="row g-4">
                 <!-- Formulario de Configuración -->

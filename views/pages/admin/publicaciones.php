@@ -1,14 +1,8 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Publicaciones y Categorías - Shopeers</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    
-    <style>
+<?php
+$pageTitle = 'Publicaciones y Categorías';
+include __DIR__ . "../../../layout/header.php";
+?>
+<style>
         :root {
             --primary-blue: #3d71ff;
             --bg-light: #f8fafc;
@@ -85,9 +79,7 @@
         .modal-content { border-radius: 24px; border: none; }
         .form-control { border-radius: 10px; border: 1px solid #e2e8f0; }
     </style>
-</head>
-<body>
-
+</style>
 <div class="container-fluid">
     <div class="row">
         <!-- Sidebar -->
@@ -144,7 +136,7 @@
                 <div class="col-md-9">
                     <div class="card shadow-card overflow-hidden">
                         <div class="table-responsive">
-                            <table class="table table-no-border mb-0">
+                            <table class="table table-no-border mb-0 table-datatable">
                                 <thead>
                                     <tr>
                                         <th>Noticia</th>
@@ -235,16 +227,34 @@
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<?php include __DIR__ . "../../../layout/footer.php"; ?>
 
 <script>
+    $(document).ready(function () {
+        if (typeof $.fn.DataTable === 'function') {
+            $('.table-datatable').each(function () {
+                const $table = $(this);
+                if ($.fn.DataTable.isDataTable($table)) {
+                    $table.DataTable().clear().destroy();
+                }
+
+                $table.DataTable({
+                    language: {
+                        url: 'https://cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json'
+                    },
+                    pageLength: 10,
+                    responsive: true,
+                    columnDefs: [
+                        { orderable: false, targets: -1 }
+                    ]
+                });
+            });
+        }
+    });
 
     const traerCategoriasPublicaciones = async () => {
         // usa ajax para traer la informacion de controlador de categoria publicacion controlador
     };
-
 </script>
-
-
 </body>
 </html>

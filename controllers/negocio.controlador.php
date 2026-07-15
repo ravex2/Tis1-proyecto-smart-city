@@ -50,7 +50,7 @@ class NegocioController {
             session_start();
         }
         $usuario = new UsuarioController();
-        if (!$usuario->tienePermiso('control_comercio') || !$usuario->tienePermiso('admin_total')) {
+        if (!$usuario->tienePermiso('control_comercio') && !$usuario->tienePermiso('admin_total')) {
             header("Location: ?ruta=gestion_comercio&status=no_autorizado");
             exit;
         }

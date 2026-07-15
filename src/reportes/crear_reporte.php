@@ -37,13 +37,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SmartCity</title>
-    <link href="https://jsdelivr.net" rel="stylesheet">
-    <link href="https://googleapis.com" rel="stylesheet">
-    <link rel="stylesheet" href="https://jsdelivr.net">
-    <link rel="stylesheet" href="/TIS1-PROYECTO-SMART-CITY/assets/css/panel.css">
+    <link rel="stylesheet" href="/assets/css/panel.css">
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+        crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 </head>
 
-<body>
+<body class="bg-light" style="font-family: sans-serif;">
     <?php include __DIR__ . "/../../views/layout/navbar_user.php"; ?>
     <div class="container-fluid mt-4">
         <div class="row">
@@ -113,6 +117,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </div>
     <script src="/Tis1-proyecto-smart-city/src/reportes/geolocalizacion.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"
+    ></script>
 </body>
 
 </html>

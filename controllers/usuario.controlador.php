@@ -36,29 +36,50 @@
             return $this->model->update(['rut' => $rut], $data);
         }
 
-        public function cambiarRol($rut, $id_rol){
+        public function cambiarRol($rut, $id_rol, $id_area = null){
             $resultado = $this->model->update(
                 ['rut' => $rut],
                 ['id_rol' => $id_rol]
             );
+
             if (!$resultado) {
                 return [
                     'ok' => false,
                     'message' => 'No se pudo actualizar el rol'
                 ];
             }
-            $rolesMunicipales = [2, 3]; // Funcionario, Administrador
 
-            if (in_array($id_rol, $rolesMunicipales)) {
-                $funcionarioModel = new FuncionarioMunicipal();
+            $funcionarioModel = new FuncionarioMunicipal();
+
+            // Roles que NO son municipales
+            if ($id_rol == 1 || $id_rol == 4) {
+
                 $funcionario = $funcionarioModel->findByRut($rut);
 
-                if (!$funcionario) {
+                if ($funcionario) {
+                    $funcionarioModel->delete($funcionario['id_funcionario']);
+                }
+
+            } else {
+
+                $funcionario = $funcionarioModel->findByRut($rut);
+
+                if ($funcionario) {
+                    $funcionarioModel->update(
+                        $funcionario['id_funcionario'],
+                        [
+                            'id_area_municipal' => $id_area
+                        ]
+                    );
+
+                } else {
                     $funcionarioModel->create([
                         'rut_usuario' => $rut,
-                        'id_area_municipal' => 1
+                        'id_area_municipal' => $id_area
                     ]);
+
                 }
+
             }
 
             return [
@@ -70,11 +91,33 @@
         public function eliminarUsuario(string $rut){
             return $this->model->delete(['rut' => $rut]);
         }
+        public static function tienePermiso(string $permisoRequerido): bool {
+            if (session_status() === PHP_SESSION_NONE) {
+                session_start();
+            }
+            if (isset($_SESSION['user']['permisos'])) {
+                return in_array($permisoRequerido, $_SESSION['user']['permisos']);
+            }
+            $id_rol = $_SESSION['user']['id_rol'] ?? null;
+            if (!$id_rol) {
+                return false;
+            }
 
-        // ============================================
+
+            $model = new Usuario();
+            $permisos = $model->obtenerPermisosPorRol($id_rol);
+
+
+            $_SESSION['user']['permisos'] = $permisos;
+
+
+            return in_array($permisoRequerido, $permisos);
+            }
+
+    
+
+
         // NUEVOS MÉTODOS PARA GOOGLE AUTH
-        // ============================================
-
         public function redirectToGoogle(): void {
             $authUrl = $this->googleAuth->getAuthUrl();
             header('Location: ' . $authUrl);
@@ -146,8 +189,8 @@
                 'correo'      => $googleData['correo'],
                 'direccion'   => $data['direccion'] ?? '',
                 'contrasenha' => password_hash(bin2hex(random_bytes(16)), PASSWORD_DEFAULT),
-                'id_rol'      => 2,
-                'id_sector'   => 1
+                'id_rol'      => 1, // Asignar rol por defecto
+                'id_sector'   => $data['id_sector'] ?? 1
             ];
 
             try {
