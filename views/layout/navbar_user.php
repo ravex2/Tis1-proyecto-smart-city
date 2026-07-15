@@ -13,7 +13,7 @@
 ?>
 
 <nav class="navbar navbar-expand-sm navbar-light bg-light shadow-sm fixed-top w-100 px-3">
-    <a class="navbar-brand fw-bold" href="#">SMART CITY</a>
+    <a class="navbar-brand fw-bold" href="?ruta=publicaciones">SMART CITY</a>
     <button
         class="navbar-toggler d-lg-none"
         type="button"
@@ -43,7 +43,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link fw-semibold <?= $rutaActual === 'consultas' ? 'border border-primary text-primary fw-semibold bg-primary-subtle rounded' : '' ?>" href="?ruta=comercio">
+                <a class="nav-link fw-semibold <?= $rutaActual === 'listado_votaciones' ? 'border border-primary text-primary fw-semibold bg-primary-subtle rounded' : '' ?>" href="?ruta=listado_votaciones">
                     Consultas Ciudadanas
                 </a>
             </li>

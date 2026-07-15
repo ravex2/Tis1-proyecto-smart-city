@@ -40,18 +40,22 @@ if (isset($_GET['voto_pub']) && isset($_GET['tipo_voto'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SmartCity - Feed</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+        crossorigin="anonymous"
+    />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="social-style.css">
     <link rel="stylesheet" href="/assets/css/publicaciones.css">
     
 </head>
-<body>
+<body class="bg-light" style="font-family: sans-serif;">
 
 <?php include __DIR__ . "/../../views/layout/navbar_user.php"; ?>
 
-<div class="container" style="margin-top: 75px;">
+<div class="container" >
     <div class="row justify-content-center gx-4">
         
         
@@ -158,35 +162,14 @@ if (isset($_GET['voto_pub']) && isset($_GET['tipo_voto'])) {
             <?php }?>
             
         </main>
-            
-
-        <aside class="col-md-3 d-none d-md-block py-4 sticky-top vh-100">
-            <div class="search-bar mb-4">
-                <div class="input-group bg-light rounded-pill px-3 border-0">
-                    <span class="input-group-text bg-transparent border-0"><i class="bi bi-search text-muted"></i></span>
-                    <input type="text" class="form-control bg-transparent border-0 py-2" placeholder="Buscar en Reportes">
-                </div>
-            </div>
-
-
-
-            <div class="trend-card bg-light rounded-4 p-3">
-                <h6 class="fw-bold mb-3 px-1">Emprendedores Destacados</h6>
-                <div class="follow-item d-flex align-items-center gap-2 mb-3">
-                    <img src="https://i.pravatar.cc/150?u=shop1" class="rounded-circle" width="36" height="36">
-                    <div class="flex-grow-1 overflow-hidden">
-                        <div class="fw-bold text-truncate small">Café de la Plaza</div>
-                        <div class="text-muted tiny">@plaza_cafe</div>
-                    </div>
-                    <button class="btn btn-dark btn-sm rounded-pill px-3">Ver</button>
-                </div>
-            </div>
-
-        </aside>
 
     </div>
 </div>
-
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+    crossorigin="anonymous"
+></script>
 <script>
 const mockRut = '12345678-9'; 
 
