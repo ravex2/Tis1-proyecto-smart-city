@@ -38,6 +38,7 @@ $mapaRutas = [
     'registro' => '/views/pages/registro.php',
     'logout' => '/views/pages/admin/logout.php',
     'dashboard' => '/views/pages/admin/panel_admin.php',
+    'api_analiticas' => '/controllers/analiticas.endpoint.php',
     'sector' => '/views/pages/admin/sector.php',
     'usuarios' => '/views/pages/admin/usuarios.php',
     'roles_usuarios' => '/views/pages/admin/asignacion_roles.php',
