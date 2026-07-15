@@ -61,11 +61,6 @@
                     <i class="bi bi-newspaper me-2"></i> Publicaciones
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link <?= $rutaActual === 'usuarios' ? 'active' : '' ?>" href="?ruta=usuarios">
-                    <i class="bi bi-person-gear me-2"></i> Usuarios
-                </a>
-            </li>
 
             <li class="nav-item">
                 <a class="nav-link <?= $rutaActual === 'roles_usuarios' ? 'active' : '' ?>" href="?ruta=roles_usuarios">

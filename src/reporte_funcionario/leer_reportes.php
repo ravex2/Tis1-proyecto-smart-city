@@ -11,7 +11,7 @@ $resultadoo = $db->query($consultaFuncionario, [$rut]);
 $funcionario = $resultadoo[0] ?? null;
 
 if (!$funcionario) {
-    header("Location: ?ruta=dashboard");
+    header("Location: ?ruta=publicaciones");
     exit();
 }
 
@@ -182,8 +182,12 @@ $resultado_lista = $db->query($consulta_lista);
                     </div>
 
                 </header>
-
-                <!-- Filtros Rápidos -->
+                <div class="d-flex justify-content-end">
+                    
+                    <a href="?ruta=crear_categoria_reporte" class="btn btn-primary rounded-pill px-5 fw-bold shadow-primary">
+                        Crear Categoria Reporte
+                    </a>
+                </div>
                 <div class="row mb-4 g-3">
 
                     <!-- Total Reportes -->

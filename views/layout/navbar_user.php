@@ -1,5 +1,4 @@
 <?php
-    // Solo dejamos la lógica PHP necesaria (evitamos duplicar consultas si ya se hicieron en el index)
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
     }   
@@ -48,6 +47,7 @@
                     Consultas Ciudadanas
                 </a>
             </li>
+            
         </ul>
         <div class="dropdown text-end">
             <a class="d-flex align-items-center text-decoration-none dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">

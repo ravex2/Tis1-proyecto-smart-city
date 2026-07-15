@@ -1,5 +1,23 @@
 <?php
     require_once __DIR__ . "/../../config/database.php";
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
+
+
+    $db = getDatabase();
+    $usuarioLogeado = $_SESSION['user'] ?? null;
+
+    if (isset($_GET["error"])) {
+
+        if ($_GET["error"] == "existen_publicaciones") {
+            echo '<div class="alert alert-danger">La categoria tiene publicaciones asociadas.</div>';
+        }
+    }
 ?>
 
 <!DOCTYPE html>
@@ -11,7 +29,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="/Tis1-proyecto-smart-city/assets/css/panel.css">
+    <link rel="stylesheet" href="assets/css/panel.css">
 
 
 </head>
@@ -23,20 +41,62 @@
         <?php include BASE_PATH . "/views/layout/sidebar.php"; ?>
 
         <main class="col-md-10 ms-sm-auto px-4">
-                <div class="feed-header p-3 sticky-top bg-white-glass blur">
-                    <h5 class="fw-bold mb-0">Listado Categorias</h5>
-                    
-                </div>
-                
-                <div class="post-box p-3 border-bottom"> 
-                    <div class="d-flex gap-3">
+                <div class="mb-3 d-flex justify-content-between align-items-center">
+                    <div>
+                        <h3 class="fw-bold mb-1">Gestión de Categorias Publicaciones</h3>
+                        <small class="text-muted">Gestiona facilmente las categorias correspondientes a las publicaciones</small>
+                    </div>
+                    <div>
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="dropdown text-end">
+                                
+                                <a class="d-flex align-items-center text-decoration-none dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
 
-                        <table class="table">
-                            <thead>
+                                    <div class="text-start">
+                                        <div class="fw-semibold">
+                                            <?= $usuarioLogeado['nombre'] . ' ' . $usuarioLogeado['apellido'] ?>
+                                        </div>
+                                        <small class="text-muted">
+                                            <?= $usuarioLogeado['correo'] ?>
+                                        </small>
+                                    </div>
+
+                                    <div class="me-2">
+                                        <img src="https://ui-avatars.com/api/?name=<?= urlencode($usuarioLogeado['nombre'].' '.$usuarioLogeado['apellido']) ?>&background=3d71ff&color=fff&rounded=true&size=40"
+                                            class="rounded-circle"
+                                            width="40"
+                                            height="40"
+                                            alt="usuario">
+                                    </div>
+
+                                </a>
+
+                                <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+
+                                    <li><hr class="dropdown-divider"></li>
+
+                                    <li>
+                                        <a class="dropdown-item text-danger" href="?ruta=logout">
+                                            <i class="bi bi-box-arrow-right"></i> Cerrar sesión
+                                        </a>
+                                    </li>
+
+                                </ul>
+
+                            </div>
+                        </div>
+                    </div>
+            </div> 
+                
+                <div class="border rounded shadow-sm bg-white p-3">
+                    <div class="table-responsive">
+
+                        <table class="table table-hover align-middle mb-0 text-center">
+                            <thead class="table-light">
                                 <tr>
-                                <th scope="col">id</th>
+                                <th scope="col">Id</th>
                                 <th scope="col">Nombre Categoria</th>
-                                <th scope="col">ID Funcionario</th>
+                                <th scope="col">Id Funcionario</th>
                                 <th scope="col">Opciones</th>
                                 
                                 </tr>

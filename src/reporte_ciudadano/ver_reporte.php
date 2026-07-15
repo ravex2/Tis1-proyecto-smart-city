@@ -44,8 +44,9 @@ $cat_pub2 = $db->query("SELECT fm.id_funcionario , fm.rut_usuario, u.nombre
 
 </head>
 <body>
+    <?php include __DIR__ . "/../../views/layout/navbar_user.php"; ?>
 
-    <div class="container-fluid">
+    <div class="container-fluid mt-4">
     <div class="row">
 
 
@@ -55,48 +56,53 @@ $cat_pub2 = $db->query("SELECT fm.id_funcionario , fm.rut_usuario, u.nombre
                     
                 </div>
                 <div class="post-box p-3 border-bottom"> 
-                    <div class="d-flex gap-3">
-                        <img src="https://i.pravatar.cc/150?u=3" class="rounded-circle" width="48" height="48">
-                        <div class="flex-grow-1">
-
+                    <div class="card text-bg-light mb-3">
+                        <div class="text-center">
+                            <div class="card-header text center">
+                                Reporte
+                            </div>
+                        </div>
+                        <div class="card-body">
                             <form method="POST" class="mt-2">
                                 
                                 <div class="mb-3">
+                                    <label>Descripcion</label>
                                     <textarea name="descripcion" class="form-control rounded-4 px-3 py-2"
-                                    rows="3"  readonly><?php echo $fila['descripcion']; ?></textarea>
+                                        rows="3"  readonly><?php echo $fila['descripcion']; ?></textarea>
                                 </div>
-
-
-                                <div class="row g-2 mb-3">
+                                    <div class="row g-2 mb-3">
 
                                     <div class="col-md-6">
+                                        <label>Imagen</label>
                                         <input type="text" name="imagen" class="form-control rounded-pill px-3 py-2"
-                                        value="<?php echo $fila['imagen']; ?>"     readonly>
+                                            value="<?php echo $fila['imagen']; ?>"     readonly>
                                     </div>
 
                                     <div class="col-md-6">
+                                        <label>Categoria</label>
                                         <select name = "id_categoria_reporte" class="form-select rounded-pill px-3 py-2" disabled>
-                                            <?php
-                                                foreach($cat_pub as $c){ ?>
-                                                    <option value="<?php echo $c['id_categoria']; ?>" 
-                                                    <?php if($c['id_categoria'] == $fila['id_categoria_reporte']) echo "selected"; ?>
-                                                    >
-                                                        <?php echo $c['nombre_categoria'];?>
-                                                    </option>
+                                                <?php
+                                                    foreach($cat_pub as $c){ ?>
+                                                        <option value="<?php echo $c['id_categoria']; ?>" 
+                                                        <?php if($c['id_categoria'] == $fila['id_categoria_reporte']) echo "selected"; ?>
+                                                        >
+                                                            <?php echo $c['nombre_categoria'];?>
+                                                        </option>
 
-                                            <?php } ?>
+                                                <?php } ?>
 
                                         </select>
                                     </div>
-
                                 </div>
                                 <div class="row g-2 mb-3">
 
                                     <div class="col-md-6">
+                                        <label>Estado del reporte</label>
                                         <input type="text" name="tipo_estado" class="form-control rounded-pill px-3 py-2"
-                                        value="<?php echo $fila['tipo_estado']; ?>"     readonly>
+                                            value="<?php echo $fila['tipo_estado']; ?>"     readonly>
                                     </div>
                                     <div class="col-md-6">
+                                        <label>Fecha en que se reporto</label>
                                         <input type="text" name="fecha" class="form-control rounded-pill px-3 py-2"
                                         value="<?php echo $fila['fecha']; ?>"     readonly>
                                     </div>
@@ -104,8 +110,13 @@ $cat_pub2 = $db->query("SELECT fm.id_funcionario , fm.rut_usuario, u.nombre
                                 </div>
 
                             </form>
-                            
                         </div>
+                        
+                            
+
+                        
+                            
+                        
 
                         
                         
@@ -118,40 +129,53 @@ $cat_pub2 = $db->query("SELECT fm.id_funcionario , fm.rut_usuario, u.nombre
                     $contador =1;
                     foreach ($seguimientos as $s) {
                         ?>
-                        <div class="post-box p-3 border-bottom">
-                            <h1>Seguimiento <?php echo $contador; ?></h1>
-                            <div class="flex-grow-1">
-                                <div class="mb-3">
-                                    <textarea name="observacion" class="form-control rounded-4 px-3 py-2"
-                                    rows="3" readonly><?php echo $s['observacion']; ?></textarea>
+                        <div class="card text-bg-dark mb-3">
+                            <div class="text-center">
+                                <div class="card-header text center">
+                                    Seguimiento <?php echo $contador; ?>
                                 </div>
-                                <div class="row g-2 mb-3">
-                                    <div class="col-md-6">
-                                        <input type="text" name="imagen_evidencia" class="form-control rounded-pill px-3 py-2"
-                                        value="<?php echo $s['imagen_evidencia']; ?>" readonly>
+                            </div>
+                            <div class="card-body">
+                                <div class="flex-grow-1">
+                                    
+                                    <div class="mb-3">
+                                        <label class="mb-1 mx-3">Observacion seguimiento <?php echo $contador; ?></label>
+                                        <textarea name="observacion" class="form-control  rounded-4 px-3 py-2"
+                                        rows="3" readonly><?php echo $s['observacion']; ?></textarea>
                                     </div>
-                                    <div class="col-md-6">
-                                        <input type="text" name="fecha" class="form-control rounded-pill px-3 py-2"
-                                        value="<?php echo $s['fecha']; ?>" readonly>
+                                    <div class="row g-2 mb-3">
+                                        <div class="col-md-6">
+                                            <label class="mb-1 mx-3">Imagen seguimiento <?php echo $contador; ?></label>
+                                            <input type="text" name="imagen_evidencia" class="form-control rounded-pill px-3 py-2"
+                                            value="<?php echo $s['imagen_evidencia']; ?>" readonly>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="mb-1 mx-3">Fecha de seguimiento <?php echo $contador; ?></label>
+                                            <input type="text" name="fecha" class="form-control rounded-pill px-3 py-2"
+                                            value="<?php echo $s['fecha']; ?>" readonly>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="mb-3">
-                                    <div class="col-md-6">
-                                        <select name = "id_funcionario" class="form-select rounded-pill px-3 py-2" disabled>
-                                            <?php
-                                                foreach($cat_pub2 as $c2){ ?>
-                                                    <option value="<?php echo $c2['id_funcionario']; ?>" 
-                                                    <?php if($c2['id_funcionario'] == $s['id_funcionario']) echo "selected"; ?>
-                                                    >
-                                                        <?php echo $c2['nombre'];?>
-                                                    </option>
+                                    <div class="mb-3">
+                                        <div class="col-md-6">
+                                            <label class="mb-1 mx-3">Funcionario Asignado a seguimiento <?php echo $contador; ?></label>
+                                            <select name = "id_funcionario" class="form-select rounded-pill px-3 py-2" disabled>
+                                                <?php
+                                                    foreach($cat_pub2 as $c2){ ?>
+                                                        <option value="<?php echo $c2['id_funcionario']; ?>" 
+                                                        <?php if($c2['id_funcionario'] == $s['id_funcionario']) echo "selected"; ?>
+                                                        >
+                                                            <?php echo $c2['nombre'];?>
+                                                        </option>
 
-                                            <?php } ?>
+                                                <?php } ?>
 
-                                        </select>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                            
+                            
 
                         </div>
                         <?php

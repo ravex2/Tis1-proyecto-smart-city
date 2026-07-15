@@ -9,6 +9,8 @@ $consultaFuncionario = "SELECT id_funcionario FROM funcionario_municipal WHERE r
 $resultado = $db->query($consultaFuncionario, [$rut]);
 $funcionario = $resultado[0] ?? null;
 
+ $usuarioLogeado = $_SESSION['user'] ?? null;
+
 if(!$funcionario){
     header("Location: ?ruta=dashboard");
     exit();
@@ -17,6 +19,17 @@ if(!$funcionario){
 $id_funcionario = $funcionario['id_funcionario'];
 $cat_pub = $db->query("SELECT * FROM categoria_publicacion");
 
+if (isset($_GET["error"])) {
+
+    if ($_GET["error"] == "fecha_pasada") {
+        echo '<div class="alert alert-danger">La fecha del evento debe ser futura.</div>';
+    }
+
+    if ($_GET["error"] == "fecha_invalida") {
+        echo '<div class="alert alert-danger"> La fecha ingresada no es válida. </div>';
+    }
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
 
@@ -24,7 +37,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $titulo = $_POST["titulo"];
     $fecha_evento = $_POST["fecha_evento"] ?? null;
     if ($fecha_evento != "") {
-        $fecha_evento = str_replace("T", " ", $fecha_evento) . ":00";
+
+        $fecha = DateTime::createFromFormat("Y-m-d\TH:i", $fecha_evento);
+
+        if (!$fecha) {
+            header("Location: ?ruta=crear_publicacion&error=fecha_invalida");
+            exit();
+        }
+
+        if ($fecha < new DateTime()) {
+            header("Location: ?ruta=crear_publicacion&error=fecha_pasada");
+            exit();
+        }
+        $fecha_evento = $fecha->format("Y-m-d H:i:s");
+
     } else {
         $fecha_evento = null;
     }
@@ -53,7 +79,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="/Tis1-proyecto-smart-city/assets/css/panel.css">
+    <link rel="stylesheet" href="assets/css/panel.css">
 
 
 </head>
@@ -65,10 +91,52 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <?php include BASE_PATH . "/views/layout/sidebar.php"; ?>
 
         <main class="col-md-10 ms-sm-auto px-4">
-                <div class="feed-header p-3 sticky-top bg-white-glass blur">
-                    <h5 class="fw-bold mb-0">Inicio</h5>
-                    
-                </div>
+                <div class="mb-3 d-flex justify-content-between align-items-center">
+                    <div>
+                        <h3 class="fw-bold mb-1">Gestión de Publicaciones</h3>
+                        <small class="text-muted">Moderación y administración de publicaciones</small>
+                    </div>
+                    <div>
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="dropdown text-end">
+                                
+                                <a class="d-flex align-items-center text-decoration-none dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+
+                                    <div class="text-start">
+                                        <div class="fw-semibold">
+                                            <?= $usuarioLogeado['nombre'] . ' ' . $usuarioLogeado['apellido'] ?>
+                                        </div>
+                                        <small class="text-muted">
+                                            <?= $usuarioLogeado['correo'] ?>
+                                        </small>
+                                    </div>
+
+                                    <div class="me-2">
+                                        <img src="https://ui-avatars.com/api/?name=<?= urlencode($usuarioLogeado['nombre'].' '.$usuarioLogeado['apellido']) ?>&background=3d71ff&color=fff&rounded=true&size=40"
+                                            class="rounded-circle"
+                                            width="40"
+                                            height="40"
+                                            alt="usuario">
+                                    </div>
+
+                                </a>
+
+                                <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+
+                                    <li><hr class="dropdown-divider"></li>
+
+                                    <li>
+                                        <a class="dropdown-item text-danger" href="?ruta=logout">
+                                            <i class="bi bi-box-arrow-right"></i> Cerrar sesión
+                                        </a>
+                                    </li>
+
+                                </ul>
+
+                            </div>
+                        </div>
+                    </div>
+            </div> 
                 <div class="d-flex justify-content-end">
                     <a href="?ruta=crear_categoria_publicacion" class="btn btn-primary rounded-pill px-5 fw-bold shadow-primary">
                         Crear Nueva Categoria Publicacion
@@ -99,7 +167,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                                     <div class="col-md-6">
                                         <label>Fecha</label>
-                                        <input type="datetime-local" name="fecha_evento"
+                                        <input type="datetime-local" name="fecha_evento" min="<?= date('Y-m-d\TH:i') ?>"
                                         class="form-control rounded-pill px-3 py-2">
                                     </div>
 

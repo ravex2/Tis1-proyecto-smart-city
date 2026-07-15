@@ -18,6 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $imagen = $_POST["imagen"];
 
     
+    // Consulta para insertar reporte
     $consulta = "INSERT INTO reporte(titulo, descripcion, id_categoria_reporte, latitud, longitud, imagen, rut_usuario, tipo_estado) 
     VALUES('$titulo', '$descripcion', '$id_categoria_reporte', '$latitud', '$longitud', '$imagen', '$rut_usuario', 'pendiente')";
     
@@ -43,9 +44,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 
 <body>
-    <div class="container-fluid">
+    <?php include __DIR__ . "/../../views/layout/navbar_user.php"; ?>
+    <div class="container-fluid mt-4">
         <div class="row">
-            <?php include BASE_PATH . "/views/layout/sidebar.php"; ?>
 
             <main class="col-md-10 ms-sm-auto px-5 py-4">
                 <div class="feed-header p-3 sticky-top bg-white-glass blur mb-4">

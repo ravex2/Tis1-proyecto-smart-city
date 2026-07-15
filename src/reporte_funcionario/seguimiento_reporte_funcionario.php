@@ -25,7 +25,7 @@ if (isset($_GET["id_enviado"])) {
     $reporte = $resultado[0] ?? null;
 
     if (!$reporte) {
-        header("Location: ?ruta=leer_reportes");
+        header("Location: ?ruta=reportes");
         exit();
     }
 }else{
@@ -59,7 +59,7 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
         $id_reporte
     ]);
 
-    header("Location: ?ruta=leer_reportes");
+    header("Location: ?ruta=reportes");
     exit();
 
 }
@@ -99,6 +99,7 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
 
                             <form method="POST" class="mt-2">
                                 <div class="mb-3">
+                                    <label>Observacion Reporte</label>
                                     <textarea name="observacion" class="form-control rounded-4 px-3 py-2"
                                     placeholder="Observacion Reporte" rows="3" required></textarea>
                                 </div>
@@ -107,6 +108,7 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
                                 <div class="row g-2 mb-3">
 
                                     <div class="col-md-6">
+                                        <label>Imagen</label>
                                         <input type="text" name="imagen_evidencia" class="form-control rounded-pill px-3 py-2"
                                             placeholder="imagen_1.jpg" required>
                                     </div>

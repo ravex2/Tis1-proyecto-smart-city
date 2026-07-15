@@ -40,38 +40,22 @@ if (isset($_GET['voto_pub']) && isset($_GET['tipo_voto'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SmartCity - Feed</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="social-style.css">
-    <link rel="stylesheet" href="/Tis1-proyecto-smart-city/assets/css/publicaciones.css">
+    <link rel="stylesheet" href="/assets/css/publicaciones.css">
     
 </head>
 <body>
 
-<div class="container custom-container">
-    <div class="row gx-4">
+<?php include __DIR__ . "/../../views/layout/navbar_user.php"; ?>
+
+<div class="container" style="margin-top: 75px;">
+    <div class="row justify-content-center gx-4">
         
-        <aside class="col-md-3 d-none d-md-flex flex-column py-4 sticky-top vh-100">
-            <div class="logo-area mb-4 px-3">
-                <i class="bi bi-intersect fs-2 text-primary"></i>
-            </div>
-            <nav class="nav flex-column gap-2 mb-auto">
-                <a class="nav-link" href="feed.html"><i class="bi bi-house-door me-3"></i> Inicio</a>
-                <a class="nav-link active" href="#"><i class="bi bi-hash me-3"></i> Explorar</a>
-                <a class="nav-link" href="#"><i class="bi bi-bell me-3"></i> Notificaciones</a>
-                <a class="nav-link" href="#"><i class="bi bi-person me-3"></i> Perfil</a>
-            </nav>
-
-            <a class="btn btn-primary rounded-pill py-3 fw-bold shadow-primary mb-4 w-100"
-                href="?ruta=login"
-            >Iniciar Sesion</a>
-
-
-        </aside>
-
         
-        <main class="col-md-6 border-start border-end px-0 bg-white shadow-sm min-vh-100">
+        <main class="col-md-7 col-lg-6 border-start border-end px-0 bg-white shadow-sm min-vh-100">
             <div class="feed-header p-3 sticky-top bg-white-glass blur d-flex align-items-center gap-4">
                 <a href="feed.html" class="btn-icon-soft sm"><i class="bi bi-arrow-left"></i></a>
                 <h5 class="fw-bold mb-0">Publicaciones</h5>
