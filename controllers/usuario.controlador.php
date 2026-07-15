@@ -114,11 +114,10 @@
             return in_array($permisoRequerido, $permisos);
             }
 
+    
 
-        // ============================================
+
         // NUEVOS MÉTODOS PARA GOOGLE AUTH
-        // ============================================
-
         public function redirectToGoogle(): void {
             $authUrl = $this->googleAuth->getAuthUrl();
             header('Location: ' . $authUrl);

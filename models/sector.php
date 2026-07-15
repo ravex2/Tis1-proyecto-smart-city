@@ -95,4 +95,22 @@ class Sector extends BaseModel {
         [$where, $params] = $this->buildWhereClause($id);
         return $this->execute(sprintf('DELETE FROM %s WHERE %s', $this->table, $where), $params);
     }
+
+    public function getParticipacionPorSector(string $fechaDesde, string $fechaHasta): array {
+        $sql = "
+            SELECT
+                s.nombre AS sector,
+                COUNT(par.rut_usuario) AS total
+            FROM sector s
+            LEFT JOIN usuario u ON u.id_sector = s.id_sector
+            LEFT JOIN participa par ON par.rut_usuario = u.rut
+            LEFT JOIN participacion pa ON pa.id_participacion = par.id_participacion
+                AND pa.fecha_participacion >= ?
+                AND pa.fecha_participacion <= ?
+            GROUP BY s.id_sector, s.nombre
+            ORDER BY total DESC, s.nombre ASC
+        ";
+
+        return $this->fetchAll($sql, [$fechaDesde . ' 00:00:00', $fechaHasta . ' 23:59:59']);
+    }
 }

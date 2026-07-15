@@ -95,4 +95,19 @@ class Participacion extends BaseModel {
         [$where, $params] = $this->buildWhereClause($id);
         return $this->execute(sprintf('DELETE FROM %s WHERE %s', $this->table, $where), $params);
     }
+
+    public function getParticipacionMensual(string $fechaDesde, string $fechaHasta): array {
+        $sql = "
+            SELECT
+                DATE_FORMAT(pa.fecha_participacion, '%Y-%m') AS periodo,
+                COUNT(DISTINCT par.rut_usuario) AS total_participantes
+            FROM participacion pa
+            INNER JOIN participa par ON pa.id_participacion = par.id_participacion
+            WHERE pa.fecha_participacion >= ? AND pa.fecha_participacion <= ?
+            GROUP BY DATE_FORMAT(pa.fecha_participacion, '%Y-%m')
+            ORDER BY periodo ASC
+        ";
+
+        return $this->fetchAll($sql, [$fechaDesde . ' 00:00:00', $fechaHasta . ' 23:59:59']);
+    }
 }

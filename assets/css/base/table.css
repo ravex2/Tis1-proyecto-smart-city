@@ -1,0 +1,172 @@
+:root {
+    --primary-blue: #3d71ff;
+    --bg-light: #f8fafc;
+    --sidebar-text: #64748b;
+    --shadow-soft: 0 10px 40px rgba(0, 0, 0, 0.04);
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: var(--bg-light);
+    color: #0f172a;
+}
+
+.sidebar {
+    background: #ffffff;
+    height: 100vh;
+    border-right: 1px solid #f1f5f9;
+    position: sticky;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.nav-link {
+    color: var(--sidebar-text);
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+    transition: all 0.2s;
+}
+
+.nav-link.active {
+    background-color: #f0f4ff;
+    color: var(--primary-blue);
+}
+
+.shadow-card { box-shadow: var(--shadow-soft); border: none; border-radius: 24px; }
+
+
+
+/* Table Styling - border-0 en tr solicitado */
+.table-custom thead th {
+    background-color: #f8fafc;
+    border: 0 !important;
+    color: #64748b;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    padding: 18px 24px;
+}
+
+.table-custom tbody tr td {
+    border: 0 !important;
+    padding: 18px 24px;
+    vertical-align: middle;
+}
+
+.icon-territory {
+    width: 40px; height: 40px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 10px; font-size: 1.1rem;
+    background: #f1f5f9; color: #475569;
+}
+
+.btn-action-soft {
+    width: 35px; height: 35px; border-radius: 10px; border: none; 
+    background: #f1f5f9; color: #64748b; transition: 0.2s;
+}
+.btn-action-soft:hover { background: #e2e8f0; color: #0f172a; }
+
+.badge-type {
+    font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+    padding: 5px 10px; border-radius: 6px; letter-spacing: 0.02em;
+}
+
+
+/* Filtro de datatables */
+
+/* ==========================================
+   ESTILOS PARA SOBRESCRIBIR DATATABLES (CDN)
+   Y QUE PAREZCA 100% BOOTSTRAP 5
+   ========================================== */
+
+/* 1. Estilizar el INPUT del buscador */
+.dataTables_filter input[type="search"] {
+    display: inline-block;
+    width: 250px;
+    padding: 0.375rem 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 0.375rem; /* Bordes redondeados de Bootstrap */
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    margin-left: 0.5rem;
+}
+
+/* Efecto al hacer clic en el buscador (el brillo azul de Bootstrap) */
+.dataTables_filter input[type="search"]:focus {
+    color: #212529;
+    background-color: #fff;
+    border-color: #86b7fe;
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+/* 2. Estilizar el SELECT de "Mostrar X registros" */
+.dataTables_length select {
+    display: inline-block;
+    width: auto;
+    padding: 0.375rem 2.25rem 0.375rem 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #fff;
+    /* Flechita hacia abajo nativa de Bootstrap 5 */
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 16px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 0.375rem;
+    appearance: none; /* Quita el estilo por defecto del navegador */
+    margin: 0 0.5rem;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+.dataTables_length select:focus {
+    border-color: #86b7fe;
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+/* 3. Alinear y dar espacio a los controles superiores */
+.dataTables_wrapper .dataTables_length, 
+.dataTables_wrapper .dataTables_filter {
+    margin-bottom: 1rem;
+    color: #6c757d;
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+}
+
+.dataTables_wrapper .dataTables_filter {
+    justify-content: flex-end;
+}
+
+/* 4. Embellecer la paginación */
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    border-radius: 0.375rem !important;
+    margin: 0 2px;
+    border: 1px solid transparent !important;
+    padding: 0.375rem 0.75rem !important;
+    color: #0d6efd !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    background: #0d6efd !important;
+    color: white !important;
+    border: 1px solid #0d6efd !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background: #e9ecef !important;
+    color: #0a58ca !important;
+    border: 1px solid #dee2e6 !important;
+    text-decoration: none !important;
+}

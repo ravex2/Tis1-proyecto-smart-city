@@ -55,82 +55,7 @@ if (isset($_POST['btn_editar'])) {
 }
 ?>
 
-
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Usuarios y Departamentos - Shopeers</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    
-    <style>
-        :root {
-            --primary-blue: #3d71ff;
-            --bg-light: #f8fafc;
-            --sidebar-text: #64748b;
-            --shadow-soft: 0 10px 40px rgba(0, 0, 0, 0.04);
-        }
-
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--bg-light);
-            color: #0f172a;
-            overflow-x: hidden;
-        }
-
-        /* Sidebar */
-        .sidebar {
-            background: #ffffff;
-            height: 100vh;
-            border-right: 1px solid #f1f5f9;
-            position: sticky;
-            top: 0;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .nav-link {
-            color: var(--sidebar-text);
-            font-size: 0.9rem;
-            font-weight: 500;
-            padding: 0.75rem 1rem;
-            border-radius: 12px;
-            transition: all 0.2s;
-        }
-
-        .nav-link:hover, .nav-link.active {
-            background-color: #f0f4ff;
-            color: var(--primary-blue);
-        }
-
-        /* Search Bar */
-        .search-container {
-            background: #ffffff;
-            transition: box-shadow 0.3s;
-        }
-
-        .shadow-card {
-            box-shadow: var(--shadow-soft);
-        }
-
-        .btn-white { background: white; border: none; font-weight: 600; font-size: 0.8rem; }
-        .shadow-primary { box-shadow: 0 4px 14px 0 rgba(61, 113, 255, 0.39); }
-        
-        /* Estilos específicos de Usuarios */
-        .user-avatar-list { width: 32px; height: 32px; border-radius: 8px; object-fit: cover; }
-        .badge-dept { background: #eef2ff; color: #4338ca; font-size: 0.7rem; font-weight: 700; padding: 4px 8px; border-radius: 6px; }
-        .dept-card { transition: transform 0.2s; cursor: pointer; border: 1px solid transparent; }
-        .dept-card:hover { transform: translateY(-5px); border-color: var(--primary-blue); }
-        .btn-action { width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center; border-radius: 8px; border: none; background: #f1f5f9; color: #64748b; }
-        .btn-action:hover { background: #e2e8f0; color: #1e293b; }
-    </style>
-</head>
-<body>
-
-
+<? include __DIR__ . "../../../layout/header.php"; ?>
 <div class="container-fluid">
     <div class="row">
         <!-- Sidebar -->
@@ -139,18 +64,8 @@ if (isset($_POST['btn_editar'])) {
         <!-- Main Content -->
         <main class="col-md-10 ms-sm-auto px-md-5 bg-light-soft">
             <!-- Header -->
-            <header class="d-flex justify-content-between align-items-center py-4">
-                <div class="search-wrapper w-50">
-                    <div class="input-group search-container border-0 shadow-sm rounded-pill px-3">
-                        <span class="input-group-text bg-transparent border-0"><i class="bi bi-search text-muted"></i></span>
-                        <input type="text" class="form-control border-0 bg-transparent" placeholder="Buscar funcionarios...">
-                    </div>
-                </div>
-                <div class="header-actions d-flex align-items-center gap-3">
-                    <div class="user-avatar ms-2">
-                        <img src="https://i.pravatar.cc/150?u=admin" width="40" height="40" class="rounded-circle" alt="User">
-                    </div>
-                </div>
+            <header class="d-flex justify-content-end align-items-center py-4">
+                <?php include __DIR__ . "../../../layout/panel/navbar_user_panel.php"; ?>
             </header>
 
             <!-- Título y Acciones -->
@@ -170,14 +85,10 @@ if (isset($_POST['btn_editar'])) {
                     <div class="card border-0 shadow-card rounded-4 p-4">
                         <div class="d-flex justify-content-between align-items-center mb-4">
                             <h6 class="fw-bold mb-0">Lista de Funcionarios</h6>
-                            <div class="dropdown">
-                                <button class="btn btn-light btn-sm rounded-pill px-3" type="button">Filtrar por Rol</button>
-                            </div>
                         </div>
 
                         <div class="table-responsive">
-
-                            <table class="table table-hover align-middle border-0">
+                            <table id="tablaUsuarios" class="table table-hover align-middle border-0">
                                 <thead class="table-light border-0">
                                     <tr class="text-muted small">
                                         <th class="border-0 fw-bold py-3">USUARIO</th>
@@ -362,6 +273,8 @@ if (isset($_POST['btn_editar'])) {
     </div>
 </div>
 
+<?php include __DIR__ . "../../../layout/footer.php"; ?>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
     function prepararEdicion(rut, nombre, apellido,contrasenha, correo, direccion, rol,sector) {
@@ -377,7 +290,36 @@ if (isset($_POST['btn_editar'])) {
         document.getElementById('editar_contrasenha').value = contrasenha;
 
     }
+
+    $(document).ready(function() {
+        // Diagnóstico: Esto debe imprimir "function" en la consola. Si imprime "undefined", hay un conflicto.
+        console.log("¿DataTables cargó correctamente?:", typeof $.fn.DataTable);
+
+        if (typeof $.fn.DataTable === 'function') {
+            // Destruir si ya existe para evitar errores de recarga
+            if ($.fn.DataTable.isDataTable('#sectorTabla')) {
+                $('#tablaUsuarios').DataTable().clear().destroy();
+            }
+
+            $('#tablaUsuarios').DataTable({
+                language: { 
+                    url: 'https://cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json' 
+                },
+                pageLength: 10,
+                responsive: true,
+                columnDefs: [
+                    { orderable: false, targets: 3 } // No ordenar la columna de acciones
+                ]
+            });
+            console.log("✅ Tabla inicializada con éxito.");
+        } else {
+            console.error("jQuery está sobrescribiendo a DataTables. Busca otro script de jQuery en tu proyecto.");
+        }
+    });
+
 </script>
+
+
 
 </body>
 </html>

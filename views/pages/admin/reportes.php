@@ -22,18 +22,11 @@ $resultado_lista = $db->query($consulta_lista);
 
 
 
-<!DOCTYPE html>
-<html lang="es">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Reportes - SmartCity</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-
-    <style>
+<?php
+$pageTitle = 'Gestión de Reportes';
+include __DIR__ . "../../../layout/header.php";
+?>
+<style>
         :root {
             --primary-blue: #3d71ff;
             --bg-light: #f8fafc;
@@ -139,11 +132,8 @@ $resultado_lista = $db->query($consulta_lista);
             object-fit: cover;
         }
     </style>
-</head>
-
-<body>
-
-    <div class="container-fluid">
+</style>
+<div class="container-fluid">
         <div class="row">
             
             <?php include __DIR__ . "../../../layout/sidebar.php"; ?>
@@ -238,7 +228,7 @@ $resultado_lista = $db->query($consulta_lista);
                 
                 <div class="card shadow-card overflow-hidden mb-5">
                     <div class="table-responsive">
-                        <table class="table table-custom mb-0">
+                        <table class="table table-custom mb-0 table-datatable">
                             <thead>
                                 <tr>
                                     <th>Título del Reporte</th>
@@ -340,7 +330,30 @@ $resultado_lista = $db->query($consulta_lista);
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+<?php include __DIR__ . "../../../layout/footer.php"; ?>
 
+<script>
+    $(document).ready(function () {
+        if (typeof $.fn.DataTable === 'function') {
+            $('.table-datatable').each(function () {
+                const $table = $(this);
+                if ($.fn.DataTable.isDataTable($table)) {
+                    $table.DataTable().clear().destroy();
+                }
+
+                $table.DataTable({
+                    language: {
+                        url: 'https://cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json'
+                    },
+                    pageLength: 10,
+                    responsive: true,
+                    columnDefs: [
+                        { orderable: false, targets: -1 }
+                    ]
+                });
+            });
+        }
+    });
+</script>
+</body>
 </html>

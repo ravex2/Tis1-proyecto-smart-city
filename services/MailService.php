@@ -15,6 +15,7 @@ class EmailService {
     }
 
     public function enviarVerificacion(string $email, string $nombre,string $rut, string $token): bool {
+        echo "Entro aqui";
         $link = "http://localhost/Tis1-proyecto-smart-city/?ruta=verificar-email&token=" . $token . "&email=" . urlencode($email) . "&rut=" . urlencode($rut);
 
         try {
@@ -29,7 +30,9 @@ class EmailService {
             
             $this->mailer->AltBody = "Hola $nombre,\n\nPor favor confirma tu cuenta visitando este enlace:\n$link\n\nEste enlace expira en 24 horas.\n\nSaludos,\nPortal Ciudadano";
 
+            echo "Antes de enviar";
             $this->mailer->send();
+            echo "Enviado";
             return true;
             
         } catch (Exception $e) {
