@@ -154,5 +154,15 @@ use Proyecto\core\Database;
             integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
             crossorigin="anonymous"
         ></script>
+
+        <script>
+            document.getElementById('buscar').addEventListener('keyup', function () {
+                let value = this.value.toLowerCase();
+                document.querySelectorAll('tbody tr').forEach(row => {
+                    row.style.display = row.innerText.toLowerCase().includes(value) ? '' : 'none';
+                });
+            });
+        </script>
+
     </body>
 </html>
