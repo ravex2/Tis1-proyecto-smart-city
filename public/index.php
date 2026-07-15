@@ -83,6 +83,9 @@ $mapaRutas = [
     'ingresar_emprendimiento' => '/public/negocios_locales/ingresar.php',
     'actualizar_revision' => '/public/negocios_locales/actualizar.php',
 
+    'listado_votaciones' => '/src/participacion_ciudadana/lista_votaciones.php',
+    'resultados_votacion' => '/src/participacion_ciudadana/resultados_votacion.php',
+    'ver_votacion' => '/src/participacion_ciudadana/ver_votacion.php',
 
     // login google
     'auth/google' => '/src/autentication/google_auth.php',
@@ -94,7 +97,6 @@ $mapaRutas = [
     'verificar-email' => '/src/autentication/verificacion_correo.php',
     'recuperar-contrasena' => '/views/pages/recuperar_contrasena.php',
     'restablecer-contrasena' => '/views/pages/restablecer_contrasena.php',
-    'ingresar_emprendimiento' => '/public/negocios_locales/ingresar.php'
 
 ];
 

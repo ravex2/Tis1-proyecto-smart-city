@@ -109,8 +109,8 @@ class AuthController {
             'correo'             => $email, // Usar el email validado
             'direccion'          => $datosUsuario['direccion'] ?? '',
             'contrasenha'        => $hashedPassword, 
-            'id_rol'             => 2,
-            'id_sector'          => 1,
+            'id_rol'             => 1, // Asignar rol por defecto
+            'id_sector'          => $datosUsuario['id_sector'] ?? 1,
         ];
 
         try {
@@ -173,13 +173,23 @@ class AuthController {
         */
 
         if ((int)($user['email_verificado'] ?? 0) === 1) {
-            echo "verificado";
-            return ['success' => true, 'message' => 'El correo ya estaba verificado.'];
+            return [
+                'success' => true,
+                'message' => 'El correo ya estaba verificado.',
+                'user' => $user
+            ];
         }
 
         if ($this->usuarioModel->marcarEmailVerificado($user['rut'])) {
-            echo "cambiando el valor";
-            return ['success' => true, 'message' => 'Email verificado correctamente.'];
+
+            // Actualizar el estado del usuario
+            $user['email_verificado'] = 1;
+
+            return [
+                'success' => true,
+                'message' => 'Email verificado correctamente.',
+                'user' => $user
+            ];
         }
 
         return ['success' => false, 'message' => 'No se pudo verificar el email.'];
