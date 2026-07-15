@@ -125,7 +125,7 @@ if ($isAjax) {
                                 <?= htmlspecialchars($biz['nombre_rubro']) ?>
                             </span>
                             <?php if ($foto): ?>
-                                <img src="/smart_city/public/uploads/<?= $foto ?>" class="w-100 h-100 object-fit-cover">
+                                <img src="/Tis1-proyecto-smart-city/public/uploads/<?= $foto ?>" class="w-100 h-100 object-fit-cover">
                             <?php else: ?>
                                 <div class="w-100 h-100 d-flex align-items-center justify-content-center text-muted"><i class="bi bi-shop fs-1 opacity-50"></i></div>
                             <?php endif; ?>
@@ -146,6 +146,9 @@ if ($isAjax) {
                                     <?php endif; ?>
                                     <?php if(!empty($biz['instagram'])): ?>
                                         <a href="https://instagram.com/<?= $biz['instagram'] ?>" target="_blank" class="btn btn-sm btn-outline-danger rounded-circle" onclick="event.stopPropagation();"><i class="bi bi-instagram"></i></a>
+                                    <?php endif; ?>
+                                    <?php if(!empty($biz['facebook'])): ?>
+                                        <a href="https://facebook.com/<?= $biz['facebook'] ?>" target="_blank" class="btn btn-sm btn-outline-primary rounded-circle" onclick="event.stopPropagation();"><i class="bi bi-facebook"></i></a>
                                     <?php endif; ?>
                                 </div>
                             </div>
@@ -333,8 +336,8 @@ if ($isAjax) {
         data.imagenes.forEach(img => {
             galeria.innerHTML += `
                 <div class="border p-1 rounded bg-white shadow-sm">
-                    <a href="/smart_city/public/uploads/${img}" target="_blank">
-                        <img src="/smart_city/public/uploads/${img}" class="rounded" style="width:70px; height:70px; object-fit:cover;">
+                    <a href="/Tis1-proyecto-smart-city/public/uploads/${img}" target="_blank">
+                        <img src="/Tis1-proyecto-smart-city/public/uploads/${img}" class="rounded" style="width:70px; height:70px; object-fit:cover;">
                     </a>
                 </div>`;
         });

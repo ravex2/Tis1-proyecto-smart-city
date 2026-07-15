@@ -36,40 +36,57 @@
             return $this->model->update(['rut' => $rut], $data);
         }
 
-        public function cambiarRol($rut, $id_rol){
+        public function cambiarRol($rut, $id_rol, $id_area = null){
             $resultado = $this->model->update(
                 ['rut' => $rut],
                 ['id_rol' => $id_rol]
             );
+
             if (!$resultado) {
                 return [
                     'ok' => false,
                     'message' => 'No se pudo actualizar el rol'
                 ];
             }
-            $id_rol_ciudadano = 1;
 
+            $funcionarioModel = new FuncionarioMunicipal();
 
-            if ($id_rol != $id_rol_ciudadano) {
-                $funcionarioModel = new FuncionarioMunicipal();
+            // Roles que NO son municipales
+            if ($id_rol == 1 || $id_rol == 4) {
+
                 $funcionario = $funcionarioModel->findByRut($rut);
 
+                if ($funcionario) {
+                    $funcionarioModel->delete($funcionario['id_funcionario']);
+                }
 
-                if (!$funcionario) {
+            } else {
+
+                $funcionario = $funcionarioModel->findByRut($rut);
+
+                if ($funcionario) {
+                    $funcionarioModel->update(
+                        $funcionario['id_funcionario'],
+                        [
+                            'id_area_municipal' => $id_area
+                        ]
+                    );
+
+                } else {
                     $funcionarioModel->create([
                         'rut_usuario' => $rut,
-                        'id_area_municipal' => 1 // Área por defecto inicial
+                        'id_area_municipal' => $id_area
                     ]);
-                }
-            }
 
+                }
+
+            }
 
             return [
                 'ok' => true,
                 'message' => 'Rol asignado correctamente'
             ];
         }
-
 
         public function eliminarUsuario(string $rut){
             return $this->model->delete(['rut' => $rut]);
