@@ -40,96 +40,8 @@ if (isset($_POST['btn_editar'])) {
     //header("Location: usuario.php?status=updated");
 }
 ?>
+<? include __DIR__ . "../../../layout/header.php"; ?>
 
-
-
-
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión Territorial - SmartCity</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    
-    <style>
-        :root {
-            --primary-blue: #3d71ff;
-            --bg-light: #f8fafc;
-            --sidebar-text: #64748b;
-            --shadow-soft: 0 10px 40px rgba(0, 0, 0, 0.04);
-        }
-
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--bg-light);
-            color: #0f172a;
-        }
-
-        .sidebar {
-            background: #ffffff;
-            height: 100vh;
-            border-right: 1px solid #f1f5f9;
-            position: sticky;
-            top: 0;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .nav-link {
-            color: var(--sidebar-text);
-            font-size: 0.9rem;
-            font-weight: 500;
-            padding: 0.75rem 1rem;
-            border-radius: 12px;
-            transition: all 0.2s;
-        }
-
-        .nav-link.active {
-            background-color: #f0f4ff;
-            color: var(--primary-blue);
-        }
-
-        .shadow-card { box-shadow: var(--shadow-soft); border: none; border-radius: 24px; }
-        
-        /* Table Styling - border-0 en tr solicitado */
-        .table-custom thead th {
-            background-color: #f8fafc;
-            border: 0 !important;
-            color: #64748b;
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            padding: 18px 24px;
-        }
-
-        .table-custom tbody tr td {
-            border: 0 !important;
-            padding: 18px 24px;
-            vertical-align: middle;
-        }
-
-        .icon-territory {
-            width: 40px; height: 40px;
-            display: flex; align-items: center; justify-content: center;
-            border-radius: 10px; font-size: 1.1rem;
-            background: #f1f5f9; color: #475569;
-        }
-
-        .btn-action-soft {
-            width: 35px; height: 35px; border-radius: 10px; border: none; 
-            background: #f1f5f9; color: #64748b; transition: 0.2s;
-        }
-        .btn-action-soft:hover { background: #e2e8f0; color: #0f172a; }
-
-        .badge-type {
-            font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
-            padding: 5px 10px; border-radius: 6px; letter-spacing: 0.02em;
-        }
-    </style>
-</head>
-<body>
 
 <div class="container-fluid">
     <div class="row">
@@ -148,8 +60,8 @@ if (isset($_POST['btn_editar'])) {
             </header>
 
             <div class="card shadow-card overflow-hidden">
-                <div class="table-responsive">
-                    <table class="table table-custom mb-0">
+                <div class="table-responsive p-4">
+                    <table id="sectorTabla"  class="table table-custom mb-0">
                         <thead>
                             <tr>
                                 <th>Identificador</th>
@@ -202,6 +114,8 @@ if (isset($_POST['btn_editar'])) {
             </div>
         </main>
     </div>
+
+    
 </div>
 
 <div class="modal fade" id="sectorModal" tabindex="-1" aria-hidden="true">
@@ -292,17 +206,45 @@ if (isset($_POST['btn_editar'])) {
 </div>
 
 
-<script>
 
-function editar_sector(id_sector,nombre, id_municipalidad) {
-    console.log("Mostrando la infor");
-    console.log(id_sector);
+
+<script>
+function editar_sector(id_sector, nombre, id_municipalidad) {
     document.getElementById('editar_id_sector').value = id_sector;
     document.getElementById('editar_nombre').value = nombre;
     document.getElementById('editar_id_municipalidad').value = id_municipalidad;
 }
-
 </script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<?php include __DIR__ . "../../../layout/footer.php"; ?>
+
+<script>
+    $(document).ready(function() {
+        // Diagnóstico: Esto debe imprimir "function" en la consola. Si imprime "undefined", hay un conflicto.
+        console.log("¿DataTables cargó correctamente?:", typeof $.fn.DataTable);
+
+        if (typeof $.fn.DataTable === 'function') {
+            // Destruir si ya existe para evitar errores de recarga
+            if ($.fn.DataTable.isDataTable('#sectorTabla')) {
+                $('#sectorTabla').DataTable().clear().destroy();
+            }
+
+            $('#sectorTabla').DataTable({
+                language: { 
+                    url: 'https://cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json' 
+                },
+                pageLength: 30,
+                responsive: true,
+                columnDefs: [
+                    { orderable: false, targets: 3 } // No ordenar la columna de acciones
+                ]
+            });
+            console.log("✅ Tabla inicializada con éxito.");
+        } else {
+            console.error("jQuery está sobrescribiendo a DataTables. Busca otro script de jQuery en tu proyecto.");
+        }
+    });
+</script>
+
+
 </body>
 </html>
