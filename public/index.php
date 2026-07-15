@@ -42,6 +42,8 @@ if (!isset($_SESSION['user']) && !in_array($ruta, $rutasPublicas)) {
 //$rolController = new RolController();
 //$resultado = $rolController->obtenerRol($rol_usuario);
 //echo print_r($resultado);
+
+
 if (isset($_SESSION['user'])) {
     $rol_usuario = $_SESSION['user']['id_rol'];
 } 

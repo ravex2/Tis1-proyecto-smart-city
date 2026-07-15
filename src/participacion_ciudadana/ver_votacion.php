@@ -3,7 +3,7 @@ require_once __DIR__ . "/../../config/database.php";
 $db = getDatabase();
 
 $id_consulta = isset($_GET['id']) ? intval($_GET['id']) : 0;
-$rut_usuario = 87654321; // TODO: Cambiar por $_SESSION['user']['rut_usuario'] cuando el login esté activo
+$rut_usuario = $_SESSION['user']['rut']; 
 
 // Validar y obtener datos de la consulta
 $consultas = $db->query("SELECT * FROM consulta_votacion WHERE id_consulta = $id_consulta");
