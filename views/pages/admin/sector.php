@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btn_crear'])) {
         $resultado = $controlador->crearSector($datos);
         
         if ($resultado) {
-            echo "<script>alert('Usuario creado con éxito'); window.location='usuario.php';</script>";
+            header("Location: ?ruta=sector");
         }
     } catch (Exception $e) {
         echo "<script>alert('Error al crear usuario: " . $e->getMessage() . "');</script>";
@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btn_crear'])) {
 // ELIMINAR
 if (isset($_POST['btn_eliminar'])) {
     $controlador->eliminarSector($_POST['id_sector']);
-    //header("Location: usuario.php?status=deleted");
+    header("Location: ?ruta=sector");
 }
 
 // EDITAR 
@@ -37,7 +37,7 @@ if (isset($_POST['btn_editar'])) {
         'id_municipalidad'   => $_POST['id_municipalidad']
     ];
     $controlador->editarSector($id_sector, $datos);
-    //header("Location: usuario.php?status=updated");
+    header("Location: ?ruta=sector");
 }
 ?>
 <? include __DIR__ . "../../../layout/header.php"; ?>

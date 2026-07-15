@@ -7,6 +7,8 @@ require_once __DIR__ . '../../../../controllers/usuario.controlador.php';
 $controlador = new UsuarioController();
 $usuarios = $controlador->obtenerUsuarios();
 
+$errorMessage = "";
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btn_crear'])) {
     try {
         $datos = [
@@ -23,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btn_crear'])) {
         $resultado = $controlador->crearUsuario($datos);
         
         if ($resultado) {
-            echo "<script>alert('Usuario creado con éxito'); window.location='usuario.php';</script>";
+            header("Location: ?ruta=usuarios");
         }
     } catch (Exception $e) {
         echo "<script>alert('Error al crear usuario: " . $e->getMessage() . "');</script>";
@@ -33,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btn_crear'])) {
 // ELIMINAR
 if (isset($_POST['btn_eliminar'])) {
     $controlador->eliminarUsuario($_POST['rut_eliminar']);
-    header("Location: usuario.php?status=deleted");
+    header("Location: ?ruta=usuarios");
 }
 
 // EDITAR 
@@ -51,7 +53,7 @@ if (isset($_POST['btn_editar'])) {
         'id_sector'   => $_POST['id_sector']
     ];
     $controlador->editarUsuario($rut, $datos);
-    //header("Location: usuario.php?status=updated");
+    header("Location: ?ruta=usuarios");
 }
 ?>
 
