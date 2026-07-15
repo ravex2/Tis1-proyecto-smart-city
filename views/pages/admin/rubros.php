@@ -49,17 +49,11 @@ if (isset($_POST['btn_editar'])) {
 
 
 ?>
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Rubros - SmartCity</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    
-    <style>
+<?php
+$pageTitle = 'Gestión de Rubros';
+include __DIR__ . "../../../layout/header.php";
+?>
+<style>
         :root {
             --primary-blue: #3d71ff;
             --bg-light: #f8fafc;
@@ -121,8 +115,7 @@ if (isset($_POST['btn_editar'])) {
         .modal-content { border-radius: 24px; border: none; padding: 10px; }
         .form-control, .form-select { border-radius: 12px; padding: 12px; border: 1px solid #f1f5f9; background: #f8fafc; }
     </style>
-</head>
-<body>
+</style>
 <div class="container-fluid">
     <div class="row">
         <!-- Sidebar -->
@@ -130,18 +123,13 @@ if (isset($_POST['btn_editar'])) {
             include __DIR__ . "../../../layout/sidebar.php";
         ?>
         <main class="col-md-10 ms-sm-auto px-md-5">
-            <header class="d-flex justify-content-between align-items-center py-4">
-                <div>
-                    <h2 class="fw-bold mb-0">Rubros Comerciales</h2>
-                    <p class="text-muted small">Define las categorías para clasificar el comercio local y emprendimientos.</p>
-                </div>
-                <button class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm" data-bs-toggle="modal" data-bs-target="#rubroModal">
-                    <i class="bi bi-plus-lg me-2"></i> Nuevo Rubro
-                </button>
+            <header class="d-flex justify-content-end align-items-center py-4">
+                <?php include __DIR__ . "../../../layout/panel/navbar_user_panel.php"; ?>
             </header>
+
             <div class="card shadow-card overflow-hidden">
-                <div class="table-responsive">
-                    <table class="table table-custom mb-0">
+                <div class="table-responsive p-4">
+                    <table class="table table-custom mb-0 table-datatable">
                         <thead>
                             <tr>
                                 <th>Icono</th>
@@ -269,5 +257,30 @@ function editar_rubro(rubro) {
 }
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<?php include __DIR__ . "../../../layout/footer.php"; ?>
+
+<script>
+    $(document).ready(function () {
+        if (typeof $.fn.DataTable === 'function') {
+            $('.table-datatable').each(function () {
+                const $table = $(this);
+                if ($.fn.DataTable.isDataTable($table)) {
+                    $table.DataTable().clear().destroy();
+                }
+
+                $table.DataTable({
+                    language: {
+                        url: 'https://cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json'
+                    },
+                    pageLength: 10,
+                    responsive: true,
+                    columnDefs: [
+                        { orderable: false, targets: -1 }
+                    ]
+                });
+            });
+        }
+    });
+</script>
 </body>
 </html>
