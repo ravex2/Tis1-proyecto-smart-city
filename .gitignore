@@ -15,7 +15,6 @@ logs/
 # archivos no necearios
 models/crudtrait.php
 
-public/uploads/*
 !.gitkee
 
 

@@ -266,7 +266,7 @@
             galeria.innerHTML = '<span class="text-muted small">Este emprendimiento no subió imágenes.</span>';
         } else {
             imagenes.forEach(img => {
-                const srcReal = `/smart_city/public/uploads/${img}`; 
+                const srcReal = `/Tis1-proyecto-smart-city/public/uploads/${img}`; 
                 
                 const div = document.createElement('div');
                 div.className = 'border p-1 rounded bg-white';
