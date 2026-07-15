@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . "/../vendor/autoload.php";
 require_once __DIR__ . "/../controllers/template.controller.php";
+require_once __DIR__ . "/../controllers/rol.controlador.php";
 
 
 define('BASE_PATH', realpath(__DIR__ . '/..'));
@@ -31,7 +32,62 @@ $rutasPublicas = [
 
 if (!isset($_SESSION['user']) && !in_array($ruta, $rutasPublicas)) {
     $ruta = 'login';
+} 
+
+
+//$rolUsuario = $_SESSION['user']['rol'] ?? $_SESSION['rol'] ?? 'invitado';
+//echo print_r($_SESSION['user']);
+
+
+//$rolController = new RolController();
+//$resultado = $rolController->obtenerRol($rol_usuario);
+//echo print_r($resultado);
+if (isset($_SESSION['user'])) {
+    $rol_usuario = $_SESSION['user']['id_rol'];
+} 
+
+$restriccionesRutas = [
+    // --- Rutas exclusivas de ADMINISTRADOR (Rol 3) ---
+    'dashboard'                 => [3],
+    'sector'                    => [3],
+    'usuarios'                  => [3],
+    'roles_usuarios'            => [3],
+    'departamentos'             => [3],
+    'rubros'                    => [3],
+    'gestion_comercio'          => [3],
+    'asignar_rol'               => [3],
+    'eliminar_area'             => [3],
+    'ingresar_area'             => [3],
+    'editar_area'               => [3],
+    'listar_area'               => [3],
+    'leer_categoria_publicacion'=> [3],
+    'crear_categoria_publicacion'=> [3],
+    'editar_categoria_publicacion'=> [3],
+    'eliminar_categoria_publicacion'=> [3],
+    'leer_categoria_reporte'    => [3],
+    'crear_categoria_reporte'   => [3],
+    'editar_categoria_reporte'  => [3],
+    'eliminar_categoria_reporte'=> [3],
+    'api_analiticas'            => [3],
+
+    // Rutas de FUNCIONARIO  ADMINISTRADOR (Rol 3) ---
+    'reportes'                      => [3, 2],
+    'ver_reporte_funcionario'       => [3, 2],
+    'seguimiento_reporte_funcionario'=> [3, 2],
+    'actualizar_revision'           => [3, 2],
+];
+
+if (isset($restriccionesRutas[$ruta])) {
+    if (!in_array($rol_usuario, $restriccionesRutas[$ruta])) {
+        $ruta = 'publicaciones';
+    }
 }
+
+
+
+
+
+
 
 $mapaRutas = [
     'login'  => '/views/base.php',
